@@ -1,10 +1,5 @@
 (message "Loading org-mode")
 
-(setq my-emacs-load-path (concat (file-name-directory (or load-file-name buffer-file-name))))
-
-(add-to-list 'load-path (concat my-emacs-load-path "org-mode/lisp"))
-(add-to-list 'load-path (concat my-emacs-load-path "org-mode/contrib/lisp"))
-
 ;; This option is only relevant at load-time of Org-mode, and must be
 ;; set *before* org.el is loaded.
 ;; (setq org-CUA-compatible t)
@@ -29,24 +24,22 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/.emacs.d/org-gtd/*.org"))
 
-(defun org-all ()
+(defun org-file-all ()
+  (interactive)
+  (setq org-agenda-files 
+        (file-expand-wildcards
+         "~/.emacs.d/org-gtd/*.org"))
+  (org-agenda-redo))
+
+(defun org-file-work ()
   (interactive)
   (setq org-agenda-files 
         (list
-         "~/.emacs.d/org-gtd/sfsf.org"
-         "~/.emacs.d/org-gtd/personal.org"
+         "~/.emacs.d/org-gtd/wish.org"
          ))
   (org-agenda-redo))
 
-(defun org-work ()
-  (interactive)
-  (setq org-agenda-files 
-        (list
-         "~/.emacs.d/org-gtd/sfsf.org"
-         ))
-  (org-agenda-redo))
-
-(defun org-life ()
+(defun org-file-personal ()
   (interactive)
   (setq org-agenda-files 
         (list
