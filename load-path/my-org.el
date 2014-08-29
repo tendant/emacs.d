@@ -55,12 +55,46 @@
 
 (setq org-log-done 'time)
 
-;; C-u C-c C-t: to switch the status quickly. 
-;; #+SEQ_TODO: TODO(t) STARTED(!) WAITING(w@/!) DELEGATED(l!) APPT | DONE(d!) DEFERRED(D!) CANCELLED(c@)
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "STARTED(!)" "WAITING(w@/!)" "DELEGATED(l!)" "APPT" "|" "DONE(d!)" "CANCELED(c@)")))
+;; C-u C-c C-t: to switch the status quickly.
 
-(define-key global-map [(f9)] 'org-agenda)
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "blue" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+              ("CANCELLED" :foreground "forest green" :weight bold)
+              ("MEETING" :foreground "forest green" :weight bold)
+              ("PHONE" :foreground "forest green" :weight bold)))) (define-key global-map [(f9)] 'org-agenda)
+
+;; Fast todo selection allows changing from any task todo state to any
+;; other state directly by selecting the appropriate key from the fast
+;; todo selection key menu. Changing a task state is done with C-c C-t
+;; KEY, where KEY is the appropriate fast todo state selection key as
+;; defined in org-todo-keywords.
+(setq org-use-fast-todo-selection t)
+
+;; Moving a task to CANCELLED adds a CANCELLED tag
+;; Moving a task to WAITING adds a WAITING tag
+;; Moving a task to HOLD adds WAITING and HOLD tags
+;; Moving a task to a done state removes WAITING and HOLD tags
+;; Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
+;; Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
+;; Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+              ("WAITING" ("WAITING" . t))
+              ("HOLD" ("WAITING") ("HOLD" . t))
+              (done ("WAITING") ("HOLD"))
+              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+
 
 ;; To keep the overview over the fraction of subtasks that are already
 ;; completed, insert either '[/]' or '[%]' anywhere in the
@@ -82,30 +116,28 @@
 
 ;;; Configuration of Remember
 (setq org-directory "~/.emacs.d/org-gtd/")
-(setq org-default-notes-file "~/.emacs.d/org-gtd/notes.org")
-;; (setq remember-annotation-functions '(org-remember-annotation))
-;; (setq remember-handler-functions '(org-remember-handler))
-;; (add-hook 'remember-mode-hook 'org-remember-apply-template)
-;; ;; (define-key global-map "\C-cr" 'org-remember)
-;; ;; templates
-;; (setq org-remember-templates
-;;      '(("Todo" ?t "* TODO %? %^g\n %i\n " "~/.emacs.d/org-gtd/personal.org" "Tasks")
-;;       ("Journal" ?j "\n* %^{topic} %T \n%i%?\n" "~/.emacs.d/org-gtd/personal.org" "Journal")
-;;       ("Book" ?b "\n* %^{Book Title} %t :READING: \n%\n" 
-;;               "~/.emacs.d/org-gtd/personal.org" "Book")
-;;       ("Contact" ?c "\n* %^{Name} :CONTACT:\n%\n" 
-;;                "~/.emacs.d/org-gtd/personal.org" "Contact")
-;;       ("Work" ?w "* TODO %? %^g\n %i\n " "~/.emacs.d/org-gtd/sfsf.org" "Tasks")
-;;       ))
+(setq org-default-notes-file "~/.emacs.d/org-gtd/refile.org")
 
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-     '(("t" "Todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks") "* TODO %? %^g\n CREATED: %U %i\n ")
-       ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/personal.org") "* %?\nEntered on %U\n %i\n  %a")
-       ("b" "Book" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Book") "\n* %^{Book Title} \n Entered on %U\n :READING: \n%\n")
-       ("c" "Contact" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Contact") "\n* %^{Name} :CONTACT:\n%\n")
-       ("w" "Work" entry (file+headline "~/.emacs.d/org-gtd/sfsf.org" "Tasks") "* TODO %? %^g\n CREATED: %U\n%i\n ")
-       ("h" "HANA" entry (file+headline "~/.emacs.d/org-gtd/sfsf.org" "HANA") "* %? %^g\n CREATED: %U\n%i\n ")
-      ))
+      (quote (("t" "todo" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+              ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
+               "* %?\n%U\n" :clock-in t :clock-resume t)
+              ("w" "org-protocol" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+              ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+              ("h" "Habit" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+
+
 
 ;; update agenda file after changes to org files
 (defun org-mode-init ()
