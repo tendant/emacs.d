@@ -1,0 +1,6 @@
+#define setUp() for testNG
+# --
+@BeforeClass
+public void setUp () {
+  $0
+}

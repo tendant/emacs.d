@@ -1,0 +1,4 @@
+#Author : Jonas Bonèr <jonas@jonasboner.com>
+#name : object name extends T
+# --
+object ${1:`(file-name-sans-extension (buffer-name))`} extends ${2:type} $0

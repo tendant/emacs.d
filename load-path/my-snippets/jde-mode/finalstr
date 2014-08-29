@@ -1,0 +1,4 @@
+# name : public static final String
+# key: final
+# --
+public static final String $1 = $0;

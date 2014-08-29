@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: height
+# --
+android:layout_height="${1:wrap_content}"$0

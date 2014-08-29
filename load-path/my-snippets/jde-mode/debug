@@ -1,0 +1,4 @@
+#_log.debug
+# --
+_log.debug("$1");
+$0

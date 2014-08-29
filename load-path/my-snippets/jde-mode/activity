@@ -1,0 +1,20 @@
+#name : activity ... { ... }
+#key : act
+# --
+/**
+ * Created by Emacs
+ * User: Lei Wang
+ * Date: `(format-time-string "%Y-%m-%d")`
+ * Time: `(format-time-string "%H:%M")`
+ */
+public class ${1:`(file-name-sans-extension (buffer-name))`} extends Activity
+{
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    $0
+  }
+
+}

@@ -1,0 +1,18 @@
+#setupejb
+# --
+  private static final Logger _log = Logger.getLogger(VarPayBonusPlanBLTest.class);
+  private EJBList ejbList;
+  private ParamBean params;
+
+  @BeforeClass
+  public void setUp () {
+  
+    ejbList = VarPayTestNGUtil.getEJBList();
+    System.out.println("ejbList: " + ejbList);
+    params = VarPayTestNGUtil.getParamBean();
+
+  }
+
+  @AfterClass
+  public void tearDown () {
+  }

@@ -1,0 +1,7 @@
+# name: try
+# key: try
+# --
+try {
+} catch ($1 e) { 
+    _log.error(e);   
+}$0

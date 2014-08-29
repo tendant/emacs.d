@@ -1,0 +1,6 @@
+# name: int main(argc, argv) { ... }
+# key: main
+# --
+public static void main(String[] args) {
+    $0
+}

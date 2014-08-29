@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: android
+# --
+xmlns:android="http://schemas.android.com/apk/res/android"

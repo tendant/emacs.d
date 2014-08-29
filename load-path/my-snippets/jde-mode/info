@@ -1,0 +1,5 @@
+# name: _log.info
+# key: info
+# --
+_log.info("$1");
+$0

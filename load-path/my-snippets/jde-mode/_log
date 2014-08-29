@@ -1,0 +1,4 @@
+# name: _log
+# key: _log
+# --
+private static final Logger logger = Logger.getLogger(`(file-name-sans-extension (buffer-name))`.class);

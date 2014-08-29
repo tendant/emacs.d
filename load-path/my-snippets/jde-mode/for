@@ -1,0 +1,7 @@
+# name: for iterator (...; ...; ...) { ... }
+# key: for 
+# --
+for (Iterator<$1> ${4:iterator} = $2.iterator(); $4.hasNext(); ) {
+    $1 $3 = $4.next();
+    $0
+}

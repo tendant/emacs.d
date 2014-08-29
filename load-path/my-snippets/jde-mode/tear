@@ -1,0 +1,7 @@
+# name: define tearDown() function for testNG
+# key: tear
+# --
+@AfterClass
+public void tearDown () {
+  $0
+}

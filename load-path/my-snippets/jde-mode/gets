@@ -1,0 +1,22 @@
+#name : gets ... { ... }
+#key : gets
+# --
+/** $1 */
+private ${2:String} ${1:fieldName};
+
+/** 
+ * get $1 
+ *  @return $1
+ */
+public $2 get${1:$(upcase-initials yas-text)}() {
+  return $1;
+}
+
+/** 
+ * set $1
+ * @param $1
+ */
+public void set${1:$(upcase-initials yas-text)}($2 $1) {
+  this.$1 = $1;
+}
+$0
