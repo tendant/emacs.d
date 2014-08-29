@@ -10,9 +10,9 @@
               ((eq system-type 'windows-nt) '("Consolas"  "Microsoft Yahei")))))
 
 ;; I don't know why I need these two.
-(setq face-font-rescale-alist '(("STHeiti" . 1) ("Microsoft Yahei" . 1) ("WenQuanYi Zen Hei" . 1)))
-(set-face-attribute 'default nil :font
-                    (format "%s:pixelsize=%d" (car my-font-options) 12)) 
+;; (setq face-font-rescale-alist '(("STHeiti" . 1) ("Microsoft Yahei" . 1) ("WenQuanYi Zen Hei" . 1)))
+;; (set-face-attribute 'default nil :font
+;;                    (format "%s:pixelsize=%d" (car my-font-options) 12))
 
 (defun my-font-config ()
   "Configure font for Linux."
