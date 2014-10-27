@@ -26,7 +26,7 @@
    (or (package-installed-p package)
        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
            (package-install package))))
- '(clojure-mode clojure-test-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
+ '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
 
 (if (and
      (< (string-to-number (car (split-string (org-version) "\\."))) 8)
