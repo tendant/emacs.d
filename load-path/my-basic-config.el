@@ -491,7 +491,9 @@ Returns nil if no differences found, 't otherwise."
 (if (string-equal "darwin" (symbol-name system-type))
     (progn
       (setenv "PATH" (concat (getenv "HOME") "/bin:/usr/local/bin:" (getenv "PATH")))
-      (setq exec-path (cons "/usr/local/bin" exec-path))
+      (setq exec-path (append (list "/usr/local/bin"
+                                    (concat (getenv "HOME") "/bin"))
+                              exec-path))
       (setq mac-option-modifier 'super) ; set the Option key as Super
       (setq mac-command-modifier 'meta) ; set the command key as Meta
       (eval-after-load "paredit"
