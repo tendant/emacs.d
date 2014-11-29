@@ -262,6 +262,7 @@
 ;; (load "~/.emacs.d/load-path/my-scala.el")
 ;; (message "Finished Loading extensions.")
 
+
 ;; for javascript
 ;; (setq js-indent-level 2)
 (setq js-indent-level 4)
@@ -272,7 +273,6 @@
 ;; (setq js2-consistent-level-indent-inner-bracket-p t)
 ;; (setq js2-pretty-multiline-decl-indentation-p t)
 ;; (put 'narrow-to-region 'disabled nil)
-
 
 
 ;; for gdb
@@ -299,7 +299,8 @@
 ;; html-mode and js-mode
 (add-hook 'html-mode-hook
           (lambda ()
-            (local-set-key (kbd "<f8>") 'js-mode)))
+            (local-set-key (kbd "<f8>") 'js-mode)
+            (set (make-local-variable 'sgml-basic-offset) 4)))
 (add-hook 'js-mode-hook
           (lambda ()
             (local-set-key (kbd "<f8>") 'html-mode)))
