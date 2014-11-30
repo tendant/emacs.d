@@ -10,8 +10,9 @@
 ;; really close the mail window after sending it.
 (setq message-kill-buffer-on-exit t)
 
-;;; configuration for smtpmail
-(load-library "smtpmail")
+;; ;;; configuration for smtpmail
+;; (load-library "smtpmail")
+
 
 ;;; Begin configure SMTP 
 ;;; Copied from http://rsw.digi.com.br/blog/2008/01/21/gnus-gmail-part-ii-adding-multiple-smtp-accounts/
@@ -41,15 +42,20 @@
 
 ;; Default smtpmail.el configurations.
 (require 'smtpmail)
+;; (require 'starttls)
+
 (setq send-mail-function 'smtpmail-send-it
       message-send-mail-function 'smtpmail-send-it
       mail-from-style nil
       user-full-name "Your Name"
       ;; user-mail-address "account2@gmail.com" ; MS Exchange server
       ;; will check this.
-      message-signature-file "~/.emacs.d/signature"
-      smtpmail-debug-info nil
-      smtpmail-debug-verb nil)
+      ;; message-signature-file "~/.emacs.d/signature"
+      smtpmail-debug-info t
+      smtpmail-debug-verb t
+      smtpmail-queue-mail nil
+      smtpmail-queue-dir  "~/.Mail/queue/cur")
+;; mu mkdir ~/.Mail/queue
 ;; The code above just sets some default values. My mail signature is
 ;; found on the file ~/emacs/signature, I also specify my user name
 ;; user-full-name and my e-mail address user-mail-address so that Gnus
@@ -70,19 +76,26 @@
   (message "Setting SMTP server to `%s:%s' for `%s'."
        server port address))
 
-;; Need to install gnutls-bin for ttl
+;;  You can either use the built-in support (in Emacs 24.1 and later), or the starttls.el Lisp library. The built-in support uses the GnuTLS 1 library. If your Emacs has GnuTLS support built-in, the function gnutls-available-p is defined and returns non-nil. Otherwise, you must use the starttls.el library (see that file for more information on customization options, etc.). The Lisp library requires one of the following external tools to be installed:
+;; (defun gnutls-available-p ()
+;;   "Function redefined in order not to use built-in GnuTLS support"
+;;   nil)
+
+;; Require to install gnutls-bin for tls
 (defun set-smtp-ssl (user password server port key cert)
   "Set related SMTP and SSL variables for supplied parameters."
-  (setq starttls-use-gnutls t
-    starttls-gnutls-program "gnutls-cli"
-    starttls-extra-arguments nil
-    smtpmail-smtp-server server
-    smtpmail-smtp-service port
-    smtpmail-starttls-credentials (list (list server port key cert))
-    ;; smtpmail-auth-credentials "~/.authinfo")
-    smtpmail-auth-credentials (list (list server port user password))
-    user-mail-address address
-    )
+  (setq
+   ;; starttls-use-gnutls t
+   ;; starttls-gnutls-program "gnutls-cli"
+   ;; starttls-extra-arguments nil
+        smtpmail-stream-type 'tls
+        smtpmail-smtp-server server
+        smtpmail-smtp-service port
+        smtpmail-starttls-credentials (list (list server port key cert))
+        ;; smtpmail-auth-credentials "~/.authinfo")
+        smtpmail-auth-credentials (list (list server port user password))
+        user-mail-address address
+        smtpmail-local-domain "gmail.com")
   (message
    "Setting SMTP server to `%s:%s' for `%s'. (SSL enabled.)"
    server port address))
@@ -106,9 +119,9 @@
              (message (car auth-spec))
              (return (apply 'set-smtp-plain auth-spec))
                      ))
-          ((eql acc-type 'ssl)
+          ( (or (eql acc-type 'ssl) (eql acc-type 'tls))
            (progn
-             (message "using ssl")
+             (message "using ssl or tls")
              (return (apply 'set-smtp-ssl auth-spec))
                    ))
           (t (error "Unrecognized SMTP account type: `%s'." acc-type)))
@@ -116,4 +129,4 @@
 
 (add-hook 'message-send-hook 'change-smtp)
 
-(provide 'my-mail)
+(provide 'my-mail-smtp)
