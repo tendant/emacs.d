@@ -10,27 +10,6 @@
 ;; really close the mail window after sending it.
 (setq message-kill-buffer-on-exit t)
 
-;; ;;; configuration for smtpmail
-;; (load-library "smtpmail")
-
-
-;; http://emacswiki.org/emacs/MultipleSMTPAccounts
-;;;
-;; You may have to consider two more variables if your MTA checks your
-;; mail address specified in “MAIL FROM:” SMTP header line to decide
-;; whether you are allowed to send mail (Exchange does this). By
-;; default ‘smtpmail-mail-address’ is used if it is specified,
-;; otherwise ‘user-mail-address’. However, you probably don’t set
-;; ‘smtpmail-mail-address’ and your ‘user-mail-address’ contains
-;; your default e-mail address that is different from the one you use
-;; for a particular SMTP server. If you want to direct smtpmail.el to
-;; use the From field of the mail, set ‘mail-specify-envelope-from’
-;; to t and ‘mail-envelope-from’ to header.
-
-;; Default smtpmail.el configurations.
-;; (require 'smtpmail)
-;; (require 'starttls)
-
 (setq
  ;; send-mail-function 'smtpmail-send-it
  ;;      message-send-mail-function 'smtpmail-send-it
@@ -39,23 +18,40 @@
       ;; user-mail-address "account2@gmail.com" ; MS Exchange server
       ;; will check this.
       ;; message-signature-file "~/.emacs.d/signature"
-      smtpmail-debug-info t
-      smtpmail-debug-verb t)
-;; mu mkdir ~/.Mail/queue
-;; The code above just sets some default values. My mail signature is
-;; found on the file ~/emacs/signature, I also specify my user name
-;; user-full-name and my e-mail address user-mail-address so that Gnus
-;; can fill the From header field automatically for me.
-
+      smtpmail-debug-info nil
+      smtpmail-debug-verb nil)
 ;; The Debug options is also nice so that you get some feedback about
 ;; what is happening while Gnus is sending the e-mail for you.
+
+
+;; https://www.gnu.org/software/emacs/manual/html_node/smtpmail/Authentication.html#Authentication
+;; The basic format of the ~/.authinfo file is one line for each set
+;; of credentials. Each line consists of pairs of variables and
+;; values. A simple example would be:
+;;
+;;     machine mail.example.org port 25 login myuser password mypassword
+;;
+;; This specifies that when using the SMTP server called
+;; ‘mail.example.org’ on port 25, Emacs should send the user name
+;; ‘myuser’ and the password ‘mypassword’. Either or both of the
+;; login and password fields may be absent, in which case Emacs
+;; prompts for the information when you try to send mail. (This
+;; replaces the old smtpmail-auth-credentials variable used prior to
+;; Emacs 24.1.)
+;; 
+;; When the SMTP library connects to a host on a certain port, it
+;; searches the ~/.authinfo file for a matching entry. If an entry is
+;; found, the authentication process is invoked and the credentials
+;; are used. If the variable smtpmail-smtp-user is set to a non-nil
+;; value, then only entries for that user are considered. For more
+;; information on the ~/.authinfo file, see auth-source.
 
 ;; (setq smtpmail-stream-type 'ssl) ;; If using TLS/SSL.  Use C-h v smtpmail-stream-type RET to see possible values
 
 ;; .authinfo.el
 ;; (setq smtp-accounts
-;;   '(("email@example.com" "Name" "smtp.gmail.com")
-;;    ("email@example.com" "Name" "smtp.gmail.com")))
+;;   '(("email1@example.com" "Name" "smtp.gmail.com" 587)
+;;     ("email2@example.com" "Name" "smtp.gmail.com" 587)))
 
 (defun my-change-smtp ()
   (require 'authinfo "~/.authinfo.el")
@@ -63,7 +59,7 @@
     (loop with from = (save-restriction
                         (message-narrow-to-headers)
                         (message-fetch-field "from"))
-          for (addr fname server) in smtp-accounts
+          for (addr fname server port) in smtp-accounts
           when (string-match addr from)
           do (progn
                (message "match found")
@@ -71,7 +67,8 @@
                (setq user-mail-address addr
                      user-full-name fname
                      smtpmail-smtp-user addr
-                     smtpmail-smtp-server server)))))
+                     smtpmail-smtp-server server
+                     smtpmail-smtp-service port)))))
 
 (defadvice smtpmail-via-smtp
   (before change-smtp-by-message-from-field (recipient buffer &optional ask) activate)
