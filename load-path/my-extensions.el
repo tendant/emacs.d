@@ -106,42 +106,6 @@
 (debug-time (require 'my-erc))
 (message "Loaded erc-mode")
 
-;; development w3m version for emacs 23
-;; (if (= emacs-major-version 23)
-;;     (add-to-list 'load-path "~/.emacs.d/load-path/emacs-w3m")
-;;   (add-to-list 'load-path "~/.emacs.d/load-path/w3m"))
-(add-to-list 'load-path "~/.emacs.d/load-path/emacs-w3m")
-
-(if linuxp
-    (require 'w3m-load)
-  (require 'w3m))
-(setq w3m-use-cookies t)
-(setq w3m-cookie-accept-bad-cookies t)
-(setq w3m-default-display-inline-images t)
-(setq w3m-display-inline-images t)
-(defun w3m-copy-url-at-point ()
-  (interactive)
-  (let ((url (w3m-anchor)))
-    (if (w3m-url-valid url)
-        (kill-new (w3m-anchor))
-      (message "No URL at point!"))))
-
-(add-hook 'w3m-mode-hook
-          (lambda ()
-            (local-set-key "\M-W" 'w3m-copy-url-at-point)))
-(message "Loaed w3m")
-
-;; (defun google (what)
-;;   "Use google to search for WHAT."
-;;   (interactive "sSearch: ")
-;;   (save-window-excursion
-;;     (delete-other-windows)
-;;     (let ((dir default-directory))
-;;       (w3m-browse-url (concat "http://www.google.com/search?q="
-;; 			      (w3m-url-encode-string what)))
-;;       (cd dir)
-;;     (recursive-edit))))
-
 ;; (add-to-list 'load-path "~/.emacs.d/load-path/emacs-svn")
 ;; (require 'psvn)
 
