@@ -26,6 +26,7 @@
 ;; 
 ;; Add below function temporarily, since this function is not released
 ;; in mu4e yet. It is only available in master.
+;; https://groups.google.com/forum/#!topic/mu-discuss/gr1cwNNZnXo
 (defun mu4e-shr2text () 
   "Html to text using the shr engine; this can be used in 
 `mu4e-html2text-command' in a new enough emacs. Based on code by 
