@@ -15,6 +15,10 @@
 
 ;; enable inline images
 (setq mu4e-view-show-images t)
+
+(setq mu4e-get-mail-command "mbsync -a" ; using mbsync to fetch mail
+      mu4e-update-interval 300) ; update every 5 minutes
+
 ;; use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
