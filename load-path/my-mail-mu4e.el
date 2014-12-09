@@ -38,6 +38,7 @@
 
 (defun my-mu4e-set-account ()
   "Set the account for composing a message."
+  (require 'authinfo "~/.authinfo.el") ; load my-mu4e-account-alist from private file
   (let* ((account
           (if mu4e-compose-parent-message
               (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
