@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: rc
+# --
+/** @jsx DOM */
+define([
+    "DOM"
+], function (
+    DOM) {
+    $0    
+});
