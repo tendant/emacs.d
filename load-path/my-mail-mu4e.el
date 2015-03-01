@@ -3,6 +3,8 @@
 ;; Install mu with mu4e in Mac OSX
 ;; EMACS=$(which emacs) brew install mu --with-emacs
 ;; mu index --maildir=~/Maildir
+
+(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
 (require 'mu4e)
 ;; top-level Maildir
 (setq mu4e-maildir "~/.Mail")
