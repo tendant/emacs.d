@@ -8,6 +8,8 @@
 
 (require 'cider)
 
+;; (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+
 ;; Enable eldoc in Clojure buffers:
 (add-hook 'cider-mode-hook #'eldoc-mode)
 
