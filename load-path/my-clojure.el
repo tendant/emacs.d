@@ -10,11 +10,15 @@
 ;; (require 'clojure-test-mode)
 ;; (require 'nrepl)
 
+(add-to-list 'load-path "/Users/l/.emacs.d/elpa/cider-20150512.633")
+(add-to-list 'load-path "/Users/l/.emacs.d/elpa/dash-20140811.523")
+(add-to-list 'load-path "/Users/l/.emacs.d/elpa/clojure-mode-20150510.357")
+(add-to-list 'load-path "/Users/l/.emacs.d/elpa/queue-0.1.1")
 (require 'cider)
 
 ;; Enable eldoc in Clojure buffers:
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-(setq nrepl-hide-special-buffers t)
+;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; (setq nrepl-hide-special-buffers t)
 ;; To auto-select the error buffer when it's displayed:
 (setq cider-auto-select-error-buffer t)
 ;; The REPL buffer name can also display the port on which the nREPL
@@ -25,18 +29,18 @@
 ;; (setq cider-repl-display-in-current-window t)
 
 
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-repl-mode))
+;; (require 'ac-nrepl)
+;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(add-to-list 'ac-modes 'cider-repl-mode))
 
 ;; auto complete
-(require 'auto-complete)
-(global-auto-complete-mode)
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(add-hook 'clojure-nrepl-mode-hook 'ac-nrepl-setup)
+;; (require 'auto-complete)
+;; (global-auto-complete-mode)
+;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'clojure-nrepl-mode-hook 'ac-nrepl-setup)
 
 (require 'paredit)
 (autoload 'enable-paredit-mode "paredit"
