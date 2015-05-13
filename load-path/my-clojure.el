@@ -6,10 +6,6 @@
 ;; (add-to-list 'load-path "~/emacs.d/load-path/pkg-info.el")
 ;; (add-to-list 'load-path "~/emacs.d/load-path/s.el")
 
-(add-to-list 'load-path "/Users/l/.emacs.d/elpa/cider-20150512.633")
-(add-to-list 'load-path "/Users/l/.emacs.d/elpa/dash-20140811.523")
-(add-to-list 'load-path "/Users/l/.emacs.d/elpa/clojure-mode-20150510.357")
-(add-to-list 'load-path "/Users/l/.emacs.d/elpa/queue-0.1.1")
 (require 'cider)
 
 ;; Enable eldoc in Clojure buffers:
@@ -19,6 +15,8 @@
 
 ;; To auto-select the error buffer when it's displayed:
 (setq cider-auto-select-error-buffer t)
+
+(setq cider-repl-pop-to-buffer-on-connect t)
 
 ;; The REPL buffer name can also display the port on which the nREPL
 ;; server is running. Buffer name will look like cider
