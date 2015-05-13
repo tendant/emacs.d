@@ -6,10 +6,6 @@
 ;; (add-to-list 'load-path "~/emacs.d/load-path/pkg-info.el")
 ;; (add-to-list 'load-path "~/emacs.d/load-path/s.el")
 
-;; (require 'clojure-mode)
-;; (require 'clojure-test-mode)
-;; (require 'nrepl)
-
 (add-to-list 'load-path "/Users/l/.emacs.d/elpa/cider-20150512.633")
 (add-to-list 'load-path "/Users/l/.emacs.d/elpa/dash-20140811.523")
 (add-to-list 'load-path "/Users/l/.emacs.d/elpa/clojure-mode-20150510.357")
@@ -19,28 +15,18 @@
 ;; Enable eldoc in Clojure buffers:
 ;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 ;; (setq nrepl-hide-special-buffers t)
+
 ;; To auto-select the error buffer when it's displayed:
 (setq cider-auto-select-error-buffer t)
+
 ;; The REPL buffer name can also display the port on which the nREPL
 ;; server is running. Buffer name will look like cider
 ;; project-name:port.
 (setq nrepl-buffer-name-show-port t)
+
 ;; Make C-c C-z switch to the CIDER REPL buffer in the current window:
 ;; (setq cider-repl-display-in-current-window t)
 
-
-;; (require 'ac-nrepl)
-;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-;; (eval-after-load "auto-complete"
-;;   '(add-to-list 'ac-modes 'cider-repl-mode))
-
-;; auto complete
-;; (require 'auto-complete)
-;; (global-auto-complete-mode)
-;; (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'clojure-nrepl-mode-hook 'ac-nrepl-setup)
 
 (require 'paredit)
 (autoload 'enable-paredit-mode "paredit"
@@ -58,17 +44,6 @@
 
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'subword-mode)
-
-;; (add-hook 'nrepl-mode-hook 'paredit-mode)
-;; (add-hook 'nrepl-mode-hook 'subword-mode)
-
-;; (add-hook 'nrepl-interaction-mode-hook
-;;           'nrepl-turn-on-eldoc-mode)
-
-
-;; for clojure
-;; https://github.com/technomancy/swank-clojure
-;;(add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
 
 ;; added for lazytest
 ;; (eval-after-load 'clojure-mode
@@ -94,12 +69,8 @@
 ;; versions. Then you should use C-c C-z to bring up the REPL (close
 ;; it with C-x 0 when you don't need it anymore)
 
-;; syntax highlight for slime repl. 
-;; (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-
 (setq auto-mode-alist
       (cons '("\\.dtm$" . clojure-mode) auto-mode-alist))
-
 
 (defun cider-namespace-refresh ()
   (interactive)
