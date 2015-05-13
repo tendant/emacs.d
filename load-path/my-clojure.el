@@ -13,7 +13,8 @@
 (require 'cider)
 
 ;; Enable eldoc in Clojure buffers:
-;; (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook #'eldoc-mode)
+
 ;; (setq nrepl-hide-special-buffers t)
 
 ;; To auto-select the error buffer when it's displayed:
