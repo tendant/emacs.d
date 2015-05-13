@@ -116,6 +116,7 @@
 
 (add-to-list 'load-path (concat my-emacs-load-path "magit"))
 (require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
 (require 'magit-svn)
 
 ;; git minor mode
@@ -283,7 +284,7 @@
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
 
-(require 'my-clojure)
+;; (require 'my-clojure)
 
 ;; octave-mode
 (autoload 'octave-mode "octave-mode" nil t)
