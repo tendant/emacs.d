@@ -21,12 +21,18 @@
     (package-initialize)
     (message "Done initialization"))
 
-(mapc
- (lambda (package)
-   (or (package-installed-p package)
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
-           (package-install package))))
- '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
+;; (mapc
+;;  (lambda (package)
+;;    (or (package-installed-p package)
+;;        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
+;;            (package-install package))))
+;;  '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
+
+(defvar my-packages '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
+
+(dolist (p my-packages)
+  (unless (package-installed-p p)
+    (package-install p)))
 
 (if (and
      (< (string-to-number (car (split-string (org-version) "\\."))) 8)
