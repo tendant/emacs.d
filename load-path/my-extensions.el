@@ -68,6 +68,11 @@
 ;; for jsp file.
 ;(require 'nxhtml-mode)
 ;(setq auto-mode-alist (cons '(".jsp" . nxhtml-mode) auto-mode-alist)) 
+(add-hook 'nxml-mode-hook
+          (lambda () (rng-validate-mode 0) )
+          t)
+(setq rng-nxml-auto-validate-flag nil)
+
 
 ;; Add below line in header of snippet file to prevent new line at the end of file.
 ;; # -*- mode: ruby; require-final-newline: nil -*-
