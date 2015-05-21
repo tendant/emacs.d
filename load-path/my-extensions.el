@@ -117,6 +117,7 @@
 (add-to-list 'load-path (concat my-emacs-load-path "magit"))
 (require 'magit)
 (setq magit-last-seen-setup-instructions "1.4.0")
+(setq magit-auto-revert-mode nil)
 (require 'magit-svn)
 
 ;; git minor mode
