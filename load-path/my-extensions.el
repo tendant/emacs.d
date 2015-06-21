@@ -237,13 +237,13 @@
 ;; for javascript
 ;; (setq js-indent-level 2)
 (setq js-indent-level 4)
-(add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
-(message "Configured for javascript")
-;; (autoload 'js2-mode "js2-mode" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 ;; (setq js2-consistent-level-indent-inner-bracket-p t)
 ;; (setq js2-pretty-multiline-decl-indentation-p t)
 ;; (put 'narrow-to-region 'disabled nil)
+(message "Configured for javascript")
 
 
 ;; for gdb
@@ -270,9 +270,9 @@
 ;; html-mode and js-mode
 (add-hook 'html-mode-hook
           (lambda ()
-            (local-set-key (kbd "<f8>") 'js-mode)
+            (local-set-key (kbd "<f8>") 'js2-mode)
             (set (make-local-variable 'sgml-basic-offset) 4)))
-(add-hook 'js-mode-hook
+(add-hook 'js2-mode-hook
           (lambda ()
             (local-set-key (kbd "<f8>") 'html-mode)))
 
