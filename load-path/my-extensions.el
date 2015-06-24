@@ -239,7 +239,7 @@
 (setq js-indent-level 4)
 ;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
 (autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js.$" . js2-mode))
 ;; (setq js2-consistent-level-indent-inner-bracket-p t)
 ;; (setq js2-pretty-multiline-decl-indentation-p t)
 ;; (put 'narrow-to-region 'disabled nil)
