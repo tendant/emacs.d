@@ -362,7 +362,14 @@ Returns nil if no differences found, 't otherwise."
       (add-hook 'c-mode-common-hook 'flyspell-prog-mode)
       (add-hook 'java-mode-hook 'flyspell-prog-mode)
       (add-hook 'jde-mode-hook 'flyspell-prog-mode)
-      (add-hook 'ruby-mode-hook 'flyspell-prog-mode)))
+      (add-hook 'ruby-mode-hook 'flyspell-prog-mode)
+      ;; https://lists.gnu.org/archive/html/bug-gnu-emacs/2014-01/msg00840.html
+      ;; emacs hangs while deleting comment in xml file with flyspell-mode on
+      (add-hook 'nxml-mode-hook
+                (lambda ()
+                  (flyspell-mode-off)))))
+
+
   
 ;; (defun turn-on-flyspell ()
 ;;    "Force flyspell-mode on using a positive arg.  For use in hooks."
