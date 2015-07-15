@@ -71,7 +71,7 @@
 ;; it with C-x 0 when you don't need it anymore)
 
 (setq auto-mode-alist
-      (cons '("\\.dtm$" . clojure-mode) auto-mode-alist))
+      (cons '("\\.dtm\\'" . clojure-mode) auto-mode-alist))
 
 (defun cider-namespace-refresh ()
   (interactive)
