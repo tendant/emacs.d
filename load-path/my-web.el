@@ -16,6 +16,18 @@
 (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
 (multi-web-global-mode 1)
 
+;; for javascript
+;; (setq js-indent-level 2)
+(setq js-indent-level 4)
+;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)) ; \' will match empty string only at the end of the string or buffer; \$ will match end of line
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+;; (setq js2-consistent-level-indent-inner-bracket-p t)
+;; (setq js2-pretty-multiline-decl-indentation-p t)
+;; (put 'narrow-to-region 'disabled nil)
+(message "Configured for javascript")
+
 
 (flycheck-define-checker jsxhint-checker
   "A JSX syntax and style checker based on JSXHint."
