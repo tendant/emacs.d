@@ -204,13 +204,13 @@
         
         ("org-myblog"
          ;; Path to your org files.
-         :base-directory "~/Documents/myblog/org/"
+         :base-directory "~/workspace/blog/leiwang/resources/org"
          :base-extension "org"
          
          ;; Path to your Jekyll project.
-         :publishing-directory "~/Documents/myblog/jekyll/"
+         :publishing-directory "~/workspace/blog/leiwang/resources/content"
          :recursive t
-         :publishing-function org-publish-org-to-html
+         :publishing-function org-html-export-to-html
          :headline-levels 4 
          :html-extension "html"
          :body-only t ;; Only export section between <body> </body>
