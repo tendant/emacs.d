@@ -28,7 +28,7 @@
 ;;            (package-install package))))
 ;;  '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
 
-(defvar my-packages '(cider clojure-mode solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets slamhound yaml-mode exec-path-from-shell js2-mode web-mode))
+(defvar my-packages '(cider clojure-mode solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets slamhound yaml-mode exec-path-from-shell js2-mode web-mode flycheck))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)
