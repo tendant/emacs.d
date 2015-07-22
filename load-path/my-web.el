@@ -28,6 +28,7 @@
 ;; (put 'narrow-to-region 'disabled nil)
 (message "Configured for javascript")
 
+(require 'flycheck)
 
 (flycheck-define-checker jsxhint-checker
   "A JSX syntax and style checker based on JSXHint."
