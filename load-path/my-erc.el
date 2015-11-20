@@ -46,12 +46,13 @@ filename is downcased."
 
 (defvar freenode-your-nick-pass "")
 (defvar oftc-your-nick-pass "")
+
 (if (file-readable-p "~/.ercpass")
     (load "~/.ercpass"))
 
 (require 'erc-services)
 (erc-services-mode 1)
-(setq erc-prompt-for-nickserv-password nil)
+(setq erc-prompt-for-nickserv-password t)
 (setq erc-nickserv-passwords
       `((freenode     (("your-nick" . ,freenode-your-nick-pass)))
         (oftc         (("your-nick" . ,oftc-your-nick-pass)))))
@@ -75,17 +76,6 @@ filename is downcased."
        :port "6667"
        :nick "your-nick"))
 
-(defun erc-xxx ()
-  (interactive)
-  (erc :server "bitlbee1.asnetinc.net"
-       :port "6667"
-       :nick "your-nick"))
-
-(defun erc-yahoo ()
-  (interactive)
-  (erc :server "bitlbee1.asnetinc.net"
-       :port "6667"
-       :nick "your-nick"))
 
 ;; bitlbee add gtalk account
 ;; account add jabber username@gmail.com mypasswd talk.google.com:5223:ssl

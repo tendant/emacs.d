@@ -119,6 +119,7 @@
 (setq magit-last-seen-setup-instructions "1.4.0")
 (setq magit-auto-revert-mode nil)
 (setq magit-revert-buffers nil)
+(global-set-key [f5] 'magit-status)
 (require 'magit-svn)
 
 ;; git minor mode
@@ -247,6 +248,7 @@
 ;;   "Major mode for editing Markdown files" t)
 ;; (setq auto-mode-alist
 ;;       (cons '("\\.text" . markdown-mode) auto-mode-alist))
+(setq markdown-command "~/bin/flavor.rb")
 
 ;; for anything
 ;; (require 'my-anything)
