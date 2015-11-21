@@ -248,7 +248,8 @@
 ;;   "Major mode for editing Markdown files" t)
 ;; (setq auto-mode-alist
 ;;       (cons '("\\.text" . markdown-mode) auto-mode-alist))
-(setq markdown-command "~/bin/flavor.rb")
+;; use command-line to preview: $ flavor.rb file | bcat
+;; (setq markdown-command "~/bin/flavor.rb")
 
 ;; for anything
 ;; (require 'my-anything)
