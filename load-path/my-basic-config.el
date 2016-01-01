@@ -509,5 +509,8 @@ Returns nil if no differences found, 't otherwise."
            (define-key paredit-mode-map (kbd "<s-right>") 'paredit-forward-slurp-sexp))) ; modify the key for paredit mode.
       ))
 
+;; Turn off electric-indent-mode
+(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+
 (message "Loaded my-basic-config.el")
 )
