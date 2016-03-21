@@ -2,7 +2,7 @@
 (add-hook 'html-mode-hook
           (lambda ()
             (local-set-key (kbd "<f8>") 'js2-mode)
-            (set (make-local-variable 'sgml-basic-offset) 4)))
+            (set (make-local-variable 'sgml-basic-offset) 2)))
 (add-hook 'js2-mode-hook
           (lambda ()
             (local-set-key (kbd "<f8>") 'html-mode)))
@@ -17,8 +17,8 @@
 (multi-web-global-mode 1)
 
 ;; for javascript
-;; (setq js-indent-level 2)
-(setq js-indent-level 4)
+(setq js-indent-level 2)
+;; (setq js-indent-level 4)
 ;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)) ; \' will match empty string only at the end of the string or buffer; \$ will match end of line
