@@ -18,6 +18,7 @@
 
 ;; for javascript
 (setq js-indent-level 2)
+(setq-default js2-basic-offset 2)
 ;; (setq js-indent-level 4)
 ;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
 (autoload 'js2-mode "js2-mode" nil t)

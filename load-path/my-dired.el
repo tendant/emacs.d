@@ -56,6 +56,16 @@
             (buffer-file-name (nth 1 marked-files)) 
             (buffer-file-name (nth 2 marked-files)))))
 
+;; dired-dwim-target is a variable defined in `dired.el'. Its value is nil
+;; 
+;; Documentation: If non-nil, Dired tries to guess a default target
+;; directory. This means: if there is a Dired buffer displayed in the
+;; next window, use its current directory, instead of this Dired
+;; buffer's current directory.
+;;
+;; The target is used in the prompt for file copy, rename etc.
+(setq dired-dwim-target t)
+
 
 (defun my-dired-mode-hook ()
   (local-set-key "E" 'dired-ediff-marked-files))
