@@ -1,4 +1,4 @@
-;;; -*- *coding: utf-8 -*-
+;; -*- *coding: utf-8 -*-
 
 ;;; Check the system types.
 (defconst win32p
@@ -410,7 +410,7 @@ Returns nil if no differences found, 't otherwise."
 
 (setq max-lisp-eval-depth 10000) ;; configure the max recursive heap for elisp
 
-(setq large-file-warning-threshold nil)
+(setq large-file-warning-threshold 100000000)
 
 
 (setq safe-local-variable-values (quote ((*coding . utf-8))))
