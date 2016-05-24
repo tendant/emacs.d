@@ -6,9 +6,6 @@
 ;; (setq color-theme-is-cumulative t)
 ;; (setq color-theme-is-global nil)
 
-(require 'solarized)
-
-(load-theme 'solarized-dark t)
 
 ;; (defun my-color-theme ()
 ;;   "Color subtheme, created 2008-11-23."
@@ -40,6 +37,12 @@
 ;;             ;; (color-theme-classic)
 ;;             ;; (my-color-theme)
 ;;             ))
+
+
+;; (require 'solarized)
+;; (load-theme 'solarized-dark t)
+
+(load-theme 'dracula t)
 
 (provide 'my-color-theme)
 (message "Loaded my-color-theme.el")
