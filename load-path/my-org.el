@@ -232,18 +232,18 @@
 ;; Configure for latex fragment
 ;;; usage in buffer: C-c C-x C-l to generate preview and C-c C-c to
 ;;; remove preview image.
-(require 'cdlatex)
-(require 'texmathp)
-(add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-(setq org-format-latex-options 
-      '(:foreground default 
-                    :background default 
-                    :scale 1.2
-                    :html-foreground "Black" 
-                    :html-background "Transparent" 
-                    :html-scale 1.2
-                    :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
-(setq org-export-with-LaTeX-fragments t)
+;; (require 'cdlatex)
+;; (require 'texmathp)
+;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+;; (setq org-format-latex-options 
+;;       '(:foreground default 
+;;                     :background default 
+;;                     :scale 1.2
+;;                     :html-foreground "Black" 
+;;                     :html-background "Transparent" 
+;;                     :html-scale 1.2
+;;                     :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+;; (setq org-export-with-LaTeX-fragments t)
 
 ;; (require 'ob-tangle)
 ;; (org-babel-do-load-languages  ; use 'make' to compile org-mode
