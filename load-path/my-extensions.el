@@ -51,12 +51,12 @@
 ;; (require 'my-eshell)
 
 ;; (debug-time "jde"
- (require 'my-jde)
+;; (require 'my-jde)
 ;; )
 
-(require 'my-jdibug)
+;; (require 'my-jdibug)
 
-(require 'my-flymake)
+;; (require 'my-flymake)
 
 ;;; DEFERRED, cause nxml-mode is coming with emacs 23.
 ;; exhume mode is not compatible with ruby-mode, so have to use below
@@ -116,7 +116,7 @@
 
 (add-to-list 'load-path (concat my-emacs-load-path "magit"))
 (require 'magit)
-(setq magit-last-seen-setup-instructions "1.4.0")
+;; (setq magit-last-seen-setup-instructions "1.4.0")
 (setq magit-refresh-status-buffer nil)
 (setq magit-auto-revert-mode nil)
 (setq magit-revert-buffers nil)
