@@ -116,8 +116,8 @@
 
 (add-to-list 'load-path (concat my-emacs-load-path "magit"))
 (require 'magit)
-;; (setq magit-last-seen-setup-instructions "1.4.0")
-(setq magit-refresh-status-buffer nil)
+;; (setq magit-last-seen-setup-instructions "1.4.0") ; delete me
+;; (setq magit-refresh-status-buffer nil)
 (setq magit-auto-revert-mode nil)
 (setq magit-revert-buffers nil)
 (setq auto-revert-buffer-list-filter
