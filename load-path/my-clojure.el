@@ -18,6 +18,8 @@
 ;; To auto-select the error buffer when it's displayed:
 (setq cider-auto-select-error-buffer t)
 
+(setq cider-repl-use-pretty-printing t)
+
 (setq cider-repl-pop-to-buffer-on-connect t)
 
 ;; The REPL buffer name can also display the port on which the nREPL

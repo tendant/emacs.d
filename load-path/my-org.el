@@ -59,6 +59,7 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+              (sequence "IDEA(i)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
 (setq org-todo-keyword-faces
@@ -69,6 +70,7 @@
               ("HOLD" :foreground "magenta" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold)
               ("MEETING" :foreground "forest green" :weight bold)
+              ("IDEA" :foreground "yellow" :weight bold)
               ("PHONE" :foreground "forest green" :weight bold)))) (define-key global-map [(f9)] 'org-agenda)
 
 ;; Fast todo selection allows changing from any task todo state to any
@@ -126,6 +128,8 @@
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+              ("i" "idea" entry (file "~/.emacs.d/org-gtd/refile.org")
+               "* IDEA %T %?\n")
               ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
               ("w" "org-protocol" entry (file "~/.emacs.d/org-gtd/refile.org")
@@ -335,6 +339,10 @@ unwanted space when exporting org-mode to html."
                           (concat "\\(" reg-han "\\) *\n *")
                           "\\1" orig-contents))
     (ad-set-arg 1 fixed-contents)))
+
+;; Set default column view headings: Task Total-Time Time-Stamp
+;; Activate org-columns with C-c C-x C-c while on a top-level heading
+(setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 
 (provide 'my-org)
 (message "Loaded org-mode successfully")

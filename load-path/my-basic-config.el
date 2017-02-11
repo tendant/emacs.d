@@ -512,5 +512,12 @@ Returns nil if no differences found, 't otherwise."
 ;; Turn off electric-indent-mode
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
+;; Line highlighting/numbering
+(global-linum-mode 1)
+(global-hl-line-mode 1)
+
+;; For dired in mac osx
+(setq dired-use-ls-dired nil)
+
 (message "Loaded my-basic-config.el")
 )

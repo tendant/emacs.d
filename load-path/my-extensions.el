@@ -119,9 +119,10 @@
 ;; (setq magit-last-seen-setup-instructions "1.4.0") ; delete me
 ;; (setq magit-refresh-status-buffer nil)
 (setq magit-auto-revert-mode nil)
-(setq magit-revert-buffers nil)
+;; (setq magit-revert-buffers nil)
 (setq auto-revert-buffer-list-filter
       'magit-auto-revert-repository-buffers-p)
+(setq vc-handled-backends (delq 'Git vc-handled-backends))
 (global-set-key [f5] 'magit-status)
 (require 'magit-svn)
 
@@ -292,6 +293,8 @@
 (require 'graphviz-dot-mode)
 
 ;; (require 'my-eclim)
+
+(require 'my-reveal)
 
 (defun my-fixup (p1 p2)
   "Prints region starting and ending positions. And take some actions on the region" 
