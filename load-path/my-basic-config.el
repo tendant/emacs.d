@@ -519,5 +519,25 @@ Returns nil if no differences found, 't otherwise."
 ;; For dired in mac osx
 (setq dired-use-ls-dired nil)
 
+;; delete white space
+;; 
+;; fixup-whitespace: function fixup white space between objects around
+;; point. Leave one space or none, according to the context.
+;;
+;; delete-indentation: command for joining
+;; multiple lines into one line. In your example, put the cursor on
+;; the line with "second" and hit M-^ twice. Here are the docs:
+;; 
+;; M-^ runs the command delete-indentation, which is an interactive compiled Lisp function in simple.el.
+;; 
+;; It is bound to M-^.
+;;
+;; (delete-indentation &optional arg)
+;; 
+;; Join this line to previous and fix up whitespace at join. If there
+;; is a fill prefix, delete it from the beginning of this line. With
+;; argument, join this line to following line.
+
+
 (message "Loaded my-basic-config.el")
 )
