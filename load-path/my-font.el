@@ -79,4 +79,10 @@
 (global-set-key (kbd "C--")      '(lambda nil (interactive) (zoom-font -1)))
 (global-set-key [C-kp-subtract]  '(lambda nil (interactive) (zoom-font -1)))
 
+(require 'chinese-fonts-setup)
+(chinese-fonts-setup-enable) ; enable setup
+(cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
+(setq cfs-profiles
+    '("program" "org-mode" "read-book"))
+
 (provide 'my-font)
