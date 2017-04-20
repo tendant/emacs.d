@@ -14,23 +14,27 @@
 ;; (set-face-attribute 'default nil :font
 ;;                    (format "%s:pixelsize=%d" (car my-font-options) 12))
 
+(defun fix-mac-osx-issue ()
+  "Fix mac osx Chinese font issue"
+  (if (and mac-osx-x-p (>= emacs-major-version 23))
+      ;; this is good for all
+      (dolist (charset '(kana han symbol cjk-misc bopomofo))
+        (set-fontset-font (frame-parameter nil 'font) charset
+                          (font-spec :family (car (cdr my-font-options)))))))
+
 (defun my-font-config ()
   "Configure font for Linux."
   (if (and linuxp (>= emacs-major-version 23))
       (progn
         ;; (set-default-font "Bitstream Vera Sans Mono-8")
         ;; (set-default-font "DejaVu Sans Mono-8")
-        (set-default-font "Inconsolata-11")
+        (set-default-font "Inconsolata-11") ; sudo apt-get install fonts-inconsolata
         ;; set the default font for chinese.
         (set-fontset-font "fontset-default"
                           'unicode '("Microsoft YaHei" . "unicode-bmp")) 
         (message "my-font.el: configured font for emacs 23")
         ))
-  (if (and mac-osx-x-p (>= emacs-major-version 23))
-      ;; this is good for all
-      (dolist (charset '(kana han symbol cjk-misc bopomofo))
-        (set-fontset-font (frame-parameter nil 'font) charset
-                          (font-spec :family (car (cdr my-font-options))))))
+  (fix-mac-osx-issue)
   (if (and linuxp (< emacs-major-version 23))
       (progn 
         ;;       (create-fontset-from-fontset-spec
@@ -53,6 +57,8 @@
         (message "*** Configure font done.")
         )))
 
+
+
 ;; configure font, if current process is not daemon.
 (if (or
      (not (boundp 'daemonp))
@@ -66,7 +72,7 @@
   (set-face-attribute 'default (selected-frame) :height 
     (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10)))
   ;; need this for mac osx Chinese font issue after zooming 
-  (my-font-config))
+  (fix-mac-osx-issue))
 
 (global-set-key (kbd "C-=")      '(lambda nil (interactive) (zoom-font 1)))
 (global-set-key [C-kp-add]       '(lambda nil (interactive) (zoom-font 1)))

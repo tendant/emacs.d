@@ -14,21 +14,19 @@
   ;;   (package-initialize))
   ;; (add-to-list 'package-archives
   ;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
-  (when (>= emacs-major-version 24)
-    (message "initizing package")
-    (require 'package)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-    (package-initialize)
-    (message "Done initialization"))
+  (require 'package) ;; You might already have this line
+  (add-to-list 'package-archives
+	       '("melpa" . "https://melpa.org/packages/"))
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    ;; (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+    (add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+    )
+  (package-initialize) ;; You might already have this line
+  
 
-;; (mapc
-;;  (lambda (package)
-;;    (or (package-installed-p package)
-;;        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
-;;            (package-install package))))
-;;  '(clojure-mode cider solarized-theme yasnippet w3m magit magit-svn ac-nrepl notmuch graphviz-dot-mode helm clojure-snippets slamhound yaml-mode exec-path-from-shell))
-
-(defvar my-packages '(cider clojure-mode solarized-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets slamhound yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider))
+(defvar my-packages '(cider clojure-mode solarized-theme dracula-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider ox-reveal))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)

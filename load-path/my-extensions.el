@@ -272,11 +272,11 @@
 (setq auto-mode-alist
       (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
 
-(message "Loading my-mail")
-(require 'my-mail-smtp)
-(require 'my-mail-mu4e)
-(require 'my-ldap)
-(message "Loaded my-mail")
+;; (message "Loading my-mail")
+;; (require 'my-mail-smtp)
+;; (require 'my-mail-mu4e)
+;; (require 'my-ldap)
+;; (message "Loaded my-mail")
 
 ;; (message "Loading mustache-mode")
 ;; (add-to-list 'load-path "~/emacs.d/load-path/mustache-mode.el")
