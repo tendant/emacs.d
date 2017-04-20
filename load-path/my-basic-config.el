@@ -188,7 +188,7 @@
 ;;; Begin: for language
 
 ;; chiense encoding
-;;; Prefer not to set language environment as GB. It has been set to UTF-8 in my-basic-config.el
+;; ;;Prefer not to set language environment as GB. It has been set to UTF-8 in my-basic-config.el
 (set-language-environment 'Chinese-GB)
 ;(setq current-language-environment "UTF-8")
 (setq default-input-method "chinese-py") ;; C-\ to switch input method
@@ -206,31 +206,6 @@
 (set-default-coding-systems 'utf-8-unix)
 (prefer-coding-system 'utf-8-unix)
 ;; (set-default default-buffer-file-coding-system 'utf-8-unix)
-
-;; Language configuration
-;(set-language-environment 'Chinese-GB)
-;(set-keyboard-coding-system 'euc-cn)
-;(set-clipboard-coding-system 'euc-cn)
-;(set-terminal-coding-system 'euc-cn)
-;(set-buffer-file-coding-system 'euc-cn)
-;(set-selection-coding-system 'euc-cn)
-;(modify-coding-system-alist 'process "*" 'euc-cn)
-;(setq default-process-coding-system 
-;            '(euc-cn . euc-cn))
-;(setq-default pathname-coding-system 'euc-cn)
-
- 
-
-;;Ä¬ÈÏ±àÂëÊÇµÄutf-8ÓÃ»§
-
-;; locale coding
-;(setq locale-coding-system'utf-8)
-;(prefer-coding-system'utf-8)
-;(set-keyboard-coding-system'utf-8)
-;(set-terminal-coding-system'utf-8)
-;(set-selection-coding-system'utf-8)
-;(set-clipboard-coding-system 'ctext)
-;(set-buffer-file-coding-system 'utf-8) 
 
 ;;; END language setting
 
