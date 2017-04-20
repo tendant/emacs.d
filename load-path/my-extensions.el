@@ -308,6 +308,22 @@
   (interactive)
   (message (format-time-string "%Y-%m-%d %H:%M:%S %Z" (current-time) t)))
 
+(defun yank-append-lines (&optional without-space)
+  "Yank each line of the current kill at the end of each subsequent line.
+
+A space will be added between each line unless WITHOUT-SPACE which can
+be passed in via a prefix arg."
+  (interactive "P")
+  (save-excursion
+    (let ((lines (split-string (current-kill 0) "\n")))
+      (dolist (line lines)
+        (goto-char (line-end-position))
+        (unless without-space
+          (just-one-space))
+        (insert line)
+        (unless (zerop (forward-line))
+          (insert "\n"))))))
+
 (require 'my-helm)
 
 (require 'my-im)
