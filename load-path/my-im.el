@@ -18,4 +18,8 @@
 
 (setq pyim-default-scheme 'quanpin)
 
+;; (setq-default pyim-english-input-switch-functions
+;;                 '(pyim-probe-dynamic-english
+;;                   pyim-probe-isearch-mode))
+
 (provide 'my-im)
