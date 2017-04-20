@@ -26,7 +26,7 @@
   (package-initialize) ;; You might already have this line
   
 
-(defvar my-packages '(cider clojure-mode solarized-theme dracula-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider ox-reveal chinese-fonts-setup))
+(defvar my-packages '(cider clojure-mode solarized-theme dracula-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider ox-reveal chinese-fonts-setup chinese-pyim chinese-pyim-basedict chinese-pyim-greatdict))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)

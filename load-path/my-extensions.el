@@ -309,3 +309,5 @@
   (message (format-time-string "%Y-%m-%d %H:%M:%S %Z" (current-time) t)))
 
 (require 'my-helm)
+
+(require 'my-im)
