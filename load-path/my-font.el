@@ -67,6 +67,12 @@
       (my-font-config)
       (message "Loaded my-font.el")))
 
+(require 'chinese-fonts-setup)
+(chinese-fonts-setup-enable) ; enable setup
+(cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
+(setq cfs-profiles
+    '("program" "org-mode" "read-book"))
+
 (defun zoom-font (n)
   "with positive N, increase the font size, otherwise decrease it"
   (set-face-attribute 'default (selected-frame) :height 
@@ -74,15 +80,18 @@
   ;; need this for mac osx Chinese font issue after zooming 
   (fix-mac-osx-issue))
 
-(global-set-key (kbd "C-=")      '(lambda nil (interactive) (zoom-font 1)))
-(global-set-key [C-kp-add]       '(lambda nil (interactive) (zoom-font 1)))
-(global-set-key (kbd "C--")      '(lambda nil (interactive) (zoom-font -1)))
-(global-set-key [C-kp-subtract]  '(lambda nil (interactive) (zoom-font -1)))
+(global-set-key (kbd "C-=")      '(lambda nil (interactive) (if linuxp
+                                                                (cfs-increase-fontsize)
+                                                              (zoom-font 1))))
+(global-set-key [C-kp-add]       '(lambda nil (interactive) (if linuxp
+                                                                (cfs-increase-fontsize)
+                                                              (zoom-font 1))))
+(global-set-key (kbd "C--")      '(lambda nil (interactive) (if linuxp
+                                                                (cfs-decrease-fontsize)
+                                                              (zoom-font -1))))
+(global-set-key [C-kp-subtract]  '(lambda nil (interactive) (if linuxp
+                                                                (cfs-decrease-fontsize)
+                                                              (zoom-font -1))))
 
-(require 'chinese-fonts-setup)
-(chinese-fonts-setup-enable) ; enable setup
-(cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
-(setq cfs-profiles
-    '("program" "org-mode" "read-book"))
 
 (provide 'my-font)
