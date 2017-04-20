@@ -40,9 +40,9 @@
 
 
 ;; (require 'solarized)
-;; (load-theme 'solarized-dark t)
 
-(load-theme 'dracula t)
+(load-theme 'solarized-dark t)
+;; (load-theme 'dracula t)
 
 (provide 'my-color-theme)
 (message "Loaded my-color-theme.el")
