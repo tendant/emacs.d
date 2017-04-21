@@ -32,7 +32,7 @@
         ;; set the default font for chinese.
         (set-fontset-font "fontset-default"
                           'unicode '("Microsoft YaHei" . "unicode-bmp")) 
-        (message "my-font.el: configured font for emacs 23")
+        ;; (message "my-font.el: configured font for emacs 23")
         ))
   (fix-mac-osx-issue)
   (if (and linuxp (< emacs-major-version 23))
@@ -68,10 +68,13 @@
       (message "Loaded my-font.el")))
 
 (require 'chinese-fonts-setup)
+;; (setq cfs-profiles '("program" "org-mode" "read-book"))
 (chinese-fonts-setup-enable) ; enable setup
-(cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
-(setq cfs-profiles
-    '("program" "org-mode" "read-book"))
+(cfs--select-profile "profile1") ; use cfs-edit-profile to create profile
+(setq cfs--profiles-steps (quote (("profile1" . 1)))) ; set font size
+(setq cfs-use-face-font-rescale t)
+;; (cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
+;; (set-face-italic 'font-lock-comment-face nil)
 
 (defun zoom-font (n)
   "with positive N, increase the font size, otherwise decrease it"

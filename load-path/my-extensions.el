@@ -14,8 +14,6 @@
 ;; color-themes
 (require 'my-color-theme)
 
-(require 'my-font)
-
 (require 'my-backups)
 
 (require 'my-ido)
@@ -327,3 +325,7 @@ be passed in via a prefix arg."
 (require 'my-helm)
 
 (require 'my-im)
+
+(require 'my-font)
+
+

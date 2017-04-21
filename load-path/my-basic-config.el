@@ -157,6 +157,7 @@
 ;; lowercase selection (C-x C-l)
 (put 'downcase-region 'disabled nil)
 ;(global-set-key (kbd "S-<SPC>") 'set-mark-command)
+(global-set-key (kbd "s-u") 'revert-buffer)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; INSERT A TIMESTAMP
