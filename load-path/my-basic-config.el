@@ -112,8 +112,8 @@
 ;; A value of `visit-save' means do it at both of those times.
 ;; Any other non-nil value means ask user whether to add a newline, when saving.
 ;; A value of nil means don't add newlines.
-(setq require-final-newline t)
-(setq mode-require-final-newline t)
+(setq require-final-newline nil)
+(setq mode-require-final-newline nil)
 
 (add-hook 'after-make-window-system-frame-hooks
           (lambda ()
