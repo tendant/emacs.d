@@ -123,7 +123,7 @@
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+               "* TODO %?\n%U\n%a\n")
               ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
@@ -132,8 +132,8 @@
                "* IDEA %T %?\n")
               ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
-              ("w" "org-protocol" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
+              ("w" "work" entry (file+headline "~/.emacs.d/org-gtd/wish.org" "Tasks")
+               "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
               ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
               ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
