@@ -122,8 +122,8 @@
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* TODO %?\n%U\n%a\n")
+      (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
+               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n")
               ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
