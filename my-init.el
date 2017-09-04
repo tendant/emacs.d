@@ -13,8 +13,15 @@
 ;; (add-to-list 'package-archives
 ;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (require 'package) ;; You might already have this line
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives
+;;              '("melpa" . "https://melpa.org/packages/"))
+
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("melpa" . "http://melpa.org/packages/")
+	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
+	("org" . "http://orgmode.org/elpa/")))
+
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   ;; ((and )dd-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
@@ -23,7 +30,7 @@
 (package-initialize) ;; You might already have this line
   
 
-(defvar my-packages '(cider clojure-mode solarized-theme dracula-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider ox-reveal chinese-fonts-setup chinese-pyim chinese-pyim-basedict chinese-pyim-greatdict))
+(defvar my-packages '(org org-plus-contrib cider clojure-mode solarized-theme dracula-theme yasnippet w3m magit magit-svn notmuch graphviz-dot-mode helm helm-ls-git clojure-snippets yaml-mode exec-path-from-shell js2-mode web-mode flycheck flycheck-clojure swift-mode ac-cider ox-reveal cnfonts pyim pyim-basedict))
 
 (dolist (p my-packages)
   (unless (package-installed-p p)

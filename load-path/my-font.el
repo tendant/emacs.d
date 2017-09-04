@@ -67,34 +67,34 @@
       (my-font-config)
       (message "Loaded my-font.el")))
 
-(require 'chinese-fonts-setup)
-;; (setq cfs-profiles '("program" "org-mode" "read-book"))
-(chinese-fonts-setup-enable) ; enable setup
-(cfs--select-profile "profile1") ; use cfs-edit-profile to create profile
-(setq cfs--profiles-steps (quote (("profile1" . 1)))) ; set font size
-(setq cfs-use-face-font-rescale t)
-;; (cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
-;; (set-face-italic 'font-lock-comment-face nil)
+;; (require 'cnfonts)
+;; ;; (setq cfs-profiles '("program" "org-mode" "read-book"))
+;; (cnfonts-enable)
+;; (cnfonts-switch-profile "profile1") ; use cfs-edit-profile to create profile
+;; (setq cfs--profiles-steps (quote (("profile1" . 1)))) ; set font size
+;; (setq cfs-use-face-font-rescale t)
+;; ;; (cfs-set-spacemacs-fallback-fonts) ; fix unicode icon display in spacemacs mode-line
+;; ;; (set-face-italic 'font-lock-comment-face nil)
 
-(defun zoom-font (n)
-  "with positive N, increase the font size, otherwise decrease it"
-  (set-face-attribute 'default (selected-frame) :height 
-    (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10)))
-  ;; need this for mac osx Chinese font issue after zooming 
-  (fix-mac-osx-issue))
+;; (defun zoom-font (n)
+;;   "with positive N, increase the font size, otherwise decrease it"
+;;   (set-face-attribute 'default (selected-frame) :height 
+;;     (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10)))
+;;   ;; need this for mac osx Chinese font issue after zooming 
+;;   (fix-mac-osx-issue))
 
-(global-set-key (kbd "C-=")      '(lambda nil (interactive) (if linuxp
-                                                                (cfs-increase-fontsize)
-                                                              (zoom-font 1))))
-(global-set-key [C-kp-add]       '(lambda nil (interactive) (if linuxp
-                                                                (cfs-increase-fontsize)
-                                                              (zoom-font 1))))
-(global-set-key (kbd "C--")      '(lambda nil (interactive) (if linuxp
-                                                                (cfs-decrease-fontsize)
-                                                              (zoom-font -1))))
-(global-set-key [C-kp-subtract]  '(lambda nil (interactive) (if linuxp
-                                                                (cfs-decrease-fontsize)
-                                                              (zoom-font -1))))
+;; (global-set-key (kbd "C-=")      '(lambda nil (interactive) (if linuxp
+;;                                                                 (cfs-increase-fontsize)
+;;                                                               (zoom-font 1))))
+;; (global-set-key [C-kp-add]       '(lambda nil (interactive) (if linuxp
+;;                                                                 (cfs-increase-fontsize)
+;;                                                               (zoom-font 1))))
+;; (global-set-key (kbd "C--")      '(lambda nil (interactive) (if linuxp
+;;                                                                 (cfs-decrease-fontsize)
+;;                                                               (zoom-font -1))))
+;; (global-set-key [C-kp-subtract]  '(lambda nil (interactive) (if linuxp
+;;                                                                 (cfs-decrease-fontsize)
+;;                                                               (zoom-font -1))))
 
 
 (provide 'my-font)
