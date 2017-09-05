@@ -18,9 +18,10 @@
 
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
+	("org" . "http://orgmode.org/elpa/")
 	("melpa" . "http://melpa.org/packages/")
 	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
-	("org" . "http://orgmode.org/elpa/")))
+	))
 
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
