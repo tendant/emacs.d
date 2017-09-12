@@ -489,8 +489,17 @@ Returns nil if no differences found, 't otherwise."
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 ;; Line highlighting/numbering
-;; (global-linum-mode 1) ; enable this will cause emacs to hang when opening big org file
 (global-hl-line-mode 1)
+(global-linum-mode 1) ; enable this will cause emacs to hang when opening big org file
+
+(defun nolinum ()
+  (interactive)
+  (message "Deactivate linum mode")
+  ;; (global-linum-mode 0)
+  (linum-mode 0))
+
+(add-hook 'org-mode-hook 'nolinum)
+
 
 ;; For dired in mac osx
 (setq dired-use-ls-dired nil)
