@@ -489,7 +489,7 @@ Returns nil if no differences found, 't otherwise."
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
 ;; Line highlighting/numbering
-(global-linum-mode 1)
+;; (global-linum-mode 1) ; enable this will cause emacs to hang when opening big org file
 (global-hl-line-mode 1)
 
 ;; For dired in mac osx
