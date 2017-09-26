@@ -124,6 +124,8 @@
 (setq org-capture-templates
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
                "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n")
+              ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
+               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %t\n   :END:\n")
               ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
@@ -343,6 +345,9 @@ unwanted space when exporting org-mode to html."
 ;; Set default column view headings: Task Total-Time Time-Stamp
 ;; Activate org-columns with C-c C-x C-c while on a top-level heading
 (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
 
 (provide 'my-org)
 (message "Loaded org-mode successfully")
