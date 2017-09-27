@@ -328,4 +328,6 @@ be passed in via a prefix arg."
 
 (require 'my-font)
 
+;; trim white space in changed area during save except for final new line
+(ws-butler-global-mode 1)
 
