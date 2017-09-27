@@ -59,19 +59,22 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "IDEA(i)")
+              (sequence "IDEA(i)" "DRAFT(f)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
+              ("DRAFT" :foreground "blue" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold)
               ("MEETING" :foreground "forest green" :weight bold)
               ("IDEA" :foreground "yellow" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold)))) (define-key global-map [(f9)] 'org-agenda)
+              ("PHONE" :foreground "forest green" :weight bold))))
+
+(define-key global-map [(f9)] 'org-agenda)
 
 ;; Fast todo selection allows changing from any task todo state to any
 ;; other state directly by selecting the appropriate key from the fast
@@ -125,7 +128,7 @@
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
                "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n")
               ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
-               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %t\n   :END:\n")
+               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: (format-time-string \"%Y-%m-%d\")\n   :END:\n")
               ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
