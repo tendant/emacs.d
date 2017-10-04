@@ -353,5 +353,13 @@ unwanted space when exporting org-mode to html."
 (with-eval-after-load 'ox
   (require 'ox-hugo))
 
+(setq org-agenda-custom-commands
+      '(("c" "My agenda view"
+         ((tags "PRIORITY=\"A\""
+                ((org-agenda-skip-funciton '(org-aganda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "High-Priority tasks:")))
+          (agenda "")
+          (alltodo "")))))
+
 (provide 'my-org)
 (message "Loaded org-mode successfully")
