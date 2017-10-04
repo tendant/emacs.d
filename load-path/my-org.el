@@ -28,7 +28,7 @@
   (interactive)
   (setq org-agenda-files 
         (file-expand-wildcards
-         "~/.emacs.d/org-gtd/*.org"))
+         "~/.emacs.d/org-gtd/[a-zA-Z]*.org"))
   (org-agenda-redo))
 
 (defun org-file-work ()
@@ -115,6 +115,7 @@
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo) 
 
 (setq org-special-ctrl-k t)
+(setq org-special-ctrl-a/e "reversed")
 
 (add-to-list 'file-coding-system-alist (cons "\\.org$"  'utf-8))
 
@@ -128,7 +129,7 @@
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
                "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n")
               ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
-               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: (format-time-string \"%Y-%m-%d\")\n   :END:\n")
+               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n")
               ("r" "respond" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :immediate-finish t)
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
