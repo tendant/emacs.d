@@ -24,14 +24,14 @@
 
 (setq org-agenda-files (file-expand-wildcards "~/.emacs.d/org-gtd/*.org"))
 
-(defun org-file-all ()
+(defun org-all ()
   (interactive)
   (setq org-agenda-files 
         (file-expand-wildcards
          "~/.emacs.d/org-gtd/[a-zA-Z]*.org"))
   (org-agenda-redo))
 
-(defun org-file-work ()
+(defun org-work ()
   (interactive)
   (setq org-agenda-files 
         (list
@@ -39,7 +39,7 @@
          ))
   (org-agenda-redo))
 
-(defun org-file-personal ()
+(defun org-personal ()
   (interactive)
   (setq org-agenda-files 
         (list
