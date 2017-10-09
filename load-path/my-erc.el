@@ -52,7 +52,7 @@ filename is downcased."
 
 (require 'erc-services)
 (erc-services-mode 1)
-(setq erc-prompt-for-nickserv-password t)
+(setq erc-prompt-for-nickserv-password nil)
 (setq erc-nickserv-passwords
       `((freenode     (("your-nick" . ,freenode-your-nick-pass)))
         (oftc         (("your-nick" . ,oftc-your-nick-pass)))))
