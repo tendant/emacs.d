@@ -331,3 +331,6 @@ be passed in via a prefix arg."
 ;; trim white space in changed area during save except for final new line
 (ws-butler-global-mode 1)
 
+;; dart-mode
+(setq dart-enable-analysis-server t)
+(add-hook 'dart-mode-hook 'flycheck-mode)
