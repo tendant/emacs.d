@@ -81,6 +81,9 @@
    "(require 'clojure.tools.namespace.repl)
     (clojure.tools.namespace.repl/refresh)"))
 
+;; https://github.com/clojure-emacs/cider/issues/2009
+(setq company-dabbrev-char-regexp "\sw\|-")
+
 ;; Install clojure-mode and slime-repl using package.el
 (provide 'my-clojure)
 (message "Loaded my-clojure")
