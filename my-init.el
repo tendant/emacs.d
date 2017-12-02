@@ -46,6 +46,7 @@
                       graphviz-dot-mode
                       helm
                       helm-ls-git
+                      ivy
                       js2-mode
                       magit
                       magit-svn

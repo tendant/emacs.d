@@ -63,7 +63,7 @@
 
 (add-hook 'clojure-mode-hook
           (lambda ()
-            (local-set-key (kbd "<f5>") 'cider-eval-buffer)))
+            (local-set-key (kbd "<f7>") 'cider-eval-buffer)))
 
 ;; use slime's C-c C-k before switching to the REPL, for
 ;; slime-compile-and-load-file. It will prompt you to save the file if

@@ -38,7 +38,7 @@
     (helm-other-buffer sources
                        (format "*Helm git project in %s*" default-directory))))
 
-(global-set-key [f4] 'helm-ls-git-ls)
+(global-set-key [f4] 'counsel-git)
 
 (provide 'my-helm)
   
