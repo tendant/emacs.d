@@ -351,6 +351,19 @@ be passed in via a prefix arg."
 ;; trim white space in changed area during save except for final new line
 (ws-butler-global-mode 1)
 
+;; restclient
+(require 'restclient)
+(defvar my-restclient-token nil)
+(defun my-restclient-hook ()
+  "Update token from a request."
+  (save-excursion
+    (save-match-data
+      ;; update regexp to extract required data
+      (when (re-search-forward "\"token\":\"\\(.*?\\)\"" nil t)
+        (setq my-restclient-token (match-string 1))))))
+
+(add-hook 'restclient-response-received-hook #'my-restclient-hook)
+
 ;; dart-mode
 (setq dart-enable-analysis-server t)
 (add-hook 'dart-mode-hook 'flycheck-mode)
