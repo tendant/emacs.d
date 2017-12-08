@@ -57,6 +57,7 @@
                       ox-reveal
                       pyim
                       pyim-basedict
+                      restclient
                       solarized-theme
                       swift-mode
                       w3m
