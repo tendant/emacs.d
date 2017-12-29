@@ -66,6 +66,10 @@
                       yaml-mode
                       yasnippet))
 
+; fetch the list of packages available 
+(unless package-archive-contents
+  (package-refresh-contents))
+
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-install p)))
