@@ -58,6 +58,7 @@
                       pyim
                       pyim-basedict
                       restclient
+                      rust-mode
                       solarized-theme
                       swift-mode
                       w3m
