@@ -71,6 +71,16 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+(setq n 0)                                  ; set n as 0
+(dolist (pkg pkgs-2b-present)               ; for each pkg in list
+  (unless (or                               ; unless
+           (package-installed-p pkg)        ; pkg is installed or
+           (assoc pkg                       ; pkg is in the archive list
+                  package-archive-contents))
+    (setq n (+ n 1))))                      ; add one to n
+(when (> n 0)                               ; if n > 0,
+  (package-refresh-contents))               ; refresh packages
+
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-install p)))
