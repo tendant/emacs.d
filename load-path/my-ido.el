@@ -168,5 +168,9 @@ directory, select directory. Lastly the file is opened."
 ;; Stop ido temporarily
 ;; You can either press C-j to accept what you have typed so far, or C-f which will drop you into regular find-file
 
+;; disable automatic file search in ido mode
+;; https://stackoverflow.com/questions/17986194/emacs-disable-automatic-file-search-in-ido-mode
+(setq ido-auto-merge-work-directories-length -1)
+
 (provide 'my-ido)
 (message "Loaded my-ido.el")
