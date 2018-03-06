@@ -230,12 +230,12 @@
 ;; (its default value), Emacs uses the "command" key as the META
 ;; key. Otherwise it uses the "option" key as the META key.
 ;;If you want to use the option key to enter special characters (such as £) instead of functioning as Alt of Meta, you can specify this in your ~/.emacs:
- (setq mac-option-modifier 'meta) ; Sets the option key as Meta (this is default)
+;; (setq mac-option-modifier 'meta) ; Sets the option key as Meta (this is default)
 ; (setq mac-control-modifier 'meta) ; Sets the control key as Meta
 ; (setq mac-function-modifier 'meta) ; Sets the function key as Meta (limitations on non-English keyboards)
 
 ;; For emacs 23 in mac osx leopard
-(setq mac-command-modifier 'meta) ; Sets the command key as Meta
+;; (setq mac-command-modifier 'meta) ; Sets the command key as Meta
 
 ;; set grep-find to omit the .svn directory
 ;;(setq grep-find-command
@@ -477,8 +477,10 @@ Returns nil if no differences found, 't otherwise."
       (setq exec-path (append (list "/usr/local/bin"
                                     (concat (getenv "HOME") "/bin"))
                               exec-path))
-      (setq mac-option-modifier 'super) ; set the Option key as Super
-      (setq mac-command-modifier 'meta) ; set the command key as Meta
+      ;; (setq mac-option-modifier 'super) ; set the Option key as Super
+      (setq mac-option-modifier 'meta)
+      ;; (setq mac-command-modifier 'meta) ; set the command key as Meta
+      (setq mac-command-modifier 'super)
       (eval-after-load "paredit"
         '(progn
            (define-key paredit-mode-map (kbd "<s-left>") 'paredit-forward-barf-sexp)
