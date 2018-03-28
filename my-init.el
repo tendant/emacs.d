@@ -28,7 +28,7 @@
   ;; ((and )dd-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
   (add-to-list 'package-archives
                '("melpa-stable" . "https://stable.melpa.org/packages/") t))
-(package-initialize) ;; You might already have this line
+;; (package-initialize) ;; You might already have this line
   
 
 (defvar my-packages '(ac-cider

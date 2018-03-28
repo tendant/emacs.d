@@ -26,9 +26,9 @@
   "Configure font for Linux."
   (if (and linuxp (>= emacs-major-version 23))
       (progn
-        ;; (set-default-font "Bitstream Vera Sans Mono-8")
-        ;; (set-default-font "DejaVu Sans Mono-8")
-        (set-default-font "Inconsolata-11") ; sudo apt-get install fonts-inconsolata
+        ;; (set-frame-font "Bitstream Vera Sans Mono-8")
+        ;; (set-frame-font "DejaVu Sans Mono-8")
+        (set-frame-font "Inconsolata-11") ; sudo apt-get install fonts-inconsolata
         ;; set the default font for chinese.
         (set-fontset-font "fontset-default"
                           'unicode '("Microsoft YaHei" . "unicode-bmp")) 
@@ -53,7 +53,7 @@
         (setq default-frame-alist
               (append '((font . "fontset-bitstreammono"))
                       default-frame-alist))
-        (set-default-font "fontset-bitstreammono")
+        (set-frame-font "fontset-bitstreammono")
         (message "*** Configure font done.")
         )))
 
