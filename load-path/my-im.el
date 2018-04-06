@@ -13,6 +13,10 @@
 (setq pyim-page-length 5)
 (setq default-input-method "pyim")
 
+(pyim-isearch-mode 1)
+
+;; (setq pyim-page-tooltip 'popup)
+(setq pyim-page-tooltip 'posframe) ; require manual install posframe
 
 (setq pyim-default-scheme 'quanpin)
 

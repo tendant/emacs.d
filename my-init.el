@@ -55,6 +55,7 @@
                       org-plus-contrib
                       ox-hugo
                       ox-reveal
+                      posframe
                       pyim
                       pyim-basedict
                       restclient
