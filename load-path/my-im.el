@@ -16,7 +16,8 @@
 (pyim-isearch-mode 1)
 
 ;; (setq pyim-page-tooltip 'popup)
-(setq pyim-page-tooltip 'posframe) ; require manual install posframe
+(if (not (version< emacs-version "26")) ; posframe require emacs version 26+
+    (setq pyim-page-tooltip 'posframe)) ; require manual install posframe
 
 (setq pyim-default-scheme 'quanpin)
 

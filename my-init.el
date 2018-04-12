@@ -55,18 +55,21 @@
                       org-plus-contrib
                       ox-hugo
                       ox-reveal
-                      posframe
                       pyim
                       pyim-basedict
                       restclient
                       rust-mode
                       solarized-theme
+                      solidity-mode
                       swift-mode
                       w3m
                       web-mode
                       ws-butler
                       yaml-mode
                       yasnippet))
+
+(defvar my-emacs26-packages '(posframe))
+  
 
 ; fetch the list of packages available 
 (unless package-archive-contents
@@ -85,6 +88,11 @@
 (dolist (p my-packages)
   (unless (package-installed-p p)
     (package-install p)))
+
+(if (not (version< emacs-version "26"))
+    (dolist (p my-emacs26-packages)
+      (unless (package-installed-p p)
+	(package-install p))))
 
 (if (and
      (< (string-to-number (car (split-string (org-version) "\\."))) 8)
