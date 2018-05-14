@@ -368,9 +368,11 @@ Returns nil if no differences found, 't otherwise."
 ;; elisp to your config:
 (if mac-osx-p
     (progn 
-      (setenv "PATH" (concat (getenv "PATH")
-                             ":/opt/local/bin"))
-      (add-to-list 'exec-path "/opt/local/bin")))
+      (setenv "PATH" (concat "~/.cargo/bin:"
+                             "/opt/local/bin:"
+                             (getenv "PATH")))
+      (add-to-list 'exec-path "/opt/local/bin")
+      (add-to-list 'exec-path "~/.cargo/bin")))
 
 ;; Maximize the emacs during startup in Mac OSX
 ;(mac-toggle-max-window)

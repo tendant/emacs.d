@@ -59,6 +59,7 @@
                       pyim-basedict
                       restclient
                       rust-mode
+                      flycheck-rust
                       solarized-theme
                       solidity-mode
                       swift-mode
