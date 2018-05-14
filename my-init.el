@@ -42,6 +42,7 @@
                       exec-path-from-shell
                       flycheck
                       flycheck-clojure
+                      flycheck-rust
                       graphql-mode
                       graphviz-dot-mode
                       helm
