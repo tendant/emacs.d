@@ -367,3 +367,8 @@ be passed in via a prefix arg."
 ;; dart-mode
 (setq dart-enable-analysis-server t)
 (add-hook 'dart-mode-hook 'flycheck-mode)
+
+
+;; rust-mode
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
