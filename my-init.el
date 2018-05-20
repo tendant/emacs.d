@@ -36,6 +36,7 @@
                       clojure-mode
                       clojure-snippets
                       cnfonts
+                      counsel
                       dart-mode
                       dockerfile-mode
                       dracula-theme
