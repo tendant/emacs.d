@@ -61,6 +61,7 @@
                       pyim-basedict
                       restclient
                       rust-mode
+                      ;; rust-cargo
                       flycheck-rust
                       solarized-theme
                       solidity-mode
@@ -69,7 +70,8 @@
                       web-mode
                       ws-butler
                       yaml-mode
-                      yasnippet))
+                      yasnippet
+                      yasnippet-snippets))
 
 (defvar my-emacs26-packages '(posframe))
   
