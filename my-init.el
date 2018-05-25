@@ -57,6 +57,7 @@
                       org-plus-contrib
                       ox-hugo
                       ox-reveal
+                      plantuml-mode
                       pyim
                       pyim-basedict
                       restclient

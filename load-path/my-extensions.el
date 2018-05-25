@@ -372,3 +372,18 @@ be passed in via a prefix arg."
 ;; rust-mode
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+;; plantuml-mode
+(setq plantuml-jar-path "~/bin/plantuml.jar")
+(setq org-plantuml-jar-path plantuml-jar-path)
+;; Enable plantuml-mode for PlantUML files
+(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+;; plantuml Integration with org-mode
+(add-to-list
+  'org-src-lang-modes '("plantuml" . plantuml))
+;; active Babel languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . nil)
+   (plantuml . t)
+   (emacs-lisp . t)))
