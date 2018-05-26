@@ -50,6 +50,7 @@
                       helm-ls-git
                       ivy
                       js2-mode
+                      ledger-mode
                       magit
                       magit-svn
                       notmuch
