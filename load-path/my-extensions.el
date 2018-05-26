@@ -387,3 +387,6 @@ be passed in via a prefix arg."
  '((R . nil)
    (plantuml . t)
    (emacs-lisp . t)))
+
+;; ledger-mode
+(setq ledger-init-file-name "~/Private-go/finance/accounting/my-ledger.ledger")
