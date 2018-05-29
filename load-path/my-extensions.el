@@ -389,4 +389,4 @@ be passed in via a prefix arg."
    (emacs-lisp . t)))
 
 ;; ledger-mode
-(setq ledger-init-file-name "~/Private-go/finance/accounting/my-ledger.ledger")
+(setq ledger-init-file-name "~/workspace/linux-conf/_ledgerrc")
