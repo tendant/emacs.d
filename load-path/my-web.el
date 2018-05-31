@@ -5,7 +5,7 @@
             (set (make-local-variable 'sgml-basic-offset) 2)))
 (add-hook 'js2-mode-hook
           (lambda ()
-            (local-set-key (kbd "<f8>") 'html-mode)))
+            (local-set-key (kbd "<f8>") 'mhtml-mode)))
 
 ;; multi-web-mode
 (require 'multi-web-mode)
