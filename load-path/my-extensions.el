@@ -325,6 +325,7 @@ be passed in via a prefix arg."
 (require 'my-helm)
 ;; configuration for ivy
 (ivy-mode 1)
+(setq ivy-use-selectable-prompt t) ; make the prompt line selectable
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
 (global-set-key "\C-s" 'swiper)
