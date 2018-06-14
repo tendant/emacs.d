@@ -357,11 +357,15 @@ be passed in via a prefix arg."
 (defvar my-restclient-token nil)
 (defun my-restclient-hook ()
   "Update token from a request."
+  (message "Update token and id from response.")
   (save-excursion
     (save-match-data
       ;; update regexp to extract required data
       (when (re-search-forward "\"token\":\"\\(.*?\\)\"" nil t)
-        (setq my-restclient-token (match-string 1))))))
+        (setq my-restclient-token (match-string 1)))
+      (if (re-search-forward "\"id\":\"\\(.*?\\)\"" nil t)
+        (setq my-restclient-id (match-string 1))
+        (setq my-restclient-id "NO-ID")))))
 
 (add-hook 'restclient-response-received-hook #'my-restclient-hook)
 
