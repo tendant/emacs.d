@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: intl
+# --
+import { FormattedMessage } from 'react-intl';$0

@@ -1,0 +1,4 @@
+# -*- mode: snippet -*-
+# name: ifm
+# --
+<FormattedMessage id='$1' defaultMessage='$2' />$0
