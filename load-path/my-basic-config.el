@@ -9,6 +9,9 @@
     (eq system-type 'cygwin)
   "Are we running on a WinTel cygwin system?")
 
+(defconst androidp
+  (string= system-configuration "arm-unknown-linux-androideabi"))
+
 (defconst linuxp
     (or (eq system-type 'gnu/linux)
         (eq system-type 'linux))
