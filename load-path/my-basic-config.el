@@ -10,7 +10,8 @@
   "Are we running on a WinTel cygwin system?")
 
 (defconst androidp
-  (string= system-configuration "arm-unknown-linux-androideabi"))
+  (or (string= system-configuration "arm-unknown-linux-androideabi")
+      (string= system-configuration "aarch64-unknown-linux-android")))
 
 (defconst linuxp
     (or (eq system-type 'gnu/linux)
@@ -446,7 +447,7 @@ Returns nil if no differences found, 't otherwise."
 ;; after mouse selection in X11, you can paste by `yank' in emacs
 (setq x-select-enable-primary t)
 
-(if linuxp
+(if (and linuxp (not androidp))
     (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
