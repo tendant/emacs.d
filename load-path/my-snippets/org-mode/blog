@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: blog
+# key: blog
+# --
+   :PROPERTIES:
+   :EXPORT_FILE_NAME: $1
+   :EXPORT_HUGO_SECTION: ${2:posts}
+   :EXPORT_DATE: `(format-time-string "%Y-%m-%d")`
+   :END:
