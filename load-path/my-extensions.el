@@ -376,6 +376,7 @@ be passed in via a prefix arg."
 
 
 ;; rust-mode
+(add-hook 'rust-mode-hook 'flycheck-mode)
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
