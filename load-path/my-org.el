@@ -353,6 +353,13 @@ unwanted space when exporting org-mode to html."
 (with-eval-after-load 'ox
   (require 'ox-hugo))
 
+;; When t (the default), the user is asked before every code block
+;; evaluation.  When ‘nil’, the user is not asked.  When set to a
+;; function, it is called with two arguments (language and body of the
+;; code block ) and should return t to ask and ‘nil’ not to ask.
+(setq org-confirm-babel-evaluate nil)
+
+
 (setq org-agenda-custom-commands
       '(("c" "My agenda view"
          ((tags "PRIORITY={A}"

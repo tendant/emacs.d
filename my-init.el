@@ -36,6 +36,9 @@
                       clojure-mode
                       clojure-snippets
                       cnfonts
+                      company
+                      company-ansible
+                      company-web
                       counsel
                       dart-mode
                       dockerfile-mode

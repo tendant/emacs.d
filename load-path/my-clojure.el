@@ -48,6 +48,9 @@
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'subword-mode)
 
+(add-hook 'cider-repl-mode-hook #'company-mode)
+(add-hook 'cider-mode-hook #'company-mode)
+
 ;; added for lazytest
 ;; (eval-after-load 'clojure-mode
 ;;   '(define-clojure-indent
