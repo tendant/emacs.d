@@ -29,6 +29,8 @@
 ;; (put 'narrow-to-region 'disabled nil)
 (message "Configured for javascript")
 
+(setq css-indent-offset 2)
+
 (require 'flycheck)
 
 (flycheck-define-checker jsxhint-checker
