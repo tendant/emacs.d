@@ -245,7 +245,7 @@
 ;;(setq grep-find-command
 ;(setq find-args-hisotry
 ;  "find . -path '*/.svn' -prune -o -type f -print | xargs -e grep -I -n -e ")
-(setenv "GREP_OPTIONS" "--exclude=.#* --exclude=*\~ --exclude=CVS/* --exclude=*/.svn*")
+;; (setenv "GREP_OPTIONS" "--exclude=.#* --exclude=*\~ --exclude=CVS/* --exclude=*/.svn*")
 
 ;; NOTE:
 ;; just go and use M-x global-set-key, then go back and recall that previous command with C-x ESC ESC, to know how to define the key bindings.
