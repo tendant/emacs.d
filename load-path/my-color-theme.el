@@ -41,7 +41,8 @@
 
 ;; (require 'solarized)
 
-(load-theme 'solarized-dark t)
+;; (load-theme 'solarized-dark t)
+(load-theme 'nord t)
 ;; (load-theme 'dracula t)
 
 (provide 'my-color-theme)
