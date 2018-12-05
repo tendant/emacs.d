@@ -57,6 +57,7 @@
                       magit
                       magit-svn
                       notmuch
+                      nord-theme
                       org
                       org-plus-contrib
                       ox-hugo
