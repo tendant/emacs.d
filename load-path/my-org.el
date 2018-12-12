@@ -22,7 +22,8 @@
 (if linux-x-p
     (setq org-x11idle-program-name 'xprintidle))
 
-(setq org-agenda-files (file-expand-wildcards "~/.emacs.d/org-gtd/*.org"))
+(setq org-agenda-files (cons "~/.emacs.d/gcal.org"
+                             (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
 
 (defun org-all ()
   (interactive)
@@ -367,6 +368,11 @@ unwanted space when exporting org-mode to html."
                  (org-agenda-overriding-header "High-Priority tasks:")))
           (agenda "")
           (alltodo "")))))
+
+(require 'org-gcal)
+(setq org-gcal-client-id "683892366933-ujh3diskfq7f4oqt1pg8edorl9868752.apps.googleusercontent.com"
+      org-gcal-client-secret "o_hbBcEbH9sXN44rHiN4RQEI"
+      org-gcal-file-alist '(("account2@gmail.com" .  "~/.emacs.d/gcal.org")))
 
 (provide 'my-org)
 (message "Loaded org-mode successfully")
