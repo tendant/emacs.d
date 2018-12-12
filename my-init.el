@@ -59,6 +59,7 @@
                       notmuch
                       nord-theme
                       org
+                      org-gcal
                       org-plus-contrib
                       ox-hugo
                       ox-reveal
