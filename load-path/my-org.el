@@ -22,8 +22,9 @@
 (if linux-x-p
     (setq org-x11idle-program-name 'xprintidle))
 
-(setq org-agenda-files (cons "~/.emacs.d/gcal.org"
-                             (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
+(setq org-agenda-files (append '("~/.emacs.d/gcal.org"
+                                 "~/.emacs.d/gcal-wish.org")
+                               (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
 
 (defun org-all ()
   (interactive)
