@@ -21,9 +21,10 @@
 (setq-default js2-basic-offset 2)
 ;; (setq js-indent-level 4)
 ;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)) ; \' will match empty string only at the end of the string or buffer; \$ will match end of line
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+;; (autoload 'js2-mode "js2-mode" nil t)
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)) ; \' will match empty string only at the end of the string or buffer; \$ will match end of line
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
 ;; (setq js2-consistent-level-indent-inner-bracket-p t)
 ;; (setq js2-pretty-multiline-decl-indentation-p t)
 ;; (put 'narrow-to-region 'disabled nil)

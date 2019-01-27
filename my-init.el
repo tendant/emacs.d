@@ -53,6 +53,7 @@
                       helm-ls-git
                       ivy
                       js2-mode
+                      rjsx-mode
                       ledger-mode
                       magit
                       magit-svn
