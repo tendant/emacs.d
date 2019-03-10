@@ -69,6 +69,7 @@
                       pyim
                       pyim-basedict
                       restclient
+                      rg
                       rust-mode
                       ;; rust-cargo
                       flycheck-rust
