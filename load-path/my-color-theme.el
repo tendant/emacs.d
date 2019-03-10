@@ -43,6 +43,13 @@
 
 ;; (load-theme 'solarized-dark t)
 (load-theme 'nord t)
+(setq nord-comment-brightness 20)
+;; Use brighter color for comments
+(set-face-attribute 'font-lock-comment-face nil
+                    :foreground "#81A1C1") ; nord9
+(set-face-attribute 'vertical-border nil
+                    :foreground "#EBCB8B") ; nord13
+
 ;; (load-theme 'dracula t)
 
 (provide 'my-color-theme)
