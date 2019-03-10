@@ -41,6 +41,7 @@
                       company-web
                       counsel
                       dart-mode
+                      default-text-scale
                       dockerfile-mode
                       dracula-theme
                       exec-path-from-shell

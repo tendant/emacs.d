@@ -96,6 +96,7 @@
 ;;                                                                 (cfs-decrease-fontsize)
 ;;                                                               (zoom-font -1))))
 
+;; Change current buffer font size
 (global-set-key (kbd "C-=")
                 'text-scale-increase)
 
