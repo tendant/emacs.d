@@ -97,10 +97,12 @@
 ;;                                                               (zoom-font -1))))
 
 ;; Change current buffer font size
-(global-set-key (kbd "C-=")
-                'text-scale-increase)
+(global-set-key (kbd "C-=") 'text-scale-increase)
 
-(global-set-key (kbd "C--")
-                'text-scale-decrease)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
+;; use default-text-scale-mode
+(global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+(global-set-key (kbd "C-M--") 'default-text-scale-decrease)
 
 (provide 'my-font)
