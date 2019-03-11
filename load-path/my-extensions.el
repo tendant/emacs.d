@@ -112,7 +112,6 @@
 ;; (add-to-list 'load-path "~/.emacs.d/load-path/emacs-svn")
 ;; (require 'psvn)
 
-(add-to-list 'load-path (concat my-emacs-load-path "magit"))
 (require 'magit)
 ;; (setq magit-last-seen-setup-instructions "1.4.0") ; delete me
 ;; (setq magit-refresh-status-buffer nil)
@@ -122,6 +121,10 @@
       'magit-auto-revert-repository-buffers-p)
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
 (global-set-key [f5] 'magit-status)
+(setq magit-section-initial-visibility-alist '((stashes . show)
+                                               (unstaged . show)
+                                               (unpushed . show)
+                                               (recent . show)))
 (require 'magit-svn)
 
 ;; git minor mode
