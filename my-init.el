@@ -58,6 +58,7 @@
                       ledger-mode
                       magit
                       magit-svn
+                      markdown-mode
                       notmuch
                       nord-theme
                       org
