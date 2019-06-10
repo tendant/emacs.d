@@ -1,0 +1,16 @@
+#+REVEAL_ROOT: ./reveal.js
+#+REVEAL_HLEVEL: 2
+#+REVEAL_THEME: white
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HIGHLIGHT_CSS: zenburn
+#+REVEAL_EXTRA_CSS: custom.css
+#+Title: __PROJECT-NAME__
+#+Author: __USER-NAME__
+#+Date: __TIME__
+#+OPTIONS: toc:nil
+#+OPTIONS: reveal_slide_number:nil
+#+OPTIONS: num:nil
+
+* Slide 1
+
+* Slide 2

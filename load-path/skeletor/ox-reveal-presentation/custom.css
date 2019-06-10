@@ -1,0 +1,29 @@
+__(BEGIN|END)__
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  text-transform: none;
+}
+
+.reveal h2 {
+  font-size: 1.2em;
+}
+
+.org-src-container, pre.example {
+  padding: 10px;
+}
+
+code.yaml {
+  min-height: 550px;
+}
+
+div p img {
+  padding: 10px;
+}
+
+.reveal section img {
+  border: 0;
+}
