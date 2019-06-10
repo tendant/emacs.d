@@ -400,3 +400,6 @@ be passed in via a prefix arg."
 
 ;; ledger-mode
 (setq ledger-init-file-name "~/workspace/linux-conf/_ledgerrc")
+
+;; skeletor
+(require 'my-skeletor)
