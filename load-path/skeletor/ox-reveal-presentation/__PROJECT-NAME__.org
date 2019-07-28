@@ -2,7 +2,7 @@
 #+REVEAL_HLEVEL: 2
 #+REVEAL_THEME: white
 #+REVEAL_PLUGINS: (highlight)
-#+REVEAL_HIGHLIGHT_CSS: zenburn
+#+REVEAL_HIGHLIGHT_CSS: reveal.js/lib/css/zenburn.css
 #+REVEAL_EXTRA_CSS: custom.css
 #+Title: __PROJECT-NAME__
 #+Author: __USER-NAME__
@@ -10,6 +10,7 @@
 #+OPTIONS: toc:nil
 #+OPTIONS: reveal_slide_number:nil
 #+OPTIONS: num:nil
+#+OPTIONS: time_stamp_file:nil
 
 * Slide 1
 

@@ -400,6 +400,12 @@ be passed in via a prefix arg."
 
 ;; ledger-mode
 (setq ledger-init-file-name "~/workspace/linux-conf/_ledgerrc")
+(add-hook 'ledger-mode-hook
+               (lambda ()
+                 (setq-local tab-always-indent 'complete)
+                 (setq-local completion-cycle-threshold t)
+                 (setq-local ledger-complete-in-steps t)))
+(require 'ledger-complete)
 
 ;; skeletor
 (require 'my-skeletor)
