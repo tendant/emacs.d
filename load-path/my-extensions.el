@@ -125,6 +125,7 @@
                                                (unstaged . show)
                                                (unpushed . show)
                                                (recent . show)))
+(setq magit-diff-refine-hunk 'all)
 (require 'magit-svn)
 
 ;; git minor mode
