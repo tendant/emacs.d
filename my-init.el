@@ -44,6 +44,7 @@
                       default-text-scale
                       dockerfile-mode
                       dracula-theme
+                      el-get
                       exec-path-from-shell
                       flycheck
                       flycheck-clojure
@@ -64,7 +65,7 @@
                       org
                       org-gcal
                       org-plus-contrib
-                      ox-hugo
+                      ;; ox-hugo
                       ox-reveal
                       plantuml-mode
                       pyim
@@ -74,6 +75,7 @@
                       rust-mode
                       ;; rust-cargo
                       flycheck-rust
+                      skeletor
                       solarized-theme
                       solidity-mode
                       swift-mode
@@ -85,7 +87,6 @@
                       yasnippet-snippets))
 
 (defvar my-emacs26-packages '(posframe))
-  
 
 ; fetch the list of packages available 
 (unless package-archive-contents
@@ -109,6 +110,29 @@
     (dolist (p my-emacs26-packages)
       (unless (package-installed-p p)
 	(package-install p))))
+
+
+;;; Add el-get
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/"))
+  (package-refresh-contents)
+  (package-initialize)
+  (package-install 'el-get)
+  (require 'el-get))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+
+(el-get-bundle ox-hugo
+               :url "https://github.com/your-nick/ox-hugo.git"
+               :checkout "master"
+               :feature ox-hugo)
+
+(el-get 'sync)
+
 
 (if (and
      (< (string-to-number (car (split-string (org-version) "\\."))) 8)
