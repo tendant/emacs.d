@@ -77,6 +77,7 @@
                       ;; rust-cargo
                       flycheck-rust
                       skeletor
+                      smtpmail-multi
                       solarized-theme
                       solidity-mode
                       swift-mode
