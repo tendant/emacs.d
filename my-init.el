@@ -44,6 +44,7 @@
                       default-text-scale
                       dockerfile-mode
                       dracula-theme
+                      ejc-sql
                       el-get
                       exec-path-from-shell
                       flycheck

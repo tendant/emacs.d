@@ -220,6 +220,18 @@
 (setq sqlplus-save-passwords  't)
 (setq sqlplus-pagesize 100)
 
+;; Emacs SQL client uses Clojure JDBC.
+(require 'ejc-sql)
+;; Enable autocomplete for ejc-sql minor mode:
+(add-hook 'ejc-sql-minor-mode-hook
+          (lambda ()
+            (auto-complete-mode t)
+            (ejc-ac-setup)))
+;; Enable ElDoc for ejc-sql minor mode:
+(add-hook 'ejc-sql-minor-mode-hook
+          (lambda ()
+            (ejc-eldoc-setup)))
+
 ;; for e-blog
 ;(load "~/.emacs.d/load-path/e-blog/e-blog.el")
 ;(message "Loaded e-blog")
