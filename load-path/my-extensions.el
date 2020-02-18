@@ -288,7 +288,7 @@
 
 ;; (message "Loading my-mail")
 ;; (require 'my-mail-smtp)
-;; (require 'my-mail-mu4e)
+(require 'my-mail-mu4e)
 ;; (require 'my-ldap)
 ;; (message "Loaded my-mail")
 
