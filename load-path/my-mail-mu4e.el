@@ -42,6 +42,9 @@
 			    :to "account1@gmail.com")))
 	  :vars '( ( user-mail-address	     . "account2@gmail.com" )
 		   ( user-full-name	     . "Your Name" )
+                   ( mu4e-sent-folder       . "/gmail-your-nick/Sent")
+                   ( mu4e-drafts-folder     . "/gmail-your-nick/Drafts")
+                   ( mu4e-trash-folder      . "/gmail-your-nick/Trash")
 		   ( mu4e-compose-signature  .
 		     (concat
 		       "Your Name"))))
@@ -56,6 +59,9 @@
 			    :to "account3@example.com")))
 	  :vars '( ( user-mail-address	     . "account3@example.com" )
 		   ( user-full-name	     . "Your Name" )
+                   ( mu4e-sent-folder       . "/account3/Sent")
+                   ( mu4e-drafts-folder     . "/account3/Drafts")
+                   ( mu4e-trash-folder      . "/account3/Trash")
 		   ( mu4e-compose-signature  . (concat "Best,\n"
                                                        "Your Name"))))))
 
