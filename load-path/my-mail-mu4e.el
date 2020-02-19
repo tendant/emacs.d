@@ -128,6 +128,7 @@
 
 ;; (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
+
 ;; enable inline images
 (setq mu4e-view-show-images t)
 
@@ -136,26 +137,49 @@
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
 
-;; emacs 24.4 and later versions include the eww browser which uses
-;; the shr html renderer; mu4e includes a little snippet to uses this
-;; with mu4e-html2text-command; for this, add the following to your
-;; configuration:
-;; 
-;; Add below function temporarily, since this function is not released
-;; in mu4e yet. It is only available in master.
-;; https://groups.google.com/forum/#!topic/mu-discuss/gr1cwNNZnXo
-(defun mu4e-shr2text () 
-  "Html to text using the shr engine; this can be used in 
-`mu4e-html2text-command' in a new enough emacs. Based on code by 
-Titus von der Malsburg." 
-  (interactive) 
-  (let ((dom (libxml-parse-html-region (point-min) (point-max))) 
-        (shr-inhibit-images t)) 
-    (erase-buffer) 
-    (shr-insert-document dom) 
-    (goto-char (point-min)))) 
+(setq mu4e-attachment-dir  "~/Downloads")
 
-(require 'mu4e-contrib)
-(setq mu4e-html2text-command 'mu4e-shr2text)
+;; (defconst message-cite-style-gmail
+;;   '((message-cite-function          'message-cite-original)
+;;     (message-citation-line-function 'message-insert-formatted-citation-line)
+;;     (message-cite-reply-position    'above)
+;;     (message-yank-prefix            "    ")
+;;     (message-yank-cited-prefix      "    ")
+;;     (message-yank-empty-prefix      "    ")
+;;     (message-citation-line-format   "On %e %B %Y %R, %f wrote:\n"))
+;;   "Message citation style used by Gmail. Use with `message-cite-style'.")
+
+;; (with-eval-after-load 'message
+;;   (setq message-cite-style message-cite-style-gmail))
+
+(setq message-cite-reply-position 'above)
+
+(add-hook 'mu4e-view-mode-hook
+  (lambda()
+    ;; try to emulate some of the eww key-bindings
+    (local-set-key (kbd "<tab>") 'shr-next-link)
+    (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+
+;; ;; emacs 24.4 and later versions include the eww browser which uses
+;; ;; the shr html renderer; mu4e includes a little snippet to uses this
+;; ;; with mu4e-html2text-command; for this, add the following to your
+;; ;; configuration:
+;; ;;
+;; ;; Add below function temporarily, since this function is not released
+;; ;; in mu4e yet. It is only available in master.
+;; ;; https://groups.google.com/forum/#!topic/mu-discuss/gr1cwNNZnXo
+;; (defun mu4e-shr2text ()
+;;   "Html to text using the shr engine; this can be used in
+;; `mu4e-html2text-command' in a new enough emacs. Based on code by
+;; Titus von der Malsburg."
+;;   (interactive)
+;;   (let ((dom (libxml-parse-html-region (point-min) (point-max)))
+;;         (shr-inhibit-images t))
+;;     (erase-buffer)
+;;     (shr-insert-document dom)
+;;     (goto-char (point-min))))
+
+;; (require 'mu4e-contrib)
+;; (setq mu4e-html2text-command 'mu4e-shr2text)
 
 (provide 'my-mail-mu4e)
