@@ -1,4 +1,4 @@
-;;; Configuration for mu4e mail client, install mu before using it
+;; Configuration for mu4e mail client, install mu before using it
 
 ;; Install mu with mu4e in Mac OSX
 ;; EMACS=$(which emacs) brew install mu --with-emacs
@@ -70,11 +70,11 @@
 
 ;; start with the first (default) context;
 ;; default is to ask-if-none (ask when there's no context yet, and none match)
-(setq mu4e-context-policy 'ask)
+(setq mu4e-context-policy 'ask-if-none)
 
 ;; compose with the current context is no context matches;
 ;; default is to ask
-(setq mu4e-compose-context-policy 'ask)
+(setq mu4e-compose-context-policy 'ask-if-none)
 
 
 ;; (setq mu4e-sent-folder "/account2@gmail.com/sent" ;; folder for sent messages
