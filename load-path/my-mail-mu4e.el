@@ -12,6 +12,40 @@
 (setq mu4e-get-mail-command "mbsync -a")  ; using mbsync to fetch mail
 (setq mu4e-update-interval 300) ; update every 300 seconds
 
+;;  If you want to use queued mail, you should create this directory
+;;  before starting mu4e. The mu mkdir command may be useful here, so
+;;  for example:
+;;
+;;   $ mu mkdir ~/.Maildir/queue
+;;   $ touch ~/.Maildir/queue/.noindex
+;;
+;; WARNING: when you switch on queued-mode, your messages won’t reach
+;; their destination until you switch it off again; so, be careful not
+;; to do this accidentally!
+;;
+;; (setq smtpmail-queue-mail t ;; start in queuing mode
+;;      smtpmail-queue-dir  "~/.Maildir/queue/cur")
+
+(defun smtpmail-online ()
+  "Switch online mode and send queued email immediately"
+  (interactive)
+  (setq smtpmail-queue-mail nil)
+  (smtpmail-send-queued-mail))
+
+(defun smtpmail-queue ()
+  "Queue all outgoing emails"
+  (interactive)
+  (setq smtpmail-queue-mail t ;; start in queuing mode
+        smtpmail-queue-dir  "~/.Maildir/queue/cur"))
+
+(setq mu4e-view-show-addresses t)
+
+(setq mu4e-compose-signature-auto-include nil)
+
+;; Enable to view message in browser: aV
+(add-to-list 'mu4e-view-actions
+  '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
 (setq mu4e-contexts
     `( ,(make-mu4e-context
 	  :name "account1@gmail.com"
@@ -159,6 +193,12 @@
     ;; try to emulate some of the eww key-bindings
     (local-set-key (kbd "<tab>") 'shr-next-link)
     (local-set-key (kbd "<backtab>") 'shr-previous-link)))
+
+
+;;store org-mode links to messages
+(require 'org-mu4e)
+;;store link to message if in header view, not to header query
+(setq org-mu4e-link-query-in-headers-mode nil)
 
 ;; ;; emacs 24.4 and later versions include the eww browser which uses
 ;; ;; the shr html renderer; mu4e includes a little snippet to uses this

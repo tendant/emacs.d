@@ -129,7 +129,7 @@
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
-               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n")
+               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U %a\n")
               ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
                "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n")
               ("r" "reading" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Reading")
@@ -141,7 +141,7 @@
               ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
                "* %?\n%U\n")
               ("w" "work" entry (file+headline "~/.emacs.d/org-gtd/wish.org" "Tasks")
-               "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+               "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
               ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* MEETING with %? :MEETING:\n%U")
               ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
