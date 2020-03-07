@@ -9,8 +9,11 @@
 ;; top-level Maildir
 (setq mu4e-maildir "~/.Maildir")
 ;; (setq mu4e-get-mail-command "true") ; not fetch mail using mu4e
-(setq mu4e-get-mail-command "mbsync -a")  ; using mbsync to fetch mail
+(setq mu4e-get-mail-command "mbsync -aV")  ; using mbsync to fetch mail
 (setq mu4e-update-interval 300) ; update every 300 seconds
+
+;; Set mu4e as default mail agent
+(setq mail-user-agent 'mu4e-user-agent)
 
 ;;  If you want to use queued mail, you should create this directory
 ;;  before starting mu4e. The mu mkdir command may be useful here, so
@@ -42,6 +45,8 @@
 
 (setq mu4e-compose-signature-auto-include nil)
 
+(setq mu4e-compose-dont-reply-to-self t)
+
 ;; Enable to view message in browser: aV
 (add-to-list 'mu4e-view-actions
   '("ViewInBrowser" . mu4e-action-view-in-browser) t)
@@ -53,9 +58,11 @@
           :leave-func (lambda () (mu4e-message "Leaving context: account1@gmail.com"))
 	  ;; we match based on the contact-fields of the message
 	  :match-func (lambda (msg)
-			(when msg
-			  (mu4e-message-contact-field-matches msg
-			    :to "account1@gmail.com")))
+                        (message "match-func: account1: " msg)
+			(if msg
+                            (mu4e-message-contact-field-matches msg
+                              :to "account1@gmail.com")
+                          (message "No message in neil.")))
 	  :vars '( ( user-mail-address	    . "account1@gmail.com"  )
 		   ( user-full-name	    . "Your Name" )
                    ( mu4e-sent-folder       . "/gmail-account1/Sent")
@@ -71,9 +78,11 @@
 	  :enter-func (lambda () (mu4e-message "Switch to context: account2@gmail.com"))
 	  ;; no leave-func
 	  :match-func (lambda (msg)
-			(when msg
+                        (message "match-func: your-nick: " msg)
+			(if msg
 			  (mu4e-message-contact-field-matches msg
-			    :to "account1@gmail.com")))
+			    :to "account2@gmail.com")
+                          (message "No message in: your-nick")))
 	  :vars '( ( user-mail-address	     . "account2@gmail.com" )
 		   ( user-full-name	     . "Your Name" )
                    ( mu4e-sent-folder       . "/gmail-your-nick/Sent")
@@ -88,9 +97,11 @@
 	  :enter-func (lambda () (mu4e-message "Switch to context: account3@example.com"))
 	  ;; no leave-func
 	  :match-func (lambda (msg)
-			(when msg
+                        (message "match-func: lei: " msg)
+			(if msg
 			  (mu4e-message-contact-field-matches msg
-			    :to "account3@example.com")))
+			    :to "account3@example.com")
+                          (message "No message in lei")))
 	  :vars '( ( user-mail-address	     . "account3@example.com" )
 		   ( user-full-name	     . "Your Name" )
                    ( mu4e-sent-folder       . "/account3/Sent")
@@ -108,8 +119,8 @@
 
 ;; compose with the current context is no context matches;
 ;; default is to ask
-(setq mu4e-compose-context-policy 'ask-if-none)
-
+;; (setq mu4e-compose-context-policy 'ask-if-none)
+(setq mu4e-compose-context-policy nil)
 
 ;; (setq mu4e-sent-folder "/account2@gmail.com/sent" ;; folder for sent messages
 ;;       mu4e-drafts-folder "/account2@gmail.com/drafts" ;; unfinished messages
@@ -166,6 +177,7 @@
 ;; enable inline images
 (setq mu4e-view-show-images t)
 
+;; (setq mu4e-msg2pdf "~/bin/msg2pdf")
 
 ;; use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
