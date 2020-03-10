@@ -8,8 +8,8 @@
 (require 'mu4e)
 ;; top-level Maildir
 (setq mu4e-maildir "~/.Maildir")
-;; (setq mu4e-get-mail-command "true") ; not fetch mail using mu4e
-(setq mu4e-get-mail-command "mbsync -aV")  ; using mbsync to fetch mail
+(setq mu4e-get-mail-command "true") ; not fetch mail using mu4e
+;; (setq mu4e-get-mail-command "mbsync -aV")  ; using mbsync to fetch mail
 (setq mu4e-update-interval 300) ; update every 300 seconds
 
 ;; Set mu4e as default mail agent
@@ -121,58 +121,6 @@
 ;; default is to ask
 ;; (setq mu4e-compose-context-policy 'ask-if-none)
 (setq mu4e-compose-context-policy nil)
-
-;; (setq mu4e-sent-folder "/account2@gmail.com/sent" ;; folder for sent messages
-;;       mu4e-drafts-folder "/account2@gmail.com/drafts" ;; unfinished messages
-;;       mu4e-trash-folder "/account2@gmail.com/trash" ;; trashed messages
-;;       mu4e-refile-folder "/account2@gmail.com/archive" ;; saved messages
-;;       user-mail-address "account2@gmail.com")
-
-;; ;; my-mu4e-account-alist will be redefined by loading ~/.authinfo.el file.
-;; (defvar my-mu4e-account-alist
-;;   '(("Account1"
-;;      (mu4e-sent-folder "/Account1/Saved Items")
-;;      (mu4e-drafts-folder "/Account1/Drafts")
-;;      (user-mail-address "my.address@account1.tld")
-;;      (smtpmail-default-smtp-server "smtp.account1.tld")
-;;      (smtpmail-local-domain "account1.tld")
-;;      (smtpmail-smtp-user "username1")
-;;      (smtpmail-smtp-server "smtp.account1.tld")
-;;      (smtpmail-stream-type starttls)
-;;      (smtpmail-smtp-service 25))
-;;     ("Account2"
-;;      (mu4e-sent-folder "/Account2/Saved Items")
-;;      (mu4e-drafts-folder "/Account2/Drafts")
-;;      (user-mail-address "my.address@account2.tld")
-;;      (smtpmail-default-smtp-server "smtp.account2.tld")
-;;      (smtpmail-local-domain "account2.tld")
-;;      (smtpmail-smtp-user "username2")
-;;      (smtpmail-smtp-server "smtp.account2.tld")
-;;      (smtpmail-stream-type starttls)
-;;      (smtpmail-smtp-service 587))))
-
-;; (defun my-mu4e-set-account ()
-;;   "Set the account for composing a message."
-;;   (require 'authinfo "~/.authinfo.el") ; load my-mu4e-account-alist from private file
-;;   (let* ((account
-;;           (if mu4e-compose-parent-message
-;;               (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-;;                 (string-match "/\\(.*?\\)/" maildir)
-;;                 (match-string 1 maildir))
-;;             (completing-read (format "Compose with account: (%s) "
-;;                                      (mapconcat #'(lambda (var) (car var))
-;;                                                 my-mu4e-account-alist "/"))
-;;                              (mapcar #'(lambda (var) (car var)) my-mu4e-account-alist)
-;;                              nil t nil nil (caar my-mu4e-account-alist))))
-;;          (account-vars (cdr (assoc account my-mu4e-account-alist))))
-;;     (if account-vars
-;;         (mapc #'(lambda (var)
-;;                   (set (car var) (cadr var)))
-;;               account-vars)
-;;       (error "No email account found"))))
-
-;; (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
-
 
 ;; enable inline images
 (setq mu4e-view-show-images t)
