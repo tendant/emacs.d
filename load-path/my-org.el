@@ -129,7 +129,7 @@
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
-               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U %a\n")
+               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
               ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
                "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n")
               ("r" "reading" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Reading")
@@ -142,12 +142,16 @@
                "* %?\n%U\n")
               ("w" "work" entry (file+headline "~/.emacs.d/org-gtd/wish.org" "Tasks")
                "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
-              ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* MEETING with %? :MEETING:\n%U")
+              ;; ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
+              ;;  "* MEETING with %? :MEETING:\n%U")
               ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
                "* PHONE %? :PHONE:\n%U")
               ("h" "Habit" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
+              ("c" "Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
+               "%(org-chef-get-recipe-from-url)")
+              ("m" "Manual Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
+               "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n"))))
 
 
 ;;; Refile http://doc.norang.ca/org-mode.html#Refiling

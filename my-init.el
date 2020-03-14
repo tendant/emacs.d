@@ -32,6 +32,7 @@
   
 
 (defvar my-packages '(ac-cider
+                      org-chef
                       cider
                       clojure-mode
                       clojure-snippets
