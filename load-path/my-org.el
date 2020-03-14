@@ -352,6 +352,7 @@ unwanted space when exporting org-mode to html."
 ;; Activate org-columns with C-c C-x C-c while on a top-level heading
 (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 
+(add-to-list 'load-path "~/emacs.d/load-path/ox-hugo")
 (with-eval-after-load 'ox
   (require 'ox-hugo))
 

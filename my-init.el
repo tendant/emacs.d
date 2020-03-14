@@ -45,7 +45,7 @@
                       dockerfile-mode
                       dracula-theme
                       ejc-sql
-                      el-get
+                      ;; el-get
                       exec-path-from-shell
                       flycheck
                       flycheck-clojure
@@ -115,25 +115,25 @@
 
 
 ;;; Add el-get
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
-(unless (require 'el-get nil 'noerror)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/"))
-  (package-refresh-contents)
-  (package-initialize)
-  (package-install 'el-get)
-  (require 'el-get))
+;; (unless (require 'el-get nil 'noerror)
+;;   (require 'package)
+;;   (add-to-list 'package-archives
+;;                '("melpa" . "http://melpa.org/packages/"))
+;;   (package-refresh-contents)
+;;   (package-initialize)
+;;   (package-install 'el-get)
+;;   (require 'el-get))
 
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 
-(el-get-bundle ox-hugo
-               :url "https://github.com/your-nick/ox-hugo.git"
-               :checkout "master"
-               :feature ox-hugo)
+;; (el-get-bundle ox-hugo
+;;                :url "https://github.com/your-nick/ox-hugo.git"
+;;                :checkout "master"
+;;                :feature ox-hugo)
 
-(el-get 'sync)
+;; (el-get 'sync)
 
 
 (if (and
