@@ -1,0 +1,2981 @@
+#+title: Ox-Hugo Manual
+#+author: Kaushal Modi
+
+#+hugo_base_dir: .
+#+hugo_section: doc
+
+#+options: creator:t author:nil
+
+#+setupfile: doc-setupfile.org
+
+#+macro: imageclick [[file:./static/images/$1][file:/images/$1]]
+#+macro: doc [[/doc/$1/$2][$3]]
+
+* Changelog [Reused Section]
+:PROPERTIES:
+:CUSTOM_ID: changelog
+:END:
+** COMMENT v
+*** Features
+*** Backward-incompatible changes
+*** Fixes
+*** Meta
+** v0.8 <2018-01-26 Fri>
+*** Features
+- Support exporting content files and attachments (images, documents)
+  to Page Bundles organization structure (Hugo v0.32+) --
+  {{{issue(111)}}}.
+- Support exporting =resources= front-matter (Hugo v0.33+) --
+  {{{issue(115)}}}.
+- Support exporting =headless= front-matter (Hugo v0.35+).
+- Advanced table styling is now possible by specifying =#+attr_html=
+  and =#+attr_css= (this one is unique to =ox-hugo=) above Org
+  tables. See its [[https://ox-hugo.scripter.co/doc/table-styling/][documentation]] -- {{{issue(93)}}}.
+  - Similarly, support =#+attr_html= and =#+attr_css= for paragraphs,
+    example blocks, source blocks, plain lists and quote blocks too --
+    {{{issue(113)}}}.
+- Now =publishDate= and =expiryDate= front-matter properties get
+  auto-derived from =SCHEDULED= and =DEADLINE= special properties if
+  associated with the valid Hugo post subtree --
+  {{{commit(0807f42d)}}}.
+  - Date values can now be easily set using the =C-c .= binding in the
+    =HUGO_PUBLISHDATE= and =HUGO_EXPIRYDATE= properties too.
+- Export source blocks and table captions -- {{{issue(38)}}}. Here's a
+  suggested CSS for the captions:
+  #+begin_src css
+  figcaption,
+  .src-block-caption,
+  .table-caption {
+      font-style: italic;
+      text-align: center;
+  }
+  #+end_src
+- Export descriptive or definition lists in Blackfriday-friendly
+  Markdown format -- {{{issue(114)}}}.
+- Support Org Special Blocks like in HTML and [[https://orgmode.org/manual/Special-blocks-in-LaTeX-export.html][LaTeX exports]] --
+  {{{issue(105)}}}. Here's one little example:
+  #+begin_src org
+  ,#+begin_mark
+  /Some/ *marked* text
+  ,#+end_mark
+  #+end_src
+- Allow setting =:EXPORT_HUGO_SECTION:= in the valid Hugo post subtree
+  itself.
+- Enable replacing any key in the front-matter with anything; it's
+  even possible to swap the keys now (tags↔categories:
+  {{{commit(fb21e82c)}}}). New keyword:
+  =HUGO_FRONT_MATTER_KEY_REPLACE= -- see {{{commit(b72a5fb0)}}}.
+- Now all the Org keyword values that should get merged, get merged --
+  {{{commit(38eba6d5)}}}.
+- Add =title= as a valid property of =menu= front-matter (Hugo
+  v0.32+).
+*** Backward-incompatible changes
+- A "better user-experience" change.. now you do not need to use
+  /double-underscores/ as /space/ replacement in =#+hugo_tags=,
+  =#+hugo_categories= and =#+keywords=. See this commit for details
+  and examples -- {{{commit(319435db)}}}.
+*** Fixes
+- Fix =HUGO_LEVEL_OFFSET= not getting set -- {{{issue(117)}}}, thanks
+  {{{user(shimmy1996)}}}!
+- Fix internal subtree counter not getting reset after a file-based
+  export.
+- Fix clickable image links with =#+name= -- {{{commit(fef0ec50)}}}.
+- Make title text rendering more robust.. now Markdown markup
+  characters like =*=, =_= and =`= show up fine, verbatim, in the
+  title.
+- Make em dash, en dash, horizontal ellipsis render in post titles
+  too -- {{{hugoissue(4175)}}} (/Upstream bug fix/), and in source
+  block captions and table captions too.
+- Fix double-escaping of =#= and =![= in Markdown export --
+  {{{issue(110)}}} (/fix in upstream =ox-md.el=/).
+*** Meta
+- Re-write the logic for parsing meta-data for various kinds of dates,
+  and optimize the logic for parsing newline separated lists like tags
+  and categories.
+- The =hugo-bare-min-theme= used for the test site is made more
+  portable (at some point, that theme might be moved to a separate
+  repo).
+** v0.7 <2017-12-18 Mon>
+*** Features
+- *Now C-c C-e H H works for both per-subtree and per-file flows* --
+  {{{commit(b1b5d28b)}}}.
+- Support Org heading based internal links -- {{{issue(88)}}}.
+- Support list values for custom front-matter variables --
+  {{{issue(99)}}}.
+- Support specifying multiple [[https://gohugo.io/templates/output-formats/][hugo output formats]] .. Now the =outputs=
+  front-matter variable is a list.
+- Support the Org =#+author= and =#+creator= keywords and their
+  respective Org Export Options -- {{{issue(106)}}}.
+- Support Org Export Snippets and Export Blocks --
+  {{{commit(1149f20cd)}}}.
+- Now post titles can be set to =nil= i.e. be not be a part of the
+  front-matter .. /because you can/.
+- Improve the messages printed by =ox-hugo= on doing per-subtree or
+  per-file exports.. the progress of files exported using per-subtree
+  flow is now clearer, and the name of the file exported using
+  per-file flow is now explicit.. Helps when you batch export a dozen
+  files with a mix of these 2 flows.
+*** Backward-incompatible changes
+- Obsolete /org-hugo-export-subtree-\ast{}/ functions and replace them with
+  /org-hugo-export-wim-\ast{}/ (What I Mean) functions. See the doc string
+  of =org-hugo-export-wim-to-md= for details.
+
+  If you are using the [[https://ox-hugo.scripter.co/doc/auto-export-on-saving/][Auto-export on saving]] flow, note the function
+  name change there too!
+*** Fixes
+- Fix number of backticks in code fence when code contains code fence
+  (/pathological corner case/).
+- Better document the =HUGO_CODE_FENCE= keyword -- {{{issue(102)}}}.
+- Don't render =(c)=, =(r)=, =(tm)= inside Latex equations --
+  {{{issue(104)}}} (/Upstream bug workaround/).
+- Better recognition of TOML-compatible integers and floats in meta
+  data for front-matter so that valid integers/floats don't get
+  unnecessarily double-quoted.
+*** Meta
+- Add a [[https://github.com/kaushalmodi/hugo-debugprint/blob/master/layouts/partials/debugprint.html][=debugprint.html=]] partial to help pretty-print various Hugo
+  objects like Page Params, File and SiteInfo for debug on the test
+  site.
+- The test site now has [[https://ox-hugo.scripter.co/test/tags/][tags]] and [[https://ox-hugo.scripter.co/test/categories/][categories]] pages.
+- Add few real world example posts containing complex Latex equations:
+  [[https://ox-hugo.scripter.co/test/real-examples/multifractals-in-ecology-using-r/][1]], [[https://ox-hugo.scripter.co/test/real-examples/nn-intro/][2]].
+- Turns out =ox-hugo= works on emacs 24.4 too (/but please upgrade
+  to the latest Emacs and Org stable versions!/).
+** v0.6 <2017-11-09 Thu>
+*** Features
+- Support the =num= export option. Now you can prefix all post
+  headings (or some not.. the ones with =UNNUMBERED= property set to
+  =t=) with their section numbers -- {{{issue(76)}}}.
+- Org TOC's are now exported as unordered Markdown lists. This allows
+  having TOC's with unnumbered headings too! This also enables
+  prefixing the section headings with their full section numbers, and
+  also having only selected headings unnumbered (both in the post body
+  and the TOC).
+- Add support for exporting internal links to source blocks, tables
+  and images by their block names! -- {{{issue(29)}}}.
+- Org table column alignment markers (=<l>=, =<r>=, =<c>=) are now
+  exported to equivalent Markdown tables.. so a center-aligned column
+  in Org buffer will remain center-aligned in the final HTML too! --
+  {{{issue(95)}}}.
+- Allow setting multiple Hugo aliases for a post. Also infer the
+  section name from inherited =HUGO_SECTION= values (subtree-based
+  exports) for those alias prefixes.
+- Prevent a footnote ref to appear by itself on a newline (based on
+  wrapping) in the browser -- {{{issue(96)}}}.
+- If Hugo shortcodes are used specifically in Markdown (=md=) source
+  blocks, they will be auto-escaped (useful when you want to
+  document/talk about some Hugo shortcode in a blog post) --
+  {{{issue(94)}}}.
+- If an Org table has just 1 row, don't make it render as a header row
+  in the final HTML.
+- If you have a case where you need to have an Org source block
+  instead a quote block, and then a source block after that quote
+  block (/I know, a very common case../ :wink:), Blackfriday barfs
+  ({{{bfissue(407)}}}). But we now have a workaround, which /just
+  works/ -- {{{issue(98)}}}.
+- Now =ATTR_HTML= above even hyper-linked images works (earlier it
+  worked only above non-hyper-linked images).
+*** Backward-incompatible changes
+- Org TOC's are exported as unordered Markdown lists instead of
+  ordered Markdown lists, and now full section numbers (like 1.2.3)
+  are shown in the TOC instead of just the last digit (like 3.) --
+  {{{commit(4be378e7)}}}.
+- The =num= Org export option is default to =nil= (only for
+  =ox-hugo=). So Org TOC's are exported without section numbers by
+  default. To get section numbers, set =num= to =t= or =onlytoc=.
+*** Fixes
+- Now exporting 1-row Org tables works too.
+- Add missing http/https/ftp prefix for hyper-linked images.
+*** Meta
+- Add documentation on how you can have
+  {{{doc(images-in-content,,Images live in the same directory as Org
+  source)}}} -- {{{issue(91)}}}.
+- Now only Org files for the [[https://ox-hugo.scripter.co][documentation site]] need to be committed
+  to git. =ox-hugo= then exports those to Markdown, and then Hugo
+  publishes those to HTML (as before) --- all on Netlify.
+- Be sure to check out the moderately revamped [[https://ox-hugo.scripter.co/test/][Test Site]]. That might
+  be of interest even if you want to check out what the new features
+  and changes look like, without first installing/updating =ox-hugo=
+  yourself :smile:.
+** v0.5 <2017-11-06 Mon>
+*** Features
+- Export TOC as a Markdown ordered list. See {{{doc(org-toc,,Table of
+  Contents)}}} -- {{{issue(88)}}}.
+- =#+attr_html= above http/https/ftp links is now supported (useful
+  for specifying the =target=, =rel=, attributes, for example).
+** v0.4.1 <2017-10-29 Sun>
+*** Features
+- Support specifying the =:height= parameter in the =#+attr_html=
+  above image links. That eventually gets transformed to the =height=
+  parameter in the =figure= tag in the HTML generated by Hugo. This
+  feature requires building Hugo from its master branch with commit
+  [[https://github.com/gohugoio/hugo/commit/488631fe0abc3667355345c7eb98ba7a2204deb5][488631fe]] (or Hugo v0.31+).
+*** Fixes
+- Fix =EXPORT_HUGO_SECTION= not getting inherited {{{issue(90)}}}.
+** v0.4 <2017-10-28 Sat>
+*** Backward-incompatible changes
+- Restore the default Org behavior of =#+tags=. Now that keyword (and
+  the =EXPORT_TAGS= property) is *not* used by =ox-hugo=. Fixes
+  {{{issue(89)}}}.
+- File-based exports must now use =#+hugo_tags= to set the post tags.
+- Subtree-based exports can use the =EXPORT_HUGO_TAGS= property to
+  override Org-style tags on the same headline (and the ones inherited
+  from Org-style tags from any of the parent subtrees and
+  =#+filetags=).
+  - Note that for subtree-based exports, =#+filetags= can be used to
+    set tags globally in the file. Earlier =#+tags= was used for that
+    purpose.
+- Subtree-based exports can use the =EXPORT_HUGO_CATEGORIES= property
+  to override Org-style categories (tags with "@" prefix) on the same
+  headline (and the ones inherited from Org-style categories from any
+  of the parent subtrees and =#+filetags=).
+  - Note that for subtree-based exports, =#+filetags= can be used to
+    set categories (tags with "@") globally in the file.
+
+See the new section added to documentation:
+{{{doc(tags-and-categories,,*Tags and Categories*)}}}
+*** Features
+- Support specifying the =:width= parameter in the =#+attr_html= above
+  image links. That eventually gets transformed to the =width=
+  parameter in the =figure= tag in the HTML generated by Hugo.
+** v0.3.2 <2017-10-24 Tue>
+*** Fixes
+- Fix issue with headline metadata parsing (ALLTAGS, CLOSED, TODO)
+  when a post Org heading was immediately followed by that post's
+  sub-heading.  This issue was seen in subtree-based exports
+  {{{issue(87)}}}.
+** v0.3.1 <2017-10-19 Thu>
+*** Fixes
+- Fix the source block line number annotation when the line numbers
+  increased in number of digits in the same code block.
+** v0.3 <2017-10-18 Wed>
+*** Features
+- Source blocks can now be exported with line numbers and/or
+  highlighting!
+
+  See {{{doc(source-blocks,,Source Blocks)}}} for details.
+** v0.2.3 <2017-10-11 Wed>
+*** Fixes
+- =org-hugo-slug= earlier stripped off only the =code= HTML tag
+  (~<code> .. </code>~) from the input string, if present. Now it does
+  that for *any* HTML tag, like =span=. For example, this HTML gets
+  stripped off from the above heading (only inside =org-hugo-slug=
+  when deriving the slug string): ~<span
+  class="timestamp-wrapper"><span class="timestamp">&lt;2017-10-11
+  Wed&gt;</span></span>~.
+** v0.2.2 <2017-10-10 Tue>
+*** Backward-incompatible changes
+- Now =ox-hugo= by default requires text, to be sub/super-scripted, to
+  be wrapped in ={}=. So now =a_b= will be exported as =a_b=, but
+  =a_{b}= will be exported as =a<sub>b</sub>=. To revert back to the
+  earlier behavior, user needs to add =#+options: ^:t= to their Org
+  file.
+** v0.2.1 <2017-09-28 Thu>
+*** Fixes
+- Single column tables now export correctly {{{issue(84)}}}.
+- Ignore =HUGO_WEIGHT= set to =auto= for /per-file/ exports
+  {{{issue(83)}}}.
+** v0.2 <2017-09-27 Wed>
+*** Features
+- Add support for all Hugo =figure= shortcode parameters
+  {{{issue(79)}}}.
+- New option =org-hugo-delete-trailing-ws= defaults to =t=; now Hugo
+  deletes trailing white-spaces by default.
+- New options =org-hugo-default-static-subdirectory-for-externals= and
+  =org-hugo-external-file-extensions-allowed-for-copying= (related to
+  {{{issue(69)}}}).
+*** Fixes
+- Remove =HUGO_STATIC_IMAGE= option; fix attachment re-write
+  {{{issue(69)}}}.
+- Fix incorrectly inserted hard line-breaks {{{issue(72)}}}. Added a
+  new option =HUGO_PRESERVE_FILLING=.
+- Fix error happening when a post title was set to an empty string
+  [ [[https://github.com/kaushalmodi/ox-hugo/commit/ba9e8365f6ee42f030ed806bf5ec42d6acce4c76][ba9e8365]] ].
+*** Backward-incompatible changes
+- Switch the default value of =org-hugo-use-code-for-kbd= option to
+  =nil= [ [[https://github.com/kaushalmodi/ox-hugo/commit/88ba15ae9bc809b0983315446c88fecfda3534e5][88ba15ae]] ].
+** v0.1.3 <2017-09-13 Wed>
+- Now a HUGO key value set to ="nil"=, like =#+hugo_code_fence: nil=,
+  will evaluate as /nil/ instead of /t/, as now
+  =org-hugo--plist-get-true-p= is used to parse boolean keys instead
+  of =plist-get=.
+** v0.1.2 <2017-09-12 Tue>
+- Make DateTime matching better; new internal variable
+  =org-hugo--date-time-regexp=. Earlier time zones ahead of UTC (with
+  =+= sign) were not detected as dates in =org-hugo--quote-string= and
+  thus were unnecessarily quoted.
+** v0.1.1 <2017-09-11 Mon>
+- Use CLOSED log drawer info if available to set the date in
+  front-matter {{{issue(68)}}}.
+- Code optimization: Use of =org-entry-get= at places instead of
+  maintaining global variables.
+* Homepage
+:PROPERTIES:
+:EXPORT_TITLE: Org to Markdown for Hugo
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_TYPE: homepage
+:EXPORT_HUGO_SECTION: /
+:EXPORT_HUGO_MENU: :menu "1.main" :title "Homepage"
+:CUSTOM_ID: main
+:END:
+#+include: "./ox-hugo-manual.org::#introduction" :only-contents t
+#+begin_note
+See the [[https://ox-hugo.scripter.co/doc/examples/][Real World Examples]] section to quickly jump to sites generated
+using =ox-hugo= and their Org sources.
+#+end_note
+** Screenshots
+#+include: "./ox-hugo-manual.org::#screenshots_intro" :only-contents t
+#+include: "./ox-hugo-manual.org::#screenshots" :only-contents t
+
+#+include: "./ox-hugo-manual.org::#demo" :minlevel 2
+
+** Installation
+#+include: "./ox-hugo-manual.org::#installation" :only-contents t
+** Usage
+#+include: "./ox-hugo-manual.org::#usage" :only-contents t
+** Thanks
+#+include: "./ox-hugo-manual.org::#thanks" :only-contents t
+** Future Plans                                                    :noexport:
+There is a plan to create a =hugo.el= that would do things like:
+- New post creation using =org-capture= (port code from [[https://github.com/kaushalmodi/.emacs.d/blob/master/setup-files/setup-hugo.el][here]]).
+- Interactive functions to toggle /draft/ state,
+  add/remove/increment/decrement /publishdate/ property.
+- Option to use template =config.toml= and some default hugo theme. So
+  all a new user would need to do is to (i) have the =hugo= [[https://github.com/gohugoio/hugo/releases][binary]] in
+  =PATH= (ii) define their =hugo= blog dir in the =defcustom= (iii)
+  =M-x hugo=.
+- Set separate faces for titles based on /draft/ state and
+  /futureness/.
+* Test Site
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_HUGO_BUNDLE: test
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_MENU: :menu "1.main" :pre "<span style=\"font-variant: small-caps;\">" :post "</span>&nbsp;↗"
+:END:
+# Generate an empty _index.md in test/ for that subdirectory to get
+# generated.
+* Issues/Requests
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_HUGO_BUNDLE: issues
+:EXPORT_FILE_NAME: _index
+:EXPORT_HUGO_MENU: :menu "1.main" :post "&nbsp;↗"
+:END:
+* Changelog
+:PROPERTIES:
+:EXPORT_FILE_NAME: changelog
+:EXPORT_HUGO_MENU: :menu "1.main"
+:END:
+#+include: "./ox-hugo-manual.org::#changelog" :only-contents t
+* Reused Sections
+** Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
+=ox-hugo= is an Org exporter backend that exports Org to
+[[https://gohugo.io/][Hugo]]-compatible Markdown ([[https://github.com/russross/blackfriday][Blackfriday]]) and also generates the
+front-matter (in TOML or YAML format).
+
+The =ox-hugo= backend extends from a /parent/ backend
+=ox-blackfriday.el=. The latter is the one that primarily does the
+Blackfriday-friendly Markdown content generation. The main job of
+=ox-hugo= is to generate the front-matter for each exported content
+file, and then append that generated Markdown to it.
+
+There are, though, few functions that =ox-hugo.el= overrides over
+those by =ox-blackfriday.el=.
+** Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+This package requires emacs 24.4+ and Org 9.0+. It is available on
+Melpa ([[https://melpa.org/#/ox-hugo]]).
+** Usage
+:PROPERTIES:
+:CUSTOM_ID: usage
+:END:
+Once the package is installed, you will need to /require/ it so that
+the =ox-hugo= export options are available in the /Org Export
+Dispatcher/ menu (the one you see when you hit =C-c C-e= to initiate
+any export).
+
+You can do that by adding the below to your config:
+#+begin_src emacs-lisp
+(with-eval-after-load 'ox
+  (require 'ox-hugo))
+#+end_src
+If you use [[https://github.com/jwiegley/use-package][=use-package=]], you can do the below instead:
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
+#+end_src
+
+Also see the {{{doc(auto-export-on-saving,,Auto Exporting)}}} section.
+
+*Spacemacs*
+
+Spacemacs users can choose to add this snippet to their
+=dotspacemacs/user-config= function in =.spacemacs=:
+
+#+begin_src emacs-lisp
+(defun dotspacemacs/user-config ()
+  ;; Other stuff
+  ;; ..
+
+  ;; ox-hugo config
+  (use-package ox-hugo
+    :ensure t          ;Auto-install the package from Melpa (optional)
+    :after ox))
+#+end_src
+
+#+begin_note
+You do have _have_ to use the =use-package= version when using
+Spacemacs. That version was used because =use-package= is installed by
+default in Spacemacs.
+#+end_note
+If you do so, you *also need to* add =ox-hugo= to
+=dotspacemacs-additional-packages=.
+
+/This was verified to work on Spacemacs =develop= branch with
+=spacemacs-base= distribution, =emacs= editing style. --
+<2017-10-09 Mon>/
+*** Before you export
+:PROPERTIES:
+:CUSTOM_ID: before-you-export
+:END:
+Before you export check that these properties are set as you need:
+- HUGO_SECTION :: The default Hugo section name for all the posts.  See
+                  [[https://gohugo.io/content-management/sections/][here]] for more information on Hugo sections.  It is
+                  common for this property to be set to =posts= or
+                  =blog=.  The default value is set using
+                  =org-hugo-default-section-directory=. See
+                  {{{doc(hugo-section,,Hugo Section)}}} for details.
+- HUGO_BASE_DIR :: Root directory of the source for the Hugo site. If
+                   this is set to =~/hugo/=, the exported Markdown
+                   files will be saved to
+                   =~/hugo/content/<HUGO_SECTION>/=
+                   directory[fn:section_more].  By default, the
+                   Markdown files reside in a hierarchy under the
+                   =content/= directory in the site root directory
+                   ([[https://gohugo.io/content-management/organization/][ref]]). If you try to export without setting this
+                   property, you will get this error:
+  #+begin_example
+  user-error: It is mandatory to set the HUGO_BASE_DIR property
+  #+end_example
+
+*Important*: If you choose to export an Org subtree as a post, you
+ need to set the =EXPORT_FILE_NAME= subtree property. That property is
+ used by this package to figure out where the current post starts.
+
+[fn:section_more] The ~HUGO_SECTION~ is the bare-minimum requirement
+to specify the destination path. That path can be further tweaked
+using ~HUGO_BUNDLE~ key (and the associated ~EXPORT_HUGO_BUNDLE~
+property), and the ~EXPORT_HUGO_SECTION*~ property (only for
+/per-subtree/ exports).
+*** Export bindings
+The common =ox-hugo= export bindings are:
+**** For both one-post-per-subtree and one-post-per-file flows
+- =C-c C-e H H= :: Export "What I Mean".
+  - If point is in a /valid Hugo post subtree/, export that
+    subtree to a Hugo post in Markdown.
+
+    A /valid Hugo post subtree/ is an Org subtree that has the
+    =EXPORT_FILE_NAME= property set.
+  - If the file is intended to be exported as a whole (i.e. has the
+    =#+title= keyword), export the whole Org file to a Hugo post in
+    Markdown.
+- =C-c C-e H A= :: Export *all* "What I Mean"
+  - If the Org file has one or more 'valid Hugo post subtrees', export
+    them to Hugo posts in Markdown.
+  - If the file is intended to be exported as a whole (i.e. no 'valid
+    Hugo post subtrees' at all, and has the =#+title= keyword), export
+    the whole Org file to a Hugo post in Markdown.
+**** For only the one-post-per-file flow
+- =C-c C-e H h= :: Export the Org file to a Hugo post in Markdown.
+*** Customization Options
+Do =M-x customize-group=, and select =org-export-hugo= to see the
+available customization options for this package.
+** Screenshots Intro
+:PROPERTIES:
+:CUSTOM_ID: screenshots_intro
+:END:
+Before you read further, you can see below how =ox-hugo= translates
+Org to Markdown (Org on the left; exported Markdown with Hugo
+front-matter on the right).
+** Screenshots
+:PROPERTIES:
+:CUSTOM_ID: screenshots
+:END:
+*** One post per Org subtree (preferred)
+:PROPERTIES:
+:CUSTOM_ID: screenshot-one-post-per-subtree
+:END:
+{{{imageclick(one-post-per-subtree.png)}}}
+- Files in above screenshot :: [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/screenshot-subtree-export-example.org][Org]] -> [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/writing-hugo-blog-in-org-subtree-export.md][Markdown]]
+*** One post per Org file
+:PROPERTIES:
+:CUSTOM_ID: screenshot-one-post-per-file
+:END:
+{{{imageclick(one-post-per-file.png)}}}
+- Files in above screenshot :: [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/writing-hugo-blog-in-org-file-export.org][Org]] -> [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/writing-hugo-blog-in-org-file-export.md][Markdown]]
+*** Editorial
+:PROPERTIES:
+:CUSTOM_ID: org-blogging-flow-editorial
+:END:
+The preferred way to organize the posts is as Org subtrees (also the
+main reason to write this package, as nothing like that was out there)
+as it makes the meta-data management for Hugo front-matter pretty
+effortless.
+
+If you are a /one Org-file per post/ type of a person, that flow works
+too! Just note that in this flow many of those =#+hugo_= properties
+need to be managed manually.. just as one would manage the front-matter
+in Markdown files --- See the Org versions in the above screenshots for
+comparison.
+** Demo
+:PROPERTIES:
+:CUSTOM_ID: demo
+:END:
+[[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content-org][Org source]] → [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content][=ox-hugo= Exported Markdown]] → https://ox-hugo.scripter.co/test
+
+The test site uses a [[https://github.com/kaushalmodi/hugo-bare-min-theme][minimal]] theme written just for debug purposes
+(not extra aesthetics). The test site is designed to verify if all the
+content translates from Org to Markdown as expected.
+
+/See [[https://themes.gohugo.io/][Hugo Themes]] for examples of really good site prettification and
+presentation styles./
+** Note to Future Contributors
+:PROPERTIES:
+:CUSTOM_ID: note-to-future-contributors
+:EXPORT_FILE_NAME: contributing-guide
+:END:
+NOTE TO FUTURE CONTRIBUTORS: I plan to merge this package into GNU
+Elpa or Org source at some point.
+
+So you will need to assign your copyright to FSF in order to get your
+patches accepted.
+
+- [[https://www.gnu.org/licenses/why-assign.html][Why assign copyright to FSF?]]
+- [[https://www.gnu.org/prep/maintain/html_node/Copyright-Papers.html#Copyright-Papers][How to start this process]]
+
+As a bonus, once you have assigned your copyright to FSF, doors open up
+for your future contributions to Emacs too!
+*** Contribute to documentation
+*See {{{doc(requirements,#doc_contributor_reqs,Requirements for doc
+contributor)}}}.*
+
+1. Clone this repo.
+2. Add/edit documentation to =doc/ox-hugo-manual.org=.
+3. Run =make doc=.
+   - This generates the Markdown files for the =ox-hugo= documentation
+     site and the .org files like =README.org= and =CONTRIBUTING.org=
+     for GitHub.
+4. Review the changes in the generated .org and .md files.
+5. Commit *only the .org files*, push branch and create PR.
+   - The =.org= → =.md= conversion is done by =ox-hugo= on Netlify.
+*** Contribute to code
+*See {{{doc(requirements,#code_contributor_reqs,Requirements for code
+contributor)}}}.*
+
+1. Clone this repo.
+2. Add/edit the .el files, *tests* in =test/site/content-org/=, and
+   *documentation* to =doc/ox-hugo-manual.org=.
+3. Run =make md doc=.
+4. Review the changes in the generated .org and .md files.
+   - Ignore the changes shown in =git diff= related to *only* the
+     randomly generated Org ID's (like =org17de7a9=).
+5. Commit (*don't push your branch yet!*).
+   - As mentioned above, commit *only the .org files* for documentation.
+6. Run test: =make -j1 test= (you *need* to =git commit= i.e. do the
+   above step before this step).
+7. Fix your commit(s) if the test fails.. repeat till you succeed.
+8. Push your feature branch and create PR.
+** Debug
+:PROPERTIES:
+:CUSTOM_ID: debug
+:END:
+If the =ox-hugo= exports do not work as expected, or if you get an
+error backtrace,
+1. Open an [[https://github.com/kaushalmodi/ox-hugo/issues][Issue]].
+2. Describe the problem you are seeing.
+3. Provide the debug info:
+   - Do =M-x org-hugo-debug-info=, *That will copy the debug info in
+     Markdown format to the kill ring.* So do *not* manually do any
+     other kill (copy/cut) operation after that!
+   - Paste the Markdown contents in the GitHub issue.
+     - You can still hit the /Preview/ tab of the Issue before
+       submitting it.
+** Test
+:PROPERTIES:
+:CUSTOM_ID: test
+:END:
+1. Clone this repo.
+2. Ensure that ~pandoc~ and ~pandoc-citeproc~ (at least version
+   {{{pandoc_version}}}) are installed (more info
+   {{{doc(contributing-guide,#contribute-to-code,here)}}}).
+3. Run =make -j1 test=.
+** Thanks
+:PROPERTIES:
+:CUSTOM_ID: thanks
+:END:
+- Matt Price ([[https://github.com/titaniumbones][@titaniumbones]])
+- Puneeth Chaganti ([[https://github.com/punchagan][@punchagan]])
+- Also thanks to
+  ~http://whyarethingsthewaytheyare.com/setting-up-the-blog/~ (/not
+  hyperlinking the link as it is insecure --- not https/),
+  ~http://www.holgerschurig.de/en/emacs-blog-from-org-to-hugo/~ (/not
+  hyperlinking the link as it is insecure --- not https/) and the
+  [[https://github.com/chaseadamsio/goorgeous][=goorgeous=]] project by Chase Adams ([[https://github.com/chaseadamsio][@chaseadamsio]]) for inspiration
+  to start this project.
+* Menus
+** Early Questions
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "2.early_questions"
+:END:
+*** Why =ox-hugo=?
+:PROPERTIES:
+:EXPORT_FILE_NAME: why-ox-hugo
+:END:
+#+begin_verse
+>    A picture is worth a thousand words.
+#+end_verse
+
+So let me show you this screenshot that took on my phone (running
+Emacs in Termux app on Android), showing the single Org file that
+serves as a source of this whole documentation site.
+
+{{{imageclick(ox-hugo-doc-source-viewing-in-Termux-Android.png)}}}
+
+-----
+
+Using Org just as a markup like Markdown is a miniscule part of
+its complete feature-set. Org also allows stuff like:
+- Easy ordering/manipulation/commenting of subtrees
+- Creating tables (with even formulas like in Excel)
+- Directly including source code snippets from external files (instead
+  of having to copy/paste them in)
+- Running code snippets within the Org file and embedding the results
+  (Org Babel)
+- ..
+
+Using Org for content writing allows using in-built Org features to
+translate to Hugo front-matter:
+
+- Org uses an outline structure and can inherit meta data (tags and
+  properties) from one subtree to children subtrees.
+- Using that feature, one can tag one tree as /emacs/, and everything
+  under that tree (all posts under that) will get that tag
+  automatically.
+- The same concept applies to inheriting any Org /property/ meta data
+  like menu entry, category, section name, etc.
+- A subtree can be quickly marked to be in TODO state (default binding
+  =C-c C-t=). A *TODO* post is marked as a /draft/ Hugo post.
+- The /menu-item weights/, /page weights/ and /taxonomy weights/ can
+  be set to be auto-calculated so that the menu items or post order in
+  the final HTML appear in the same order as the respective subtrees
+  in Org.
+
+  If the subtrees are re-ordered in Org, the weights get changed too.
+- One can have a subtree with section property set to "posts" and all
+  post subtrees under that will go to that section. Similarly another
+  parent subtree can have that property set to "articles", and so on.
+- Images can be displayed inline in the Org buffer.
+- After save hooks can be set up in Emacs so that each time I save the
+  file, only the current subtree in Org gets exported to
+  Markdown. With the Hugo server running with the
+  =--navigateToChanged= switch (this allows auto-changing the preview
+  to the last changed post), the flow is seamless -- Save the Org file
+  and see the exact changed post in browser.
+- *All* posts can simply be subtrees in a single Org file. That way
+  one can take advantage of Org subtree filtering and searching
+  functions (=org-sparse-tree= bound to =C-c /= by default).
+- (and much more..)
+*** Do I need to re-write my whole blog in Org?
+:PROPERTIES:
+:EXPORT_FILE_NAME: do-I-need-to-re-write-my-whole-blog-in-org
+:EXPORT_HUGO_MENU_OVERRIDE: :title "Need to re-write my blog?"
+:END:
+If you are considering to try out =ox-hugo=, and if you have already
+been using Hugo, it is normal for this thought to cross your mind:
+#+begin_quote
+I already have dozens or hundreds of posts written in Markdown. Do I
+need to convert them to Org if I want to start using =ox-hugo=?
+#+end_quote
+
+The answer is *No*.
+
+This package will export your future posts written in Org to
+Markdown. And those files will live along with your already written
+Markdown posts. So converting existing Markdown files to Org would be
+purely the user's choice, your choice -- but that's by no means a
+necessity if you want to start using =ox-hugo=.
+
+.. And if at some point, you want to stop using =ox-hugo=, you still
+have the exported Markdown files.
+*** Deprecation Notices
+:PROPERTIES:
+:EXPORT_FILE_NAME: deprecation-notices
+:END:
+**** Org Hugo Auto Export feature now a /minor mode/ -- <2019-01-03 Thu>
+***** Changes needed to be done in user config
+1. Do *not* require ~ox-hugo-auto-export~ any more!
+   - For now, you will get a warning each time you do that
+     /require/. But in few weeks, the old ~ox-hugo-auto-export.el~
+     file will be deleted from this project, and then doing that
+     /require/ will throw an error.
+   #+begin_note
+   The ~ox-hugo-auto-export.el~ has been deleted from this project. So
+   doing that /require/ will throw an error now. -- <2019-04-15 Mon>
+   #+end_note
+2. Make these changes in your ~.dir-locals.el~ or File Local Variables
+   as applicable:
+   |---------------------+----------------------------------------+-------------------------------------------|
+   | Auto-export on save | Earlier                                | Now                                       |
+   |---------------------+----------------------------------------+-------------------------------------------|
+   | *Enable*            | ~(org-hugo-auto-export-on-save . t)~   | ~(eval . (org-hugo-auto-export-mode))~    |
+   | *Disable*           | ~(org-hugo-auto-export-on-save . nil)~ | ~(eval . (org-hugo-auto-export-mode -1))~ |
+   |---------------------+----------------------------------------+-------------------------------------------|
+***** Summary
+~org-hugo-auto-export-mode~ is a new minor mode that now ships with
+~ox-hugo~. So the user doesn't need to do anything special to install
+it --- it simply autoloads.
+
+As a bonus, now ~M-x org-hugo-auto-export-mode~ can be used to toggle
+the auto-exporting on and off in an Org buffer.
+
+#+begin_note
+See the updated docs for {{{doc(usage,,~ox-hugo~ Usage)}}} and
+[[*Auto-export on Saving][Auto-export on saving]].
+#+end_note
+
+For history behind this change, see {{{issue(247)}}}. \\
+--- /*tl;dr*: doing the Right thing/
+** Getting Started
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "3.getting_started"
+:END:
+*** Installation
+:PROPERTIES:
+:EXPORT_FILE_NAME: installation
+:END:
+#+include: "./ox-hugo-manual.org::#installation" :only-contents t
+*** Usage
+:PROPERTIES:
+:EXPORT_FILE_NAME: usage
+:END:
+#+include: "./ox-hugo-manual.org::#usage" :only-contents t
+*** How do I try =ox-hugo= on my site?
+:PROPERTIES:
+:EXPORT_FILE_NAME: how-do-I-try-it
+:EXPORT_HUGO_MENU_OVERRIDE: :title "Try it on my site?"
+:END:
+1. =cd= to your Hugo site base directory -- the one that contains the
+   =config.toml= (or =config.yaml= or =config.json=).
+2. Start the =hugo server= in that directory:
+   #+begin_example
+   hugo server -D --navigateToChanged
+   #+end_example
+3. Above command will mention the localhost where the site is
+   served. Open that in your browser.
+4. Create a separate directory for Org content in the Hugo site base
+   directory. You can name it anything, but I prefer to name it
+   =content-org=
+
+   Examples ---
+   - [[https://github.com/kaushalmodi/ox-hugo/tree/master/doc][=ox-hugo= documentation site (you're reading it)]]
+   - [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site][=ox-hugo= test site]]
+   - [[https://gitlab.com/kaushalmodi/kaushalmodi.gitlab.io][/scripter.co/ -- My blog]]
+5. Create an Org file in there and follow the {{{doc(usage,,*Usage*)}}}
+   section to export it.
+*** Blogging Flow
+:PROPERTIES:
+:EXPORT_FILE_NAME: blogging-flow
+:END:
+There are 2 major blogging flows that can be used with this package:
+1. One post per Org subtree (preferred)
+   - Export only the *current* post Org subtree, or
+   - Export all valid Hugo post subtrees in a loop.
+2. One post per Org file
+   - This works but you won't be able to leverage Org-specific
+     benefits like tag and property inheritance, use of TODO states to
+     translate to post =draft= state, auto weight calculation for
+     pages, taxonomies and menu items, etc.
+
+See the [[*Org Capture Setup][Org Capture Setup]] page to see how to quickly create new posts.
+
+See the [[*Auto-export on Saving][Auto-export on saving]] page to learn how to setup up seeing
+live-preview of the Hugo-rendered HTML each time you do =C-x C-s= in
+the Org file. That section explains how to set that up for either of
+the above two blogging flows.
+** Example
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "4.example"
+:END:
+*** Screenshots
+:PROPERTIES:
+:EXPORT_FILE_NAME: screenshots
+:END:
+#+include: "./ox-hugo-manual.org::#screenshots" :only-contents t
+*** Hugo test site for this package
+:PROPERTIES:
+:EXPORT_FILE_NAME: tests-site
+:EXPORT_HUGO_MENU_OVERRIDE: :title "Try the test site"
+:END:
+A [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site][site]] with bare-bones Hugo "theme" is used to live-test the
+package --- you'll know why theme is double-quoted once you try out the
+site on =hugo=.
+
+Check out the [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/all-posts.org][example single Org file]]. That is created for testing various
+Org->Hugo content and meta-data translation features. [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content/posts][Here]] are the
+exported Markdown files.
+**** How to try =ox-hugo= on that site?
+1. Clone this repo:
+   #+begin_example
+   git clone --recurse-submodules -j8 https://github.com/kaushalmodi/ox-hugo
+   #+end_example
+2. Ensure that ~pandoc~ and ~pandoc-citeproc~ (at least version
+   {{{pandoc_version}}}) are installed (more info
+   {{{doc(contributing-guide,#contribute-to-code,here)}}}).
+3. Start the =hugo= server:
+   #+begin_example
+   make serve HUGO_BASE_DIR=test/site
+   #+end_example
+4. Open =http://localhost:1337= in your browser.
+5. In a different terminal, =cd= to the repo directory.
+6. Run:
+   #+begin_example
+   make md
+   #+end_example
+7. In few seconds, hundreds of test posts will get created, with the
+   =hugo server= aided preview in the browser zapping through each new
+   created post.
+**** Alternative way
+1. Clone this repo.
+   #+begin_example
+   git clone --recurse-submodules -j8 https://github.com/kaushalmodi/ox-hugo
+   #+end_example
+2. Ensure that ~pandoc~ and ~pandoc-citeproc~ (at least version
+   {{{pandoc_version}}}) are installed (more info
+   {{{doc(contributing-guide,#contribute-to-code,here)}}}).
+3. =cd= to the =test/site/= directory and do:
+   #+begin_example
+   hugo server -D --navigateToChanged
+   #+end_example
+4. Above command will mention the localhost where the site is
+   served. Open that in your browser.
+5. In emacs, ~(require 'ox-hugo)~ or evaluate the ~ox-hugo.el~ from
+   the cloned repo.
+6. Do ~(require 'org-id)~ too because some tests in the below test
+   file rely on that Org feature.
+7. Open the {{{ox-hugo-test-file}}} file.
+8. ~C-c C-e H A~ -- That will export *all* subtrees in the file to
+   Markdown files.
+9. In few seconds, hundreds of test posts will get created, with the
+   ~hugo server~ aided preview in the browser zapping through each new
+   created post.
+*** Real World Examples
+:PROPERTIES:
+:EXPORT_FILE_NAME: examples
+:EXPORT_HUGO_LAYOUT: examples
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :after_content "_PS: You can also open an issue/PR if you need to get yourself removed from this list._"
+:END:
+Here are some examples of sites generated using *=ox-hugo= + Hugo*.
+
+If you too have a site generated using this package, and have the Org
+source of your site public, feel free to open a PR (updating just
+[[https://github.com/kaushalmodi/ox-hugo/blob/master/doc/data/users.toml][=users.toml=]]) to add yourself here, or open an issue.
+** Org to Hugo
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "5.org_to_hugo"
+:END:
+*** Org meta-data to Hugo front-matter
+:PROPERTIES:
+:EXPORT_FILE_NAME: org-meta-data-to-hugo-front-matter
+:EXPORT_HUGO_MENU_OVERRIDE: :title "Org→Hugo front-matter"
+:END:
+**** For subtree-based exports
+When organizing the posts as Org *subtrees*, many Hugo front-matter
+variables get set implicitly using the meta-data parsed from the posts
+in Org.
+
+Below, where /subtree/ is mentioned, it implies a *valid Hugo-post
+subtree* i.e. an Org subtree that has the =EXPORT_FILE_NAME= property
+set.
+#+caption: Hugo front-matter translation for subtree-based exports
+#+attr_html: :class sane-table
+|------------------------------------+----------------------------------------+----------------------------------------------------------------------------|
+| Hugo front-matter (TOML)           | Org                                    | Org description                                                            |
+|------------------------------------+----------------------------------------+----------------------------------------------------------------------------|
+| =title = "foo"=                    | =* foo=                                | Subtree heading                                                            |
+| =date = 2017-09-11T14:32:00-04:00= | =CLOSED: [2017-09-11 Mon 14:32]=       | Auto-inserted =CLOSED= subtree property when switch to Org *DONE* state    |
+| =date = 2017-07-24=                | =:EXPORT_DATE: 2017-07-24=             | Subtree property                                                           |
+| =publishDate = 2018-01-26=         | =SCHEDULED: <2018-01-26 Fri>=           | Auto-inserted =SCHEDULED= subtree property using default =C-c C-s= binding |
+| =publishDate = 2018-01-26=         | =:EXPORT_HUGO_PUBLISHDATE: 2018-01-26:= | Subtree property                                                           |
+| =expiryDate = 2999-01-01=          | =DEADLINE: <2999-01-01 Tue>=            | Auto-inserted =DEADLINE= subtree property using default =C-c C-d= binding  |
+| =expiryDate = 2999-01-01=          | =:EXPORT_HUGO_EXPIRYDATE: 2999-01-01:=  | Subtree property                                                           |
+| =lastmod = <current date>=          | =:EXPORT_HUGO_AUTO_SET_LASTMOD: t=     | Subtree property                                                           |
+| =lastmod = <current date>=          | =#+hugo_auto_set_lastmod: t=           | Org keyword                                                                |
+| =tags = ["toto", "zulu"]=          | =* foo :toto:zulu:=                     | Subtree heading tags                                                       |
+| =categories = ["x", "y"]=          | =* foo :@x:@y:=                         | Subtree heading tags with =@= prefix                                       |
+| =draft = true=                     | =* TODO foo=                           | Subtree heading Org TODO state set to =TODO=[fn:4].                        |
+| =draft = false=                    | =* foo= or =* DONE foo=                | Subtree heading Org TODO state not set or set to =DONE=[fn:4].             |
+| =weight = 123= (manual)            | =:EXPORT_HUGO_WEIGHT: 123=             | Manual setting of page weight                                              |
+| =weight = 123= (auto-calc)         | =:EXPORT_HUGO_WEIGHT: auto=            | When set to =auto=, page weight is auto-calculated                         |
+| =tags_weight = 123= (manual)       | =:EXPORT_HUGO_WEIGHT: :tags 123=       | Manual setting of /FOO/ taxonomy weight, by setting to =:FOO VALUE=        |
+| =tags_weight = 123= (auto-calc)    | =:EXPORT_HUGO_WEIGHT: :tags auto=      | When set to =:FOO auto=, /FOO/ taxonomy weight is auto-calculated          |
+| =weight = 123= (in =[menu.foo]=)   | =:EXPORT_HUGO_MENU: :menu foo=         | Menu weight is auto-calculated unless specified                            |
+|------------------------------------+----------------------------------------+----------------------------------------------------------------------------|
+***** Notes
+- Precedence for =date= parsing :: =CLOSED= subtree property /more
+     than/ =EXPORT_DATE= subtree property /more than/ =#+date:=
+     keyword.
+- Precedence for =draft= parsing :: Org TODO state based /draft/ state
+     /more than/ =EXPORT_HUGO_DRAFT= subtree property.
+- Custom front-matter parameters :: See the [[*Custom Front-matter Parameters][Custom Front-matter
+  Parameters]] section.
+**** For file-based exports
+#+caption: Hugo front-matter translation for file-based exports
+#+attr_html: :class sane-table
+|----------------------------------+--------------------------------------|
+| Hugo front-matter (TOML)         | Org                                  |
+|----------------------------------+--------------------------------------|
+| =title = "foo"=                  | =#+title: foo=                       |
+| =date = 2017-07-24=              | =#+date: 2017-07-24=                 |
+| =publishDate = 2018-01-26=       | =#+hugo_publishdate: 2018-01-26=     |
+| =expiryDate = 2999-01-01=        | =#+hugo_expirydate: 2999-01-01=      |
+| =lastmod = <current date>=        | =#+hugo_auto_set_lastmod: t=         |
+| =tags = ["toto", "zulu"]=        | =#+hugo_tags: toto zulu=             |
+| =categories = ["x", "y"]=        | =#+hugo_categories: x y=             |
+| =draft = true=                   | =#+hugo_draft: true=                 |
+| =draft = false=                  | =#+hugo_draft: false=                |
+| =weight = 123=                   | =#+hugo_weight: 123=                 |
+| =tags_weight = 123=              | =#+hugo_weight: :tags 123=           |
+| =categories_weight = 123=        | =#+hugo_weight: :categories 123=     |
+| =weight = 123= (in =[menu.foo]=) | =#+hugo_menu: :menu foo :weight 123= |
+|----------------------------------+--------------------------------------|
+***** Notes
+- The *auto calculation* of weights for pages, taxonomies and menu
+  items works *only* for subtree-based exports.
+
+  For the file-based exports, the weights have to be specified
+  manually. Any /weight/ assignment to ="auto"= for file-based exports
+  is ignored.
+- See [[#org-hugo-date-format][~org-hugo-date-format~]] for customizing the date formats for all
+  /date/ front-matter parameters.
+- For setting custom front-matter parameters, see the [[*Custom Front-matter Parameters][Custom
+  Front-matter Parameters]] section.
+*** Formatting
+:PROPERTIES:
+:EXPORT_FILE_NAME: formatting
+:END:
+Below table shows the translation of Org markup to Markdown markup in
+the exported =.md= files.
+
+See the Org source in [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/all-posts.org][=all-posts.org=]] under /Formatting/ -> /General/
+heading and how it exports to Markdown in [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/posts/general-formatting.md][=general-formatting.md=]].
+#+caption: Org markup to Markdown markup
+#+attr_html: :class sane-table
+|--------------------+--------------------------------------------------------------------|
+| Org                | Markdown                                                           |
+|--------------------+--------------------------------------------------------------------|
+| =*bold*=           | =**bold**=                                                         |
+| =/italics/=        | =_italics_=                                                        |
+| ==monospace==      | =`monospace`=                                                      |
+| =~key-binding~=    | =`key-binding`=                                                    |
+|                    | - if =org-hugo-use-code-for-kbd= is nil [default]                  |
+| =~key-binding~=    | =<kbd>key-binding</kbd>=                                           |
+|                    | - if =org-hugo-use-code-for-kbd= is non-nil                        |
+|                    | - Requires *CSS* to render the =<kbd>= tag as something special.   |
+| =+strike-through+= | =~~strike-through~~=                                               |
+| =_underline_=      | =<span class = "underline">underline</span>=                       |
+|                    | - Requires *CSS* to render this =underline= class as an underline. |
+|--------------------+--------------------------------------------------------------------|
+*** Dates
+:PROPERTIES:
+:EXPORT_FILE_NAME: dates
+:END:
+**** Defcustoms
+***** =org-hugo-date-format=
+:PROPERTIES:
+:CUSTOM_ID: org-hugo-date-format
+:END:
+- Default value :: ="%Y-%m-%dT%T%z"=
+
+This variable sets the date format used for exporting /date/
+front-matter parameters like =date=, =publishDate=, =expiryDate=,
+=lastmod=.
+
+Note that the date format *must match* the date specification from
+[[https://tools.ietf.org/html/rfc3339#section-5.8][RFC3339]].
+
+Examples of RFC3339-compatible values for this variable:
+
+|---------------------------+-----------------------------|
+| Value                     | Example output              |
+|---------------------------+-----------------------------|
+| =%Y-%m-%dT%T%z= (default) | =2017-07-31T17:05:38-04:00= |
+| =%Y-%m-%dT%T=             | =2017-07-31T17:05:38=       |
+| =%Y-%m-%d=                | =2017-07-31=                |
+|---------------------------+-----------------------------|
+
+Do =C-h v org-hugo-date-format= for more information (within Emacs,
+once the =ox-hugo= package is loaded).
+
+***** =org-hugo-suppress-lastmod-period=
+ - Default value :: =0.0=
+
+A suppressing period (in seconds) during which the =lastmod= parameter
+is not added to the front matter. The suppressing period is counted as
+a delta between the =date= and =lastmod= parameters.
+
+If the value is 86400.0, the =lastmod= parameter will not be added to the
+front matter within 24 hours from the value of =date= parameter.
+
+=lastmod= would be exported when you initially change the Org TODO
+state to =DONE= by saving the file automatically with the following
+conditions. Some users may not prefer this behavior.
+
+| Variable                         | Value |
+|----------------------------------+-------|
+| org-hugo-auto-set-lastmod        | t     |
+| org-log-done                     | time  |
+
+In such case, you can suppress =lastmod= in the front-matter if you set
+=org-hugo-suppress-lastmod-period= to =60.0= or other appropriate value.
+
+Note that this variable is effective only if auto-setting of the
+=lastmod= parameter is enabled i.e. if =org-hugo-auto-set-lastmod= or
+=EXPORT_HUGO_AUTO_SET_LASTMOD= is non-nil.
+
+**** File-based Exports
+:PROPERTIES:
+:CUSTOM_ID: dates-file-based-exports
+:END:
+In Org files meant for file-based exports, you simply set a value for
+a =#+hugo_FOO= keyword (in most cases, for example =#+date= is one of
+the exceptions) to set the =FOO= parameter in the exported
+front-matter.
+
+#+caption: Dates translation from Org meta-data to Hugo front-matter (file-based exports)
+#+attr_html: :class sane-table
+|----------------------------------+----------------------------|
+| Org                              | Hugo front-matter (TOML)   |
+|----------------------------------+----------------------------|
+| =#+date: 2017-07-24=             | =date = 2017-07-24=        |
+| =#+hugo_publishdate: 2018-01-26= | =publishDate = 2018-01-26= |
+| =#+hugo_expirydate: 2999-01-01=  | =expiryDate = 2999-01-01=  |
+| =#+hugo_lastmod: 2018-02-06=     | =lastmod = 2018-02-06=     |
+| =#+hugo_auto_set_lastmod: t=     | =lastmod = <current date>= |
+|----------------------------------+----------------------------|
+**** Subtree-based Exports
+:PROPERTIES:
+:CUSTOM_ID: dates-subtree-based-exports
+:END:
+The date meta-data can be set as Org properties in post subtrees,
+similar to the keywords set for [[#dates-file-based-exports][File-based exports]]. But subtree-based
+exports allow an even concise way to set those dates.
+***** Date
+This is interpreted from the Org [[https://orgmode.org/manual/Special-properties.html][Special Property]] =CLOSED=.
+
+The =CLOSED= property is inserted once the post-subtree's =TODO= state
+is set to =DONE= (~C-c C-t~), *if* the =org-log-done= variable is set
+to ='time= (default is /nil/). This option can also be enabled on a
+per-file-basis with =#+startup: logdone=.
+
+Here's an example:
+#+begin_src org
+,* DONE My post
+CLOSED: [2018-01-23 Tue 14:10]
+Post content.
+#+end_src
+
+Above gets translated to =date = 2018-01-23T14:10:00-05:00= in
+front-matter (TOML).
+
+- NOTE :: Another variable =org-log-done-with-time= can be set to /nil/
+          (default to =t=) if you would like the =CLOSED= time stamp
+          to contain only the date, and not the time.
+
+/You do not then need to explicitly set the =:EXPORT_DATE:= property./
+***** Publish Date
+This is interpreted from the Org Special Property =SCHEDULED=. The
+idea is that you schedule a task for a /future/ date, just as you
+would set a post to be published in /future/. This property is
+set using the default ~C-c C-s~ binding in Org.
+
+Here's an example:
+#+begin_src org
+,* My future post
+SCHEDULED: <2060-01-26 Mon>
+Post content.
+#+end_src
+
+Above gets translated to =publishDate = 2060-01-26T00:00:00-05:00= in
+front-matter (TOML).
+
+/You do not then need to explicitly set the =:EXPORT_HUGO_PUBLISHDATE:=
+property./
+***** Expiry Date
+This is interpreted from the Org Special Property =DEADLINE=. The idea
+is that just as you /ideally/ don't plan to work on a task after a set
+deadline, you don't plan to keep a post published after a set expiry
+date. This property is set using the default ~C-c C-d~ binding in Org.
+
+Here's an example:
+#+begin_src org
+,* My short-lived post
+DEADLINE: <2018-02-06 Tue>
+Post content.
+#+end_src
+
+Above gets translated to =expiryDate = 2018-02-06T00:00:00-05:00= in
+front-matter (TOML).
+
+/You do not then need to explicitly set the =:EXPORT_HUGO_EXPIRYDATE:=
+property./
+***** Last modified
+Like any other front-matter property, you can explicitly set the /last
+modified/ date too, using the =:EXPORT_HUGO_LASTMOD:= property.
+
+But what's the point of calling a property /last modified/, if you
+forget to manually update that property *each time* you update the
+post. SO =ox-hugo= takes care of that for you.. if you set the property
+=:EXPORT_HUGO_AUTO_SET_LASTMOD:= to a non-nil value.
+
+It's normal for one to choose to auto-set the /last modified/ date for
+all the posts. So instead of setting the above property for each post
+individually, it might be more convenient to simply put
+=#+hugo_auto_set_lastmod: t= at the top of the file.
+*** Image Links
+:PROPERTIES:
+:EXPORT_FILE_NAME: image-links
+:END:
+This section will provides few alternatives for linking to images in
+Org files in a way that's compatible with =ox-hugo= and Hugo.
+
+For the sake of the below explanation, let's have the /HUGO_BASE_DIR/
+(the directory containing the Hugo site's =config.toml= file) be
+=~/hugo/=. Then the Hugo /static/ directory will be =~/hugo/static/=.
+**** References to files in the /static/ directory
+:PROPERTIES:
+:CUSTOM_ID: references-to-files-in-the-static-directory
+:END:
+Now if you have a file =~/hugo/static/images/foo.png=, =ox-hugo= makes
+it convenient for you to reference that image by simply
+=/images/foo.png=.
+
+#+begin_note
+Note that this is *not* the default behavior of other Org exporters.
+#+end_note
+
+But in the case of Hugo, as the referenced file will /normally/ be in
+the Hugo /static/ directory, =ox-hugo= allows the =/images/foo.png=
+style of short reference *if* that is a valid path under that Hugo
+site's /static/ directory.
+
+See the below examples on how to reference images in different ways:
+***** Inline image -- Unhyperlinked
+#+caption: Unhyperlinked image (don't click it)
+#+name: fig__unhyperlinked_image
+[[/images/org-mode-unicorn-logo-200px.png]]
+#+begin_src org
+[[/images/org-mode-unicorn-logo-200px.png]]
+#+end_src
+***** Inline image -- Also hyperlinked to an image
+#+caption: Image hyperlinked to an image (click it!)
+#+name: fig__hyperlinked_image
+[[/images/org-mode-unicorn-logo-200px.png][file:/images/org-mode-unicorn-logo-50px.png]]
+#+begin_src org
+[[/images/org-mode-unicorn-logo-200px.png][file:/images/org-mode-unicorn-logo-50px.png]]
+#+end_src
+This style of link is normally used if you want to link a low
+resolution image to its higher resolution version.
+- NOTE 1 :: The =file:= prefix has to be used in the *Description
+            component* of the Org link.
+- NOTE 2 :: The =file:= prefix can be used for the *Link component* of
+            the Org link too --- it doesn't hurt.
+- NOTE 3 :: A space in the path in the *Description component* of the
+            Org link has to be encoded to "%20".
+***** Regular link to an image
+[[/images/org-mode-unicorn-logo-200px.png][Click here to see org-mode-unicorn-logo-200px.png]]
+#+begin_src org
+[[/images/org-mode-unicorn-logo-200px.png][Click here to see org-mode-unicorn-logo-200px.png]]
+#+end_src
+This style of linking will work for references to non-image files in
+the /static/ directory too.
+**** References to files *outside* the /static/ directory
+:PROPERTIES:
+:CUSTOM_ID: references-to-files-outside-the-static-directory
+:END:
+This is a unique feature of =ox-hugo=.
+
+(i) If a reference is made to a file outside the Hugo /static/
+directory, *and* (ii) if it has one of the extensions listed in
+=org-hugo-external-file-extensions-allowed-for-copying=, then that
+file is copied by =ox-hugo= to the /static/ directory.
+
+Here is an example link:
+#+begin_src org
+[[~/some-dir/static/images/foo.png]]
+#+end_src
+***** Source path contains =/static/=
+If you link to files outside of the Hugo =static= directory, just
+ensure that the path contains the string =/static/= /if you like to
+preserve the directory structure/. Necessary directories are then
+created inside the /static/ directory to preserve the structure.
+
+Example translations between outside =static= directory paths to the
+copied location inside =static=:
+
+#+caption: Where files get copied to if their path contains =static/=
+#+attr_html: :class sane-table
+|----------------------------------+-------------------------------------------+----------------------------------------------------------------------------------------------------------|
+| File location outside =static=   | Copied-to location inside =static=        | Explanation                                                                                              |
+|----------------------------------+-------------------------------------------+----------------------------------------------------------------------------------------------------------|
+| =~/temp/static/images/foo.png=   | =<HUGO_BASE_DIR>/static/images/foo.png=   | If the *outside* path has =/static/= in it, the directory structure after that is preserved when copied. |
+| =~/temp/static/img/foo.png=      | =<HUGO_BASE_DIR>/static/img/foo.png=      | (same as above)                                                                                          |
+| =~/temp/static/foo.png=          | =<HUGO_BASE_DIR>/static/foo.png=          | (same as above)                                                                                          |
+| =~/temp/static/articles/zoo.pdf= | =<HUGO_BASE_DIR>/static/articles/zoo.pdf= | (same as above)                                                                                          |
+|----------------------------------+-------------------------------------------+----------------------------------------------------------------------------------------------------------|
+
+See the {{{doc(usage,#before-you-export,Usage → Before you export)}}}
+section to learn how to set the *HUGO_BASE_DIR*.
+***** Source path does not contain =/static/=
+Here is an example link where the source path does not contain
+=/static/=:
+#+begin_src org
+[[~/some-dir/bar/foo.png]]
+#+end_src
+
+In this case, that file is copied directly to the
+=org-hugo-default-static-subdirectory-for-externals= sub-directory
+(=ox-hugo/= by default) within the Hugo static directory. No directory
+structure generation happens in this case.
+
+#+caption: Where files get copied to if their path *does not* contain =static/=
+#+attr_html: :class sane-table
+|--------------------------------+------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| File location outside =static= | Copied-to location inside =static=       | Explanation                                                                                                                 |
+|--------------------------------+------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+| =~/temp/bar/baz/foo.png=       | =<HUGO_BASE_DIR>/static/ox-hugo/foo.png= | Here, as the *outside* path does not have =/static/= in it, the file is copied to the =ox-hugo/= dir in Hugo =static/= dir. |
+|--------------------------------+------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------|
+***** Disable auto-copying
+This auto-copying behavior can be disabled completely by setting
+=org-hugo-external-file-extensions-allowed-for-copying= to /nil/.. but
+you might not want that if you keep your files *outside* the Hugo
+static directory.
+*** Source blocks
+:PROPERTIES:
+:EXPORT_FILE_NAME: source-blocks
+:END:
+=ox-hugo= tries to generate Markdown with fenced code blocks if
+possible. It also supports exporting source blocks with line numbers
+and/or highlighting enabled for specific lines.
+**** Code Fences
+By default, the =HUGO_CODE_FENCE= property is set to a non-nil
+value. So the code blocks will be exported with GitHub-style
+code-fencing with triple-backticks when possible.
+
+Example:
+
+#+begin_src md
+```emacs-lisp
+(message "Hello")
+```
+#+end_src
+
+- Note :: It is necessary to set the Hugo site config variable
+          =pygmentsCodeFences= to =true= for syntax highlighting to
+          work for fenced code blocks.
+
+The Hugo =highlight= shortcode is automatically used instead of code
+fences (even with this property at a non-nil value) if:
+- Line numbers are enabled using the Org =-n= / =+n= syntax (see
+  below), or
+- Line highlighting is enabled using the =:hl_lines= parameter in the
+  source block header (see below).
+
+Set the =HUGO_CODE_FENCE= property to =nil= if you want to *always*
+use the Hugo =highlight= shortcode.
+**** Line numbers
+Line numbers can be enabled/configured using the Org =-n= / =+n=
+syntax. See the Info node [[https://orgmode.org/manual/Literal-examples.html][=(org) Literal examples=]] for more
+information.
+
+Here are some examples fetched from the "Source blocks with line
+number annotation" test case in the {{{ox-hugo-test-file}}}.
+
+#+include: "../test/site/content-org/all-posts.org::#source-block-line-number-cases" :only-contents t
+**** Highlighting
+Implementing this feature was interesting, because while Org doesn't
+have a syntax to enable highlighting only specific lines, the Hugo
+=highlight= shortcode does allow that via =hl_lines= argument.
+
+So the challenge was to present that "lines to be highlighted"
+information in the Org source in a nice format and then translate that
+to the =hl_lines= =highlight= shortcode argument at the time of
+exporting.
+
+It involved /hacking/ the =org-babel-exp-code=. See [[https://lists.gnu.org/archive/html/emacs-orgmode/2017-10/msg00300.html][this discussion on
+the =emacs-orgmode= thread]] if interested.
+
+This feature is implemented by using a parameter called =:hl_lines= in
+the header of source blocks. This parameter is specific to =ox-hugo=,
+and that's why implementing this needed that hack.
+
+If a user wants to highlight lines 1, and then 3 to 5, they would add
+=:hl_lines 1,3-5= to the source block header.
+# Below 2 include statements fetch the noweb references used in the
+# code inserted by the following include statements.
+#+include: "../test/site/content-org/all-posts.org::#source-block-with-line-numbers-examples"
+#+include: "../test/site/content-org/all-posts.org::#source-block-with-line-highlighting-examples"
+***** Without line numbers
+#+include: "../test/site/content-org/all-posts.org::#source-blocks-with-highlighting-no-linenums" :only-contents t
+***** With line numbers
+The Org source for the below is similar to the above, except that the
+=-n= switch is also added to enable the line numbers.
+
+#+include: "../test/site/content-org/all-posts.org::#source-blocks-with-highlighting-with-linenums-not-starting-from-1" :only-contents t
+*** Equations
+:PROPERTIES:
+:EXPORT_FILE_NAME: equations
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :mathjax true
+:END:
+**** Inline equations
+- Inline equations are wrapped between =\(= and =\)=.
+  - =$= wrapping also works, but it is not preferred as it comes with
+    restrictions like "there should be no whitespace between the
+    equation and the =$= delimiters".
+
+    So =$ a=b $= will not work (it will look like: $ a=b $), but
+    =$a=b$= will work (it will look like: $a=b$).
+
+    On the other hand, both =\(a=b\)= (it will look like: \(a=b\)) and
+    =\( a=b \)= (it will look like: \( a=b \)) will work.
+- One-per-line equations are wrapped between =\[= and =\]= or =$$=
+  delimiters.
+
+For example, below in Org:
+#+begin_src org
+LaTeX formatted equation: \( E = -J \sum_{i=1}^N s_i s_{i+1} \)
+#+end_src
+
+will look like this in Hugo rendered HTML:
+
+LaTeX formatted equation: \( E = -J \sum_{i=1}^N s_i s_{i+1 }\)
+
+*Don't see this in Markdown, see what it looks after Hugo has
+processed it.* --- =ox-hugo= does some heavy escaping to get around a
+Blackfriday issue with supporting MathJax syntax equations (that Org
+supports).
+
+Here's another example, taken from [[https://orgmode.org/manual/LaTeX-fragments.html][(org) LaTeX fragments]].
+
+Below in Org:
+#+begin_example
+If $a^2=b$ and \( b=2 \), then the solution must be either
+$$ a=+\sqrt{2} $$ or \[ a=-\sqrt{2} \]
+#+end_example
+
+renders to:
+
+If $a^2=b$ and \( b=2 \), then the solution must be either
+$$ a=+\sqrt{2} $$ or \[ a=-\sqrt{2} \]
+
+(Note that the last two equations show up on their own lines.)
+**** {{{latex}}} Environments
+=ox-hugo= support {{{latex}}} environments.
+
+So below in Org buffer:
+
+#+begin_src org
+\begin{equation}
+\label{eq:1}
+C = W\log_{2} (1+\mathrm{SNR})
+\end{equation}
+#+end_src
+
+will export as:
+
+\begin{equation}
+\label{eq:1}
+C = W\log_{2} (1+\mathrm{SNR})
+\end{equation}
+
+Equation referencing will also work[fn:3]. So =\ref{eq:1}= will render as
+\ref{eq:1}.
+**** Examples
+You can find many examples by looking at {{{testtag(equations)}}}.
+*** Tags and Categories
+:PROPERTIES:
+:EXPORT_FILE_NAME: tags-and-categories
+:END:
+**** Subtree-based Export
+***** Tags
+For subtree-based exports, the Hugo front-matter =tags= values are
+derived from Org tags set for the post subtree headline.
+
+Example:
+#+begin_src org
+,* My post                                                         :tag1:tag2:
+#+end_src
+
+By default, Org tags from parent headlines, and the tags set in the
+=#+filetags= keyword get inherited (as the default value of
+=org-use-tag-inheritance= is =t=). If the tag inheritance doesn't work
+as expected, check that the value of that variable is set as required.
+
+If the =EXPORT_HUGO_TAGS= property is set for a valid Hugo post
+subtree, the value of that property will *completely override* the Org
+tags set even on that subtree, the inherited values of Org-style tags
+from parent headlines and even =#+filetags=.
+****** Marking files to not be exported
+Note that if you want to prevent a file from getting exported, you can
+assign a special tag to the whole file (example: =no_no_dont_export=).
+- For /per-subtree/ flow, that /don't export/ tag *has to be set using
+  the =#+filetags= keyword*[fn:2].
+- For /per-file/ flow, that same /dont' export/ tag *has to be set
+  using the =#+hugo_tags= keyword* (because ~#+filetags~ keyword does
+  not work for /per-file/ flow. See [[* File-based Export]]).
+
+Then in your export setup, add that special tag to the
+=org-export-exclude-tags= variable. You can grep through this repo for
+the special tag =dont_export_during_make_test= that is used to mark
+few Org files to not be exported when running the
+{{{doc(test,,tests)}}}.
+****** Why use =#+filetags= and not =#+tags=?
+- About =#+filetags= -- [[https://orgmode.org/manual/Tag-inheritance.html][Tag Inheritance]] or =C-h i g (org) Tag
+  inheritance=
+- About =#+tags= -- [[https://orgmode.org/manual/Setting-tags.html][Setting Tags]] or =C-h i g (org) Setting tags=
+***** Categories
+For subtree-based exports, the Hugo front-matter =categories= values
+are derived from Org tags set for the post subtree headline, but only
+the ones prefixed with *@*.
+
+Example:
+#+begin_src org
+,* My post                                                       :@cat1:@cat2:
+#+end_src
+
+As with the tags, by default, the categories (Org tags with "@"
+prefix) from parent headlines, and the ones set in the =#+filetags=
+keyword too get inherited (as the default value of
+=org-use-tag-inheritance= is =t=). If the tag inheritance doesn't work
+as expected, check that the value of that variable is set as required.
+
+If the =EXPORT_HUGO_CATEGORIES= property is set for a valid Hugo post
+subtree, the value of that property will *completely override* the
+categories set even on that subtree, the inherited values of
+categories from parent headlines and even =#+filetags=.
+**** File-based Export
+The tag (and category) inheritance does not apply to the file-based
+export flow. So =#+filetags= will have no effect in this flow.
+
+- To set tags, use =#+hugo_tags=.
+- To set categories, use =#+hugo_categories=.
+
+#+begin_note
+=#+filetags= will have no effect in *file-based* export flow.
+#+end_note
+**** Hyphens and Spaces in Org tags (and categories)
+Hyphens and spaces are not allowed in Org tags (=* Heading :TAG:=).
+
+So =ox-hugo= converts:
+- *single underscores* to hyphens if =org-hugo-prefer-hyphen-in-tags=
+  is set to non-nil (default).
+- *double underscores* to spaces if =org-hugo-allow-spaces-in-tags= is
+  set to non-nil (default).
+
+So an Org tag *abc_def* will be exported as /tag/ *"abc-def"*, and
+*abc__def* will be exported as /tag/ *"abc def"*.
+
+The same applies to Org tags with prefix =@= which will be exported as
+/categories/. So *@abc_def* will be exported as /category/
+*"abc-def"*, and *@abc__def* as /category/ *"abc def"*.
+
+To export a tag or category with an underscore, use 3 consecutive
+underscores. So an Org tag *abc___def* will be exported as /tag/
+*"abc_def"* (and the same for categories). If you rather prefer to
+always export /single underscores/ as underscores, set
+=org-hugo-prefer-hyphen-in-tags= to nil.
+
+- NOTE :: These two variables *also affect* the tags set via
+          =#+filetags= keyword (which is used only in subtree-based
+          exported Org files).
+
+These variables do not affect the tags set via keywords =#+hugo_tags=,
+=#+hugo_categories= or =#+keywords= (or their respective subtree
+property forms), because Org keywords and properties allow using the
+hyphen and space (/in "double-quoted strings"/) characters. So the
+underscores in these keywords remain untransformed on export.
+**** Examples
+- [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/tags-and-categories.org][Org source]]
+- Exported Markdown -- [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/posts/inheriting-tags.md][=inheriting-tags.md=]], [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/posts/overriding-tags.md][=overriding-tags.md=]]
+- Hugo-generated HTML -- [[https://ox-hugo.scripter.co/test/posts/inheriting-tags/][Inheriting tags]], [[https://ox-hugo.scripter.co/test/posts/overriding-tags/][Overriding tags]]
+*** Table of Contents
+:PROPERTIES:
+:EXPORT_FILE_NAME: org-toc
+:END:
+Hugo can automatically parse the Markdown content and auto-create a
+Table of Contents. See its documentation on [[https://gohugo.io/content-management/toc/][Table of Contents]]. So
+=ox-hugo= does not generate the TOC using Org by default.
+
+The only advantage of using Hugo-generated TOC is that it does not
+clutter the Markdown source.
+
+Though, the advantage of Org-generated TOC is that you get finer
+control on:
+- *Where* to include the TOC --- Location of the =#+toc= keyword in the
+  Org content.
+- How many headlines to include in the TOC --- /Example: =#+toc:
+  headlines 2=/ or =:EXPORT_OPTIONS: toc:2=.
+- Whether you want *all* the headlines in the TOC to be numbered or
+  not --- See =org-hugo-export-with-section-numbers=.
+- Whether you want *only some* headlines numbered (both in post body
+  and the TOC) --- Set the =UNNUMBERED= property of that headline to
+  =t=.
+- Whether you want to list the sub-headings *only from the current
+  heading in the post* --- /Example: ~#+toc: headlines 1 local~/.
+
+If you want to use the Org-generated TOC instead of the Hugo-generated
+one, do one of the following:
+1. As the default is to use the Hugo-generated TOC, the Org-generated
+   TOC has to be enabled explicitly. To do this for all your ~ox-hugo~
+   generated posts, set the =org-hugo-export-with-toc= variable to a
+   non-nil value like =t= or =2=.
+2. Org-generated TOC can be enabled per-post by either setting the
+   =EXPORT_OPTIONS= subtree property (for subtree-based exports) or
+   the =OPTIONS= keyword (for file-based exports) to a non-nil value,
+   like ~toc:t~ or ~toc:2~.
+3. Above two options will insert the TOC between the front-matter and
+   the Markdown content. If you'd like to insert the Org-generated TOC
+   anywhere else in the post, you can do it using the =#+toc=
+   keyword.. Example: =#+toc: headlines 2=.
+
+See the [[https://orgmode.org/manual/Table-of-contents.html][Table of Contents]] section in the Org manual for more info.
+
+/Note that =ox-hugo= does not support =#+toc: listings= and =#+toc:
+tables=./
+**** "Table of Contents" heading
+The "Table of Contents" heading is inserted as a plain HTML ~div~
+element. Users can customize the looks of that ~div~ by setting CSS
+rules for ~.ox-hugo-toc .heading~.
+
+Here is an example CSS rule for that:
+#+begin_src css
+.ox-hugo-toc .heading {
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: center;
+}
+#+end_src
+**** Excluding Org-generated TOC from Hugo summaries
+As mentioned above, if you use Hugo-generated TOC, the advantage is
+that the TOC is not inserted physically in the content Markdown
+file.
+
+But with the Org-generated TOC, it *will* be. The disadvantage of that
+is that the =.Summary= in Hugo will consider the TOC! So your TOC will
+show up in places you don't expect.. like summaries in post lists, in
+twitter cards, etc.
+
+But.. there's a way to fix that, because =ox-hugo= inserts a special
+comment ~<!--endtoc-->~ at the end of the inserted TOC.
+
+Using that special comment, this [[https://github.com/kaushalmodi/hugo-bare-min-theme/blob/master/layouts/partials/summary_minus_toc.html][=summary_minus_toc.html=]] partial
+tries to get the "summary you mean". This partial is used by the
+=ox-hugo= test site.
+- You can find examples of where this partial can be used in
+  [[https://github.com/kaushalmodi/hugo-bare-min-theme/blob/master/layouts/partials/opengraph.html][=opengraph.html=]] and  [[https://github.com/kaushalmodi/hugo-bare-min-theme/blob/master/layouts/partials/twitter_cards.html][=twitter_cards.html=]] partials, also used in
+  the test site.
+
+/Note that you would need to use the =summary_minus_toc.html= partial
+wherever you do not intend to have TOC included in the summary (for
+example, in the Opengraph =og:description= meta tag)./
+*** Table Styling
+:PROPERTIES:
+:EXPORT_FILE_NAME: table-styling
+:END:
+Classic =ox-html= allows setting table attributes directly using
+=#+attr_html=. But specifying the attributes directly in the =<table>=
+tag is [[https://www.w3.org/TR/2011/WD-html-markup-20110113/table.html#table-constraints][admonished in HTML5]] .. /and so Hugo/Blackfriday do not allow
+any way to directly insert attributes *inside* the =<table>= tag./
+
+So a workaround is used by =ox-hugo=.. it wraps the tables with =<div>=
+tags with classes, which a user can then use to style the tables using
+CSS.. /just as recommended by HTML5/ :smile:.
+
+=ox-hugo= can style different tables in different ways on the same
+page, with the help of =#+attr_html= and =#+attr_css= (*introduced in
+=ox-hugo=*) attributes.
+
+1. =#+attr_html= is used to assign one or more classes to a table.
+   #+begin_src org
+   ,#+attr_html: :class sane-table
+   #+end_src
+   - Wraps the table in =<div>= tags with =sane-table= class.
+   - Sets style from =#+attr_css=, if present, for =.sane-table table=
+     scope.
+
+   or
+
+   #+begin_src org
+   ,#+attr_html: :class zebra-striping sane-table
+   #+end_src
+   - Wraps the table in =<div>= tags with =zebra-striping= *and*
+     =sane-table= classes.
+   - Sets style from =#+attr_css=, if present, *only* for the
+     =.zebra-striping table= scope i.e. only for the first class
+     listed in that attribute. Specifying multiple classes to a table
+     is useful if you want that table to inherit the styling from CSS
+     rules for multiple classes.
+2. =#+attr_css= is used to assign the specified styles to the
+   class of the table it precedes.
+
+   Examples:
+   #+begin_src org
+   ,#+attr_css: :width 80%
+   #+end_src
+
+   #+begin_src org
+   ,#+attr_css: :text-align left
+   #+end_src
+
+   - If =#+attr_html= is used to specify the table class, the style is
+     applied to the first of the list of classes (as explained above).
+   - If =#+attr_html= is *not* used to set a custom class name for the
+     table, the class name is auto-derived..
+     - If the table =#+caption= is present, the class name is
+       =table-N= where "N" is the /Nth/ captioned table on that page.
+     - If the table is not captioned, the class name is always
+       =table-nocaption=. So.. if you want to have different styling
+       for different tables, make sure that you either set their
+       custom class name using =#+attr_html=, or caption them.
+
+
+- All tables exported with the =<div>= tags have the class
+  =ox-hugo-table=. This can be useful if you want to set a common
+  style for all those tables.
+- =#+attr_css= applies styling only to the =.CLASS table= scope. So if
+  you want more styling i.e. for other elements like =td=, =tr=, etc,
+  you would need to do that in an =#+export_begin html= block.
+
+  Example:
+
+  #+begin_src org
+  ,#+begin_export html
+  <style>
+  .my-table th,
+  .my-table td {
+      padding: 20px;
+      text-align: left;
+  }
+  </style>
+  ,#+end_export
+  ,#+caption: Table with verbatim CSS
+  ,#+attr_html: :class my-table
+  | h1  | h2  | h3  |
+  |-----+-----+-----|
+  | abc | def | ghi |
+  #+end_src
+
+You can find many examples of table styling here:
+#+caption: Table Styling Examples
+#+attr_html: :class sane-table
+| Org Source                                                                                   | Exported Markdown | Hugo HTML   |
+|----------------------------------------------------------------------------------------------+-------------------+-------------|
+| {{{ox-hugo-test-file}}} -- search for =* Table Styling= or =:EXPORT_FILE_NAME: table-styling= | [[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content/posts/table-styling.md][table-styling.md]]  | [[https://ox-hugo.scripter.co/test/posts/table-styling/][Hugo output]] |
+
+-----
+
+/Credit: [[https://css-tricks.com/complete-guide-table-element/][Guide to styling tables in HTML5-friendly manner]]/ --- /css-tricks.com/
+*** Details and summary
+:PROPERTIES:
+:EXPORT_FILE_NAME: details-and-summary
+:END:
+The "details" Org Special Block (~#+begin_details~ .. ~#+end_details~)
+is used for generating the Details disclosure elements [[https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details][~<details>~]]
+and ~<summary>~.
+
+The summaries nested in these "details" Org Special blocks are created
+using the "summary" Org Special block ~#+begin_summary~
+.. ~#+end_summary~.
+**** Regular details disclosure
+#+begin_src org
+#+begin_details
+#+begin_summary
+Why is this in *green*?
+#+end_summary
+You will learn that later below in [[#details-css][CSS]] section.
+#+end_details
+#+end_src
+will render like below:
+#+begin_details
+#+begin_summary
+Why is this in *green*?
+#+end_summary
+You will learn that later below in [[#details-css][CSS]] section.
+#+end_details
+**** Details disclosure without details or without summary
+- If the ~details~ Special Block does not contain the ~summary~
+  Special Block, a details-only disclosure will be created.
+  #+begin_src org
+  #+begin_details
+  Here are the /details/.
+  #+end_details
+  #+end_src
+  will render like below:
+  #+begin_details
+  Here are the /details/.
+  #+end_details
+  #+begin_note
+  In the absence of summary, most browsers will use a default string
+  "Details" for the summary.
+  #+end_note
+- If the ~details~ Special Block contains *only* the ~summary~ Special
+  Block, a summary-only disclosure will be created.
+  #+begin_src org
+  #+begin_details
+  #+begin_summary
+  Some *Summary*
+  #+end_summary
+  #+end_details
+  #+end_src
+  will render like below:
+  #+begin_details
+  #+begin_summary
+  Some *Summary*
+  #+end_summary
+  #+end_details
+  #+begin_note
+  Even if the details part is absent, the collapsing triangle will
+  still be rendered. But nothing will show up when that triangle is
+  uncollapsed.. /as the details portion is not there/.
+  #+end_note
+**** Open by default disclosure widget
+The ~<details>~ disclosure widget is initially closed by default. But
+it can be made to show up opened by default by adding the ~:open t~
+attribute like this:
+#+begin_src org
+#+attr_html: :open t
+#+begin_details
+#+begin_summary
+Some *Summary*
+#+end_summary
+Here are the /details/.
+#+end_details
+#+end_src
+will render like below:
+#+attr_html: :open t
+#+begin_details
+#+begin_summary
+Some *Summary*
+#+end_summary
+Here are the /details/.
+#+end_details
+#+begin_note
+For open-by-default disclosure widgets, the ~#+attr_html~ keyword
+specifically needs to contain ~:open t~.
+#+end_note
+**** CSS rules for these widgets
+:PROPERTIES:
+:CUSTOM_ID: details-css
+:END:
+- ~details summary~ will apply to the /summary/ portion of the
+  disclosure widget.
+- ~details .details~ will apply to the /details/ portion of the
+  disclosure widget.
+
+#+html: <style>.green { color: green; }</style>
+#+html: <style>.blue { color: blue; }</style>
+
+For instance, the CSS rules set using below caused all the disclosure
+/summaries/ to show in <span class="green">green</span>, and all the
+disclosure /details/ to show in <span class=blue>blue</span>.
+#+begin_src org
+#+html: <style>details summary { color: green; }</style>
+#+html: <style>details .details { color: blue; }</style>
+#+end_src
+
+#+html: <style>details summary { color: green; }</style>
+#+html: <style>details .details { color: blue; }</style>
+*** Author
+:PROPERTIES:
+:EXPORT_FILE_NAME: author
+:END:
+The ~author~ front-matter parameter is designed to always be a list or
+an array, so that multiple authors can be supported.
+**** Default Author
+The ~author~ parameter is set to always export by default (as the
+default value of ~org-export-with-author~ is ~t~).
+
+The author name defaults to ~user-full-name~. You can choose to either
+customize this variable in your Emacs config, or manually set the
+author name by adding the below to the top of your Org file:
+#+begin_src org
+,#+author: FirstName LastName
+#+end_src
+
+If using /per-subtree/ flow, and if you want to specify the author (or
+override the value set by the above ~#+author~ keyword) differently
+for all posts under a subtree, add below in that subtree's property
+drawer:
+#+begin_src org
+:PROPERTIES:
+:EXPORT_AUTHOR: Firstname LastName
+:END:
+#+end_src
+
+Either of above two author-setting methods will export to this TOML
+front-matter:
+#+begin_src toml
+author = ["FirstName LastName"]
+#+end_src
+**** Multiple Authors
+Multiple authors can be specified by either:
+- Using multiple ~#+author~ keywords, or
+  #+begin_src org
+  ,#+author: FAuthor1 LAuthor1
+  ,#+author: FAuthor2 LAuthor2
+  #+end_src
+- Specifying comma-separated authors, if setting them in subtree
+  properties.
+  #+begin_src org
+  :PROPERTIES:
+  :EXPORT_AUTHOR: FAuthor1 LAuthor1, FAuthor2 LAuthor2
+  :END:
+  #+end_src
+
+Either of above two author-setting methods will export to this TOML
+front-matter:
+#+begin_src toml
+author = ["FAuthor1 LAuthor1", "FAuthor2 LAuthor2"]
+#+end_src
+**** Disabling exporting of ~author~ parameter
+Author exporting can be disabled using any of these ways:
+- To disable author exporting only for a specific Org file, add below
+  to the top of that file:
+  #+begin_src org
+  ,#+options: author:nil
+  #+end_src
+- If using /per-subtree/ flow, and if you want to disable author
+  exporting only for posts under specific subtrees, add below in the
+  property drawers of those:
+  #+begin_src org
+  :PROPERTIES:
+  :EXPORT_OPTIONS: author:nil
+  :END:
+  #+end_src
+- To disable author exporting by default for all exporters (not just
+  ~ox-hugo~), set ~org-export-with-author~ to ~nil~ in your Emacs
+  config.
+**** Tweaking your Hugo template to support /list/ ~author~
+#+begin_note
+The ~author~ front-matter parameter is *always* exported as a
+TOML/YAML list.
+#+end_note
+If you already have Hugo posts with the ~author~ front-matter already
+set, it is possible that those values exist as single string values
+instead of lists.
+
+If so, you can use a snippet like the [[https://github.com/kaushalmodi/hugo-onyx-theme/blob/master/layouts/partials/author.html][~author.html~ partial]] used by
+this doc site to parse the ~author~ parameter correctly (whether it's
+a plain string or a list of strings).
+***** Forcing ~author~ to be a /string/ (alternative)
+If you are not comfortable with Hugo templates, you can alternatively
+force the ~author~ param to be a plain /string/ instead of a /list/,
+by setting it as a /custom/ front-matter parameter:
+#+begin_src org
+#+author:
+#+hugo_custom_front_matter: :author "FirstName LastName"
+#+end_src
+
+- Note :: Remember to set the default author name to nil if doing this,
+          by setting the ~#+author~ keyword (or ~:EXPORT_AUTHOR:~
+          property) to /nothing/.
+*** Hugo Summary Splitter
+:PROPERTIES:
+:EXPORT_FILE_NAME: hugo-summary-splitter
+:END:
+#+begin_description
+Manual splitting of Hugo summary.
+#+end_description
+In Hugo, the point of split between the summary and main content can
+be specified using the ~<!--more-->~ HTML snippet. See [[https://gohugo.io/content-management/summaries/#manual-summary-splitting][its
+documentation]] for more information.
+
+The recommended way to do that in the Org files you export using
+~ox-hugo~ is to use ~#+hugo: more~.
+
+Here's an example:
+#+begin_src org
+My post summary.
+,#+hugo: more
+My post content.
+#+end_src
+*** COMMENT Hyperlinks
+:PROPERTIES:
+:EXPORT_FILE_NAME: hyperlinks
+:END:
+**** External Links
+**** Internal Links
+** Enhancements
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "6.enhancements"
+:END:
+*** Auto-export on Saving
+:PROPERTIES:
+:EXPORT_FILE_NAME: auto-export-on-saving
+:END:
+Wouldn't it be awesome if you can see the live-preview of your
+Hugo-rendered post each time you saved your post in Org?
+
+Well.. you can do that with these steps, which apply to both
+/per-subtree/ and /per-file/ flows:
+**** First time setup
+***** Step {{{n}}}: Enable minor mode =org-hugo-auto-export-mode=
+This minor mode is disabled by default. It can be enabled separately
+at project level or file level.
+#+begin_note
+Note that once you update the ~.dir-locals.el~ file or file-local
+Variables as shown below, you will be prompted by Emacs to tell it if
+those settings are safe. Hit ~!~ in that prompt to says /yes/ and to
+save that choice for future Emacs sessions.
+#+end_note
+****** Enable for the whole project
+If you want to enable auto-exporting for the whole project, add this
+to the ~.dir-locals.el~ file in the project root:
+#+begin_src emacs-lisp
+(("content-org/"
+  . ((org-mode . ((eval . (org-hugo-auto-export-mode)))))))
+#+end_src
+Above assumes that the Org files are in the /"content-org/"/ directory
+(at any nested level in there) relative to that =.dir-locals.el= file:
+#+begin_example
+<HUGO_BASE_DIR>
+  ├── config.toml
+  ├── content
+  ├── content-org      <-- Org files in there
+  ├── static
+  ├── themes
+  └── .dir-locals.el
+#+end_example
+
+If you have the Org file directly in the project root or in the same
+directory as the ~.dir-locals.el~, add this in that file instead:
+#+begin_src emacs-lisp
+((org-mode . ((eval . (org-hugo-auto-export-mode)))))
+#+end_src
+
+Note that with above, ~org-hugo-auto-export-mode~ will be enabled for
+*all* Org files in the project. If you do not want that, see [[* Enable
+only for an Org file]].
+******* Enabling for multiple projects
+To enable auto-exporting for multiple projects, simply add similar
+=.dir-locals.el= files to the root directories of those projects. Just
+ensure that the relative Org file directories, like the
+/"content-org/"/ in above example, are set correctly.
+****** Enable only for an Org file
+Add below to the very-end of your Org file and *save the file*:
+#+begin_src org
+,* Footnotes
+,* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
+#+end_src
+*About Footnotes*: Here I recommend adding the =* Footnotes=
+ header[fn:5] too so that in case you add any Org footnotes, they go
+ directly to that section you created. Otherwise, Org will auto-create
+ a new /Footnotes/ heading *at the end of the file*.. and the /Local
+ Variables/ heading would then no longer be at the end of the file.
+****** Enable for the whole project except for few Org files
+1. Enable the auto-exporting for the whole project as explained [[* Enable for the whole project][above]].
+2. Then add below to the end of the Org file where you need to disable
+   the auto-exporting:
+   #+begin_src org
+   ,* Footnotes
+   ,* COMMENT Local Variables                          :ARCHIVE:
+   # Local Variables:
+   # eval: (org-hugo-auto-export-mode -1)
+   # End:
+   #+end_src
+   Note that this time, =org-hugo-auto-export-mode= is disabled to
+   override its enabled state in =.dir-locals.el=.
+
+#+begin_note
+After updating the state of =org-hugo-auto-export-mode= using either
+of the above methods, remember to:
+1. Save the Org file where you expect the auto-exporting to work.
+2. Revert the buffer (~M-x revert-buffer~). That will ensure that the
+   updated state for the =org-hugo-auto-export-mode= minor mode is
+   effective.
+#+end_note
+**** Steps that /might/ need to be taken every time
+Once the initial setup is done, the following steps apply to both
+blogging flows.
+***** Step {{{n}}}: Start the engines (Hugo Server)
+We start the =hugo server= so that we can see the live-preview each
+time the Org file is saved[fn:6].
+
+Run below in your Hugo site root (the directory that contains the site
+=config.toml=) to start the server:
+#+begin_example
+hugo server -D --navigateToChanged
+#+end_example
+***** Step {{{n}}}: Open your browser
+By default the site is served locally on port /1313/ on
+/localhost/. So the above step would have printed something like below
+at the end:
+#+begin_example
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+#+end_example
+
+So open your favorite browser pointing to that address.
+**** FINAL step that needs to be taken every time
+***** Step {{{n}}}: Save and be in awe
+If you are like me, you might not need to repeat steps 3 and 4 above,
+as you can leave the =hugo= server running in a separate terminal, and
+have a browser tab pinned to that localhost.
+
+So with that, have the Emacs and browser frames set up side-by-side,
+and edit your Org post.
+
+Hit =C-x C-s= and be in awe as the browser auto-refreshes to the
+*exact post you modified*!
+*** Org Capture Setup
+:PROPERTIES:
+:EXPORT_FILE_NAME: org-capture-setup
+:END:
+**** An Org Capture template
+If you do not want to manually type the =EXPORT_FILE_NAME= for each
+new post, here is an example Org Capture template can help:
+#+begin_src emacs-lisp
+;; Populates only the EXPORT_FILE_NAME property in the inserted headline.
+(with-eval-after-load 'org-capture
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("h"                ;`org-capture' binding + h
+                 "Hugo post"
+                 entry
+                 ;; It is assumed that below file is present in `org-directory'
+                 ;; and that it has a "Blog Ideas" heading. It can even be a
+                 ;; symlink pointing to the actual location of all-posts.org!
+                 (file+olp "all-posts.org" "Blog Ideas")
+                 (function org-hugo-new-subtree-post-capture-template))))
+#+end_src
+
+Above capture will auto-insert a heading prefixed with =TODO=. With
+=org-log-done= set to ='time=, on changing the =TODO= state to the
+=DONE= state (=C-c C-t=), a [[https://orgmode.org/manual/Special-properties.html][/Special Property/]] called =CLOSED= will be
+auto-inserted below the heading. Below is an example.
+#+begin_example
+,*** DONE Narrowing the Author column in Magit                       :org:log:
+CLOSED: [2017-12-18 Mon 16:36]
+#+end_example
+=ox-hugo= auto-sets the =date= field in the front-matter to the time
+stamp in that =CLOSED= property.
+**** Alternative way: Export Hugo posts to a /Page Bundle/ organization
+:PROPERTIES:
+:CUSTOM_ID: org-capture-template-page-bundle
+:END:
+=ox-hugo= has /first-class/ support for the [[https://scripter.co/hugo-leaf-and-branch-bundles/][Page Bundles]] style of
+content organization, introduced in Hugo v0.32.
+
+If you prefer to have the exported posts to use the Page Bundles style
+of content organization, define the same
+=org-hugo-new-subtree-post-capture-template= as below:
+#+begin_src emacs-lisp
+(defun org-hugo-new-subtree-post-capture-template ()
+  "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+  (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+         (fname (org-hugo-slug title)))
+    (mapconcat #'identity
+               `(
+                 ,(concat "* TODO " title)
+                 ":PROPERTIES:"
+                 ,(concat ":EXPORT_HUGO_BUNDLE: " fname)
+                 ":EXPORT_FILE_NAME: index"
+                 ":END:"
+                 "%?\n")                ;Place the cursor here finally
+               "\n")))
+#+end_src
+**** Alternative way to set the =date= field
+:PROPERTIES:
+:CUSTOM_ID: org-capture-template-export-date
+:END:
+If you prefer to not insert time-stamps using the =DONE=-state
+switching (i.e. you have =org-log-done= at its default value of
+=nil=), you can explicitly insert the =EXPORT_DATE= property too using
+the below definition of =org-hugo-new-subtree-post-capture-template=
+instead.
+#+begin_src emacs-lisp
+(defun org-hugo-new-subtree-post-capture-template ()
+  "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+  (let* (;; http://www.holgerschurig.de/en/emacs-blog-from-org-to-hugo/
+         (date (format-time-string (org-time-stamp-format :long :inactive) (org-current-time)))
+         (title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+         (fname (org-hugo-slug title)))
+    (mapconcat #'identity
+               `(
+                 ,(concat "* TODO " title)
+                 ":PROPERTIES:"
+                 ,(concat ":EXPORT_FILE_NAME: " fname)
+                 ,(concat ":EXPORT_DATE: " date) ;Enter current date and time
+                 ":END:"
+                 "%?\n")                ;Place the cursor here finally
+               "\n")))
+#+end_src
+*** Images in Content
+:PROPERTIES:
+:EXPORT_FILE_NAME: images-in-content
+:END:
+Conventionally any static content for a Hugo site, like images, PDF
+files, and other attachments are put in the site =static/=
+directory. Files in that directory are served at the site root when
+the Hugo publishes that site. So all the content in there can be
+accessed using the root prefix =/=. So a =static/foo.png= file can be
+accessed at =/foo.png=.
+
+More detail for this conventional approach can be found in the
+documentation for [[#references-to-files-in-the-static-directory][referencing files in static directory]].
+**** But.. what about putting images along with the content?
+OK, so with that short intro out of the way, =ox-hugo= supports
+putting the /attachment files/ in the same directory as the source Org
+files!
+
+In the below example, the left hand side shows the Org content and
+attachment file organization that the user would need to do
+manually. And the right hand side shows the structure that =ox-hugo=
+will generate in the =content/= and =static/= (the /conventional/ way
+discussed above) directories.
+
+#+begin_example
+./content-org
+├── images-in-content/
+│  ├── images-in-content.org
+│  │    * Post 1 (Org subtree)   →  ./content/images-in-content/post1.md
+│  │    * Post 2 (Org subtree)   →  ./content/images-in-content/post2.md
+│  ├── gnu.png                   →  ./static/ox-hugo/gnu.png
+│  └── org.png                   →  ./static/ox-hugo/org.png
+├── post3/
+│  ├── post3.org                 →  ./content/images-in-content/post3.md
+│  └── gnu-copy.png              →  ./static/ox-hugo/gnu-copy.png
+└── post4/
+   ├── post4.org                 →  ./content/images-in-content/post4.md
+   └── org-copy.png              →  ./static/ox-hugo/org-copy.png
+#+end_example
+
+Have a look at the
+[[https://raw.githubusercontent.com/kaushalmodi/ox-hugo/master/test/site/content-org/images-in-content/images-in-content.org][=content-org/images-in-content/images-in-content.org=]] file for an
+example of how to reference same-directory files (=gnu.png= and
+=org.png= in this example) in an Org file (/Hint: Just as you would do
+in a normal Org file/).
+
+The benefit of this /same-directory-attachment/ approach is that you
+don't need to use any directory prefix to reference those files
+(example: =[[file:gnu.png]]=). When =ox-hugo= exports those posts though,
+the images are auto-copied to the =static/ox-hugo/= directory[fn:1]
+and =/ox-hugo/= prefix is added to those file references in the
+exported Markdown files.
+
+Also as the image file references are valid within the Org file, you
+can see those images inline too!
+
+#+attr_html: :alt Screenshot of an Org mode buffer showing image in content
+[[file:/images/images-in-content-screenshot.png]]
+**** Examples
+Whether you prefer the subtree-based approach or file-based approach
+for writing your posts in Org, there are examples for both in the
+=ox-hugo= test suite:
+- [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content-org/images-in-content][Org source]]
+- [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content/images-in-content][Exported Markdown]]
+*** Replace Front-matter Keys
+:PROPERTIES:
+:EXPORT_FILE_NAME: replace-front-matter-keys
+:END:
+This is a =ox-hugo=-unique feature that allows you to replace any
+front-matter key name to accommodate for your favorite Hugo theme.
+
+#+hugo: more
+
+The syntax is:
+
+#+begin_src org
+#+hugo_front_matter_key_replace: oldkey1>newkey1 oldkey2>newkey2
+#+end_src
+
+or, if you want this to apply only for a specific Org tree:
+
+#+begin_src org
+:EXPORT_HUGO_FRONT_MATTER_KEY_REPLACE: oldkey1>newkey1 oldkey2>newkey2
+#+end_src
+
+Here are few use cases to better explain this feature.
+
+- Note :: I use property drawers in the below examples (used in
+          subtree-based flow). But the same would work for the Org
+          keyword equivalents in file-based flow too.
+
+**** Use =description= in Org file, but export as =summary=
+The /Description/ meta-data is standard in Org.
+
+Starting with *v0.55.0*, Hugo now supports ~summary~ as an inbuilt
+front-matter variable to directly specify the post /summary/. See Hugo
+commit [[https://github.com/gohugoio/hugo/commit/3a62d54745e2cbfda6772390830042908d725c71][3a62d547]] for details.
+
+#+begin_description
+~ox-hugo~ has also been supporting the ~description~ front-matter
+variable. So support for the new ~summary~ front-matter variable,
+which is essentially a duplicate of ~description~, is not added
+explicitly.
+#+end_description
+
+As the ~summary~ parameter does not have explicit support in
+~ox-hugo~, you would need to set it using the following property:
+
+#+begin_src org
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :summary "Here is my post summary."
+#+end_src
+
+But instead, you can simply add this at the top of your Org file:
+
+#+begin_src org
+#+hugo_front_matter_key_replace: description>summary
+#+end_src
+
+and then use ~description~ to do the same:
+
+#+begin_src org
+:EXPORT_DESCRIPTION: Here is my post summary.
+#+end_src
+
+It gets even better if you use the *description* Org Special Block:
+
+#+begin_src org
+,#+begin_description
+Here is my *post summary*.
+
+And this can be over /multiple lines/ too!
+,#+end_description
+#+end_src
+
+By doing above, you would be using /description/ in your Org source,
+but that would get exported as /summary/ in the Markdown! :smile:
+**** Use Org tags, but export as =keywords=
+Here's another scenario.. you painstakingly set Org tags for all your
+posts, and then you switch to a theme that calls refers to your =tags=
+as =keywords= instead!
+
+Captain =HUGO_FRONT_MATTER_KEY_REPLACE= is here to help you
+again! :sunglasses:
+
+Just add this at the top of your Org file:
+
+#+begin_src org
+#+hugo_front_matter_key_replace: tags>keywords
+#+end_src
+**** Swap =tags= and =categories=
+And one more example.. you call them /tags/, the Hugo theme calls them
+/categories/, and vice-versa.
+
+What do you do? ..
+
+#+begin_src org
+#+hugo_front_matter_key_replace: tags>categories categories>tags
+#+end_src
+**** Removing front-matter keys during export
+:PROPERTIES:
+:CUSTOM_ID: removing-keys
+:END:
+In the front-matter key replacement syntax:
+#+begin_src org
+#+hugo_front_matter_key_replace: oldkey>newkey
+#+end_src
+If ~newkey~ is a special string *nil*, ~oldkey~ will be _removed_ from
+the exported front-matter.
+
+For example, if you want to remove the ~aliases~ front-matter from
+your exported files (but want to leave them in your Org files), simply
+add this to the top of your Org files:
+#+begin_src org
+#+hugo_front_matter_key_replace: aliases>nil
+#+end_src
+**** Examples
+You can find a bunch of examples if you search for /"Replace
+front-matter keys"/ in {{{ox-hugo-test-file}}}.
+- Those examples are exported as {{{testtag(replace)}}}.
+*** Pandoc Citations
+:PROPERTIES:
+:EXPORT_FILE_NAME: pandoc-citations
+:END:
+The [[https://pandoc.org/][Pandoc]] Citations are prefixed with the *@* character. If the
+citation is ~@foo~, that particular /foo/ reference much be present in
+one of the specified bibliography files.
+
+#+begin_note
+Users need to have the ~pandoc~ and ~pandoc-citeproc~ binaries[fn:7]
+present in the ~PATH~.
+#+end_note
+
+When one or more citations are found by Pandoc, a top-level
+"References" section with matching references is automatically added
+at the very end of the post.
+**** Enabling
+Pandoc based citation parsing is enabled by setting the
+~#+hugo_pandoc_citations:~ keyword or ~:EXPORT_HUGO_PANDOC_CITATIONS:~
+subtree property to ~t~.
+
+#+begin_note
+If a post has neither [[* Nocite][~nocite~]] meta-data, nor valid citation keys
+(~@foo~), the Pandoc parsing step is skipped *even if* the above
+Pandoc Citations parsing option is enabled.
+#+end_note
+**** Bibliography
+Bibliography files (~example.bib~) are specified using the
+~#+bibliography:~ keyword or ~:EXPORT_BIBLIOGRAPHY:~ subtree
+property. *It is mandatory to specify at least one bibliography file.*
+
+Multiple comma-separated bibliography files can be
+specified.
+
+/Note that the path to these bibliography files is relative to the Org
+file directory./
+**** Nocite
+~nocite~ is a special Pandoc-specific meta-data which can be used to
+add extra citations even when they are not referenced in the post. It
+is set like any other list-type custom front-matter parameter
+(i.e. ~:LIST_PARAM '(ELEMENT1 ELEMENT2)~). See its example [[#pandoc-citations-example][below]].
+**** Link citations
+~link-citations~ is a special Pandoc-specific meta-data which, when
+set to ~true~, enables linking of the citations in the post body to
+the corresponding reference in the "References" section. It is set
+like any other single-value custom front-matter parameter
+(i.e. ~:LIST_PARAM VALUE~). See its example [[#pandoc-citations-example][below]].
+**** Specifying Citation Style Language (CSL)
+By default, Pandoc uses /Chicago Manual of Style author-date/ as the
+[[https://citationstyles.org/][Citation Style Language]] ([[https://pandoc.org/MANUAL.html#citations][ref]]). This can be customized by using the
+Pandoc-specific meta-data ~csl~ to specify the new CSL file. It is set
+like any other single-value custom front-matter parameter
+(i.e. ~:LIST_PARAM VALUE~). See its example [[#pandoc-citations-example][below]].
+
+/Note that the path to the CSL file is relative to the Org file
+directory./
+**** Removal of Pandoc-specific meta-data
+The Pandoc-specific meta-data mentioned above (~nocite~,
+~link-citations~ and ~csl~) are auto-deleted from the front-matter in
+the final Markdown file that's supposed to be used by Hugo.
+
+Those meta-data were added using HUGO_CUSTOM_FRONT_MATTER *only for
+Pandoc* to parse. Also there's no point leaking the user's
+bibliography and CSL file paths in the front-matter to be processed by
+Hugo.
+**** Example
+:PROPERTIES:
+:CUSTOM_ID: pandoc-citations-example
+:END:
+Here is a mini-example using Pandoc Citations:
+#+begin_src org
+,* Citations Example
+:PROPERTIES:
+:EXPORT_FILE_NAME: citations-example
+:EXPORT_HUGO_PANDOC_CITATIONS: t
+:EXPORT_BIBLIOGRAPHY: cite/bib/bib1.bib, cite/bib/bib2.bib
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :nocite '(@cite3 @cite4)
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :link-citations true
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :csl cite/csl/my-custom-csl-format.csl
+:END:
+Here is a test example file with an in-text citation where someone
+important says something important (e.g. @cite1). And here is
+another bit of blah with a footnote citation.[fn:1]
+
+,* Footnotes
+
+[fn:1] See [@cite2].
+#+end_src
+
+- Note :: Above example assumes ~cite/bib/bib1.bib~,
+          ~cite/bib/bib2.bib~ and ~cite/csl/my-custom-csl.format.csl~
+          to exist in the same directory containing that Org file.
+
+{{{test-search(citations)}}}
+
+Also see [[https://pandoc.org/MANUAL.html#citations][Pandoc Manual -- Citations]] for more details.
+**** How Pandoc Citations work
+1. ~ox-hugo~ first exports the Org file/subtree to a Markdown file as
+   usual.
+2. ~pandoc~ then expands the ~@foo~ citations in that file and
+   *rewrites* the whole Markdown file from the AST parsed by it.
+***** COMMENT
+/Below caveat shouldn't apply now. Pandoc output seems to be pretty
+much Blackfriday-compatiable now -- <2018-07-20 Fri>/
+
+-----
+
+/Mostly/ this would work fine.
+
+But you might end up with issues if the /Blackfriday/ workarounds
+implemented in ~ox-hugo~ exports get removed during the rewrite by
+Pandoc.
+
+To check if an issue you see is specific to Pandoc rewrites,
+- temporarily set the ~HUGO_PANDOC_CITATIONS~ option to ~nil~,
+- re-export using ~ox-hugo~, and
+- check if Hugo renders the final HTML correctly after that.
+
+If this original Markdown export is parsed fine by Hugo, open an Issue
+with all the details (reproducible Org snippet, failing Markdown
+output by Pandoc, etc.), and we can see if this is something that can
+be fixed.
+
+(Of course, open an issue whenever any ~ox-hugo~ export does not do
+things as you expect :smile:)
+*** Custom Front-matter Parameters
+:PROPERTIES:
+:EXPORT_FILE_NAME: custom-front-matter
+:END:
+#+begin_description
+Setting custom front-matter parameters which have no special meaning
+to Hugo, but are used in user's themes.
+#+end_description
+
+- To set a custom front-matter parameter in a subtree, use the
+  ~:EXPORT_HUGO_CUSTOM_FRONT_MATTER:~ property.
+- To set a custom front-matter parameter globally or for /per-file/
+  export flow, use the keyword ~#+hugo_custom_front_matter:~.
+
+For the rest of this section, the /property/ method for setting the
+custom front-matter will be used. But the same applies to the
+/keyword/ method too (except for property-specific
+~:EXPORT_HUGO_CUSTOM_FRONT_MATTER+:~ syntax -- See ~(org) Property
+Syntax~ for more).
+**** Single value parameters
+***** Syntax
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :key1 value1 :key2 value2
+:END:
+#+end_src
+
+Instead of appending all the key/value pairs on the same line, they
+can instead be broken down as shown below, by appending ~+~ to the
+property name.
+
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :key1 value1
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :key2 value2
+:END:
+#+end_src
+
+If using the /keyword/ method instead, the same would be written as:
+#+begin_src org
+,#+hugo_custom_front_matter: :key1 value1
+,#+hugo_custom_front_matter: :key2 value2
+#+end_src
+
+/The above method of appending keywords will work for the other cases
+below too./
+***** Example
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :feature true
+:END:
+#+end_src
+Above exports to TOML front-matter as:
+#+begin_src toml
+feature = true
+#+end_src
+**** List value parameters
+***** Syntax
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :key1 '(elem11 elem12) :key2 '(elem21 elem22)
+:END:
+#+end_src
+***** Example
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :animals '(dog cat "penguin" "mountain gorilla")
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :integers '(123 -5 17 1_234)
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :floats '(12.3 -5.0 -17E-6)
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :booleans '(true false)
+:END:
+#+end_src
+Above exports to TOML front-matter as:
+#+begin_src toml
+animals = ["dog", "cat", "penguin", "mountain gorilla"]
+integers = [123, -5, 17, 1_234]
+floats = [12.3, -5.0, -1.7e-05]
+booleans = [true, false]
+#+end_src
+**** Maps of single and list values
+Maps of keys with single or list values are supported.
+
+#+begin_note
+/Maps of maps/ or /TOML tables of tables/ are not supported. See [[*
+Front-matter Extra]] section for an alternative.
+#+end_note
+***** Syntax
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :key1 '((subkey11 . subval11) (subkey12 . (subelem121 subelem122))) :key2 '((subkey21 . subval21))
+:END:
+#+end_src
+***** Example
+#+begin_src org
+:PROPERTIES:
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :versions '((emacs . "27.0.50") (hugo . "0.48"))
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :header '((image . "projects/Readingabook.jpg") (caption . "stay hungry, stay foolish"))
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER+: :collection '((animals . (dog cat "penguin" "mountain gorilla")) (integers . (123 -5 17 1_234)) (floats . (12.3 -5.0 -17E-6)) (booleans . (true false)))
+:END:
+#+end_src
+Above exports to TOML front-matter as:
+#+begin_src toml
+[versions]
+  emacs = "27.0.50"
+  hugo = 0.48
+[header]
+  image = "projects/Readingabook.jpg"
+  caption = "stay hungry, stay foolish"
+[collection]
+  animals = ["dog", "cat", "penguin", "mountain gorilla"]
+  integers = [123, -5, 17, 1_234]
+  floats = [12.3, -5.0, -1.7e-05]
+  booleans = [true, false]
+#+end_src
+**** Front-matter Extra
+You would use this feature only if you need to use some front-matter
+that ~ox-hugo~ cannot translate from native Org keywords/properties to
+TOML/YAML front-matter. A good example is if you need to add custom
+/map of map/ type front-matter (or TOML /tables of tables/).
+
+The front-matter specified in this manner is appended *verbatim* to
+the *end* of the ~ox-hugo~ generated front-matter.
+***** TOML Extra front-matter
+Create a *toml* Org source block anywhere in your post, and add the
+special header args ~:front_matter_extra t~ to it.
+
+/The TOML front-matter is the default. So you do not need to set
+~:EXPORT_HUGO_FRONT_MATTER_FORMAT: toml~./
+#+begin_src org
+,* Post with TOML front-matter (default)
+:PROPERTIES:
+:EXPORT_FILE_NAME: extra-front-matter-toml
+:END:
+The contents of the ~#+begin_src toml :front_matter_extra t~ TOML
+block here will get appended to the TOML front-matter.
+,#+begin_src toml :front_matter_extra t
+[[foo]]
+  bar = 1
+  zoo = "abc"
+[[foo]]
+  bar = 2
+  zoo = "def"
+,#+end_src
+#+end_src
+***** YAML Extra front-matter
+Create a *yaml* Org source block anywhere in your post, and add the
+special header args ~:front_matter_extra t~ to it.
+
+#+begin_src org
+,* Post with YAML front-matter
+:PROPERTIES:
+:EXPORT_FILE_NAME: extra-front-matter-yaml
+:EXPORT_HUGO_FRONT_MATTER_FORMAT: yaml
+:END:
+The contents of the ~#+begin_src yaml :front_matter_extra t~ YAML
+block here will get appended to the YAML front-matter.
+,#+begin_src yaml :front_matter_extra t
+foo:
+  - bar: 1
+    zoo: abc
+  - bar: 2
+    zoo: def
+,#+end_src
+#+end_src
+***** Wrong format of extra front-matter
+The ~:front_matter_extra t~ source block LANG *has* to match your
+selected front-matter format.
+
+You cannot have a ~#+begin_src yaml :front_matter_extra t~ extra
+front-matter block if your front-matter format is YAML (and
+vice-versa).
+
+If that happens, that blocks gets exported neither to the Markdown
+body nor to the front-matter.
+**** More Examples
+You can find many other examples by looking at {{{testtag(custom-fm)}}}.
+*** Hugo Section
+:PROPERTIES:
+:EXPORT_FILE_NAME: hugo-section
+:END:
+#+begin_description
+Specifying the path under Hugo "content" to where the Markdown file
+should be exported.
+#+end_description
+**** Default
+By default, ~ox-hugo~ exports all the markdown files to
+~<HUGO_BASE_DIR>/content/posts/~.
+
+The "posts" sub-directory default is set in the
+~org-hugo-default-section-directory~ /defcustom/ variable which a user
+can customize.
+
+With the below Org file, the post will export to that "posts"
+sub-directory:
+
+#+begin_src org
+,#+hugo_base_dir: .
+
+,* My post
+:PROPERTIES:
+:EXPORT_FILE_NAME: my-post
+:END:
+This gets created in ~<HUGO_BASE_DIR>/content/posts/~.
+#+end_src
+
+Setting ~org-hugo-default-section-directory~ will affect
+globally---All your ~ox-hugo~ exported projects.
+**** Setting ~HUGO_SECTION~ per file
+:PROPERTIES:
+:CUSTOM_ID: hugo-section-keyword
+:END:
+If you need to override the default ~HUGO_SECTION~ only in an Org
+file, set the ~#+hugo_section~ keyword.
+#+begin_src org
+,#+hugo_base_dir: .
+,#+hugo_section: articles
+
+,* My post
+:PROPERTIES:
+:EXPORT_FILE_NAME: my-post
+:END:
+This gets created in ~<HUGO_BASE_DIR>/content/articles/~.
+#+end_src
+**** Setting ~HUGO_SECTION~ per subtree (only /per-subtree/ flow)
+:PROPERTIES:
+:CUSTOM_ID: hugo-section-property
+:END:
+If you need to override *both* the default ~HUGO_SECTION~ and the Org
+file specific ~#+hugo_section~ keyword, set the ~EXPORT_HUGO_SECTION~
+subtree property.
+#+begin_src org
+,#+hugo_base_dir: .
+,#+hugo_section: articles
+
+,* About
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: about
+:END:
+This gets created directly in ~<HUGO_BASE_DIR>/content/~.
+,* My post
+:PROPERTIES:
+:EXPORT_FILE_NAME: my-post
+:END:
+This gets created in ~<HUGO_BASE_DIR>/content/articles/~. As the
+~EXPORT_HUGO_SECTION~ property is not set, the ~#+hugo_section~
+keyword value applies.
+,* Notes
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: notes
+:END:
+,** My note
+:PROPERTIES:
+:EXPORT_FILE_NAME: my-note
+:END:
+This gets created in ~<HUGO_BASE_DIR>/content/notes/~.
+#+end_src
+
+The ~EXPORT_HUGO_SECTION~ does not need to be set in the same subtree
+as the post.
+
+The benefit of this is that you can have a parent subtree set the
+~EXPORT_HUGO_SECTION~ value, and then have all the children subtrees
+inherit that value. See the "Notes" subtree in above example to see
+this inheritance in action.
+**** Section path fragments (only /per-subtree/ flow)
+:PROPERTIES:
+:CUSTOM_ID: hugo-section-fragments
+:END:
+The default Org Property behavior is that the value of a property set
+in the /closest parent/ wins. See the below example to understand
+that.
+
+#+name: code__using_only_EXPORT_HUGO_SECTION
+#+caption: Using only ~EXPORT_HUGO_SECTION~
+#+begin_src org
+,* Main section
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: main
+:END:
+The parsed value of ~EXPORT_HUGO_SECTION~ property is ~"main"~ here.
+,** Sub section 1
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: sub
+:END:
+The parsed value of ~EXPORT_HUGO_SECTION~ property is ~"sub"~ here. The
+earlier set ~"main"~ value in the parent of this subtree is lost.
+
+I would have liked the parent value ~"main"~ to get auto-prepended here.
+,** Sub section 2
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: main/sub
+:END:
+The parsed value of ~EXPORT_HUGO_SECTION~ property is ~main/sub~ here.
+
+While this works, it gets a bit inconvenient to manually prefix the
+parent property value (~"main/"~ here) as the number of nesting levels
+increase.
+#+end_src
+
+But this is Emacs, and with the help of Emacs-Lisp and kind help from
+/Ihor Radchenko/ on the [[https://lists.gnu.org/r/emacs-orgmode/2018-10/msg00002.html][Org mailing list]], ~ox-hugo~ now has a solution
+to this!
+
+#+begin_verse
+>    /Introducing *~EXPORT_HUGO_SECTION*~* (with that asterisk)/ :tada:
+#+end_verse
+
+If a subtree has the ~EXPORT_HUGO_SECTION*~ property set, it is
+treated as a section path *fragment*. Such fragment properties will be
+concatenated with the *same* fragment properties further up in the
+parent hierarchy.
+
+The collective concatenated value of ~EXPORT_HUGO_SECTION*~ properties
+is further prefixed with the value of the good old ~HUGO_SECTION~
+keyword/property that's effective in that subtree.
+
+#+begin_note
+~EXPORT_HUGO_SECTION*~ *has* to be set as a subtree property. There is
+no Org keyword equivalent for this, because this property is designed
+only for /per-subtree/ flow (and it makes sense only for this flow).
+#+end_note
+
+So the final *section path* looks like this:
+#+begin_example
+<HUGO_BASE_DIR>/content/<HUGO_SECTION>/<concatenated values of EXPORT_HUGO_SECTION*>/
+                        └─────────────────────  section path  ──────────────────────┘
+#+end_example
+
+See the below example to get further clarity on this logic.
+
+#+name: code__using_hugo_section_fragments
+#+caption: Using ~EXPORT_HUGO_SECTION*~ in conjunction to ~EXPORT_HUGO_SECTION~
+#+begin_src org
+,* Main section
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: main
+:END:
+The /section path/ derived at this level is ~"main/"~.
+,** Sub section 1
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: sub1
+:END:
+The /section path/ derived at this level is ~"main/sub1/"~.
+,*** Sub section 1.1
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: p1
+:END:
+The /section path/ derived at this level is ~"main/sub1/p1/"~.
+,*** Sub section 1.2
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: p2
+:END:
+The /section path/ derived at this level is ~"main/sub1/p2/"~.
+,** Sub section 2
+:PROPERTIES:
+:EXPORT_HUGO_SECTION*: sub2
+:END:
+The /section path/ derived at this level is ~"main/sub2/"~.
+#+end_src
+*** Inlined SVGs
+:PROPERTIES:
+:EXPORT_FILE_NAME: inlined-svgs
+:END:
+Inlined SVGs are supported by a new HTML attribute introduced by
+~ox-hugo~: *inlined*.
+
+Simply add ~#+attr_html: :inlined t~ above the SVG file link.
+
+Here's an example of inlining an SVG:
+
+#+begin_src org
+,#+caption: An SVG with hyperlink
+,#+attr_html: :inlined t
+[[file:../test/site/content-org/images/svg-with-hyperlinks.svg]]
+#+end_src
+
+.. which results in:
+
+#+caption: An SVG with hyperlink
+#+attr_html: :inlined t
+[[file:../test/site/content-org/images/svg-with-hyperlinks.svg]]
+*** Chinese Support
+:PROPERTIES:
+:EXPORT_FILE_NAME: chinese-support
+:END:
+**** Auto-unwrapping of lines with multi-byte characters
+This issue came up on this [[https://emacs-china.org/t/ox-hugo-auto-fill-mode-markdown/9547][emacs-china thread]] .. the issue was that
+when consecutive lines in Org source had Chinese characters, in HTML
+the last character on one line got separated from the first character
+on the next line by a space, which is not grammatically correct in
+Chinese.
+
+So in such cases, those lines must be unwrapped _without any spaces_
+to separate those characters across the lines.
+
+That of course would not be grammatically correct in English and even
+other languages with multi-byte characters (few examples: Hindi,
+Gujarati).
+
+So that line-unwrapping _with space removal_ is done *only if*,
+1. The /locale/ is [[https://www.gnu.org/software/gettext/manual/html_node/Locale-Environment-Variables.html][auto-detected]] to be Chinese via environment
+   variables /LANGUAGE/, /LC_ALL/ or /LANG/, or
+2. The /locale/ is *manually set* to Chinese by setting it to *zh*
+   using ~#+hugo_locale:~ keyword (or ~EXPORT_HUGO_LOCALE~ property).
+*** COMMENT Hugo Bundle
+:PROPERTIES:
+:EXPORT_FILE_NAME: hugo-bundle
+:END:
+#+begin_description
+Specifying the [[https://gohugo.io/content-management/page-bundles/][Hugo Page Bundle]] directory name containing the
+~_index.md~ (/branch/ bundle index file) or ~index.md~ (/page/ bundle
+index file).
+#+end_description
+**** More Reading
+- [[https://scripter.co/hugo-leaf-and-branch-bundles/][scripter.co -- Hugo: Leaf and Branch Bundles]]
+** Meta
+:PROPERTIES:
+:EXPORT_HUGO_MENU: :menu "7.meta"
+:END:
+*** Search
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: search
+:EXPORT_HUGO_LAYOUT: search
+:EXPORT_HUGO_MENU: :menu "0.search" :title "Click to Search"
+:EXPORT_HUGO_CUSTOM_FRONT_MATTER: :sitemap '((priority . 0.1))
+:EXPORT_HUGO_OUTPUTS: html json
+:END:
+Results from static site search implemented using /Fusejs/, /jquery/
+and /mark.js/. -- [[https://gist.github.com/eddiewebb/735feb48f50f0ddd65ae5606a1cb41ae][Source]]
+*** Meta Features
+:PROPERTIES:
+:EXPORT_FILE_NAME: meta-features
+:END:
+- [X] Extensive tests! -- [[https://github.com/kaushalmodi/ox-hugo/tree/master/test/site/content-org][test/site/content-org]] (=make test=)
+- [X] Travis CI Integration -- Checks with emacs versions starting from
+  24.4->25.2, with the latest stable version of =org-plus-contrib=.
+- [X] [[https://ox-hugo.scripter.co][Documentation site]] -- Generated using =ox-hugo= itself (=make
+  doc_md hugo_doc=).
+- [X] GitHub repo files: [[https://github.com/kaushalmodi/ox-hugo/blob/master/README.org][~README.org~]] and [[https://github.com/kaushalmodi/ox-hugo/blob/master/CONTRIBUTING.org][~CONTRIBUTING.org~]] --
+  Generated using =ox-org= (=make doc_gh=).
+- [X] [[../test/][Test site]] -- Regenerated after each commit to this repo (=make
+  test=).
+- [X] Passes =make test= and generates documentation using =make doc=
+  in [[https://termux.com/][Termux]] app on Android too.
+- [X] Passes =checkdoc= and =package-lint= ([[https://github.com/purcell/package-lint/issues/89][/almost/]]).
+*** Requirements
+:PROPERTIES:
+:EXPORT_FILE_NAME: requirements
+:END:
+**** Requirements for doc contributor
+:PROPERTIES:
+:CUSTOM_ID: doc_contributor_reqs
+:END:
+#+begin_note
+- Minimum required ~hugo~ version: {{{min_hugo_version}}}
+#+end_note
+**** Requirements for code contributor
+:PROPERTIES:
+:CUSTOM_ID: code_contributor_reqs
+:END:
+#+begin_note
+- Org mode version used for tests: {{{org_mode_version}}}
+- Minimum required ~hugo~ version: {{{min_hugo_version}}}
+- ~pandoc~ and ~pandoc_site~ version {{{pandoc_version}}}
+#+end_note
+
+- About Pandoc :: /While the end-user does not need Pandoc installed on
+  their machine, a code contributor needs to have both ~pandoc~ and
+  ~pandoc-citeproc~ installed[fn:7]. These are needed for ~make md~
+  and ~make -j1 test~ steps to work as they use/test the [[*Pandoc Citations][Pandoc
+  Citations]] feature too./
+*** Contributing Guide
+:PROPERTIES:
+:EXPORT_FILE_NAME: contributing-guide
+:END:
+#+include: "./ox-hugo-manual.org::#note-to-future-contributors" :only-contents t
+*** Debug
+:PROPERTIES:
+:EXPORT_FILE_NAME: debug
+:END:
+#+include: "./ox-hugo-manual.org::#debug" :only-contents t
+*** Test
+:PROPERTIES:
+:EXPORT_FILE_NAME: test
+:END:
+#+include: "./ox-hugo-manual.org::#test" :only-contents t
+* Footnotes
+
+[fn:7] The Pandoc Citations feature was last tested on
+<2019-01-03 Thu> with Pandoc version {{{pandoc_version}}}. If you are
+running an older version, the quickest way to install might be to
+simply download the latest release archive from [[https://github.com/jgm/pandoc/releases][Pandoc releases]],
+extract it and put the ~pandoc~ and ~pandoc-citeproc~ binaries in one
+of the directories in your /PATH/.
+
+[fn:6] If you are still using a Hugo version older than 0.25, update
+now! -- Because that version added support for the awesome
+=--navigateToChanged= switch.
+
+[fn:5] I am assuming that the value of ~org-footnote-section~ in your
+Emacs setup is the default value ~"Footnotes"~. If it's not, change
+the "Footnotes" heading in that example accordingly.
+
+[fn:4] The ~TODO~ / ~DONE~ keyword is used in this example as they are
+the defaults in ~org-todo-keywords~. If you have customized your
+~org-todo-keywords~, or are customizing them using other means like
+the per-file ~#+seq_todo~ setting, use those instead. Use your custom
+"DONE" keyword (it should be a part of ~org-done-keywords~) instead of
+the default ~DONE~. And similarly, use your custom "TODO" keyword
+instead of the default ~TODO~ (ensure that it is *not* in
+~org-done-keywords~).
+
+[fn:3] This requires MathJax. [[https://github.com/kaushalmodi/hugo-bare-min-theme/blob/master/layouts/partials/mathjax.html][Here]] is a MathJax configuration that is
+tested to work for equation referencing (referencing =\label{}=
+labeled equations using =\ref{}=). The same is used on the =ox-hugo=
+test site too.
+
+[fn:2] For only subtree-based exports, you can set that special tag as
+Org style tags too. Example: ~* I don't want to export this post
+:no_no_dont_export:~.. and don't forget to add that tag to
+=org-export-exclude-tags= too!
+
+[fn:1] To understand why the attachment files get copied to the
+=static/ox-hugo/= directory, have a look at the documentation for
+{{{doc(image-links,#references-to-files-outside-the-static-directory,referencing
+files outside static directory)}}}.
+* COMMENT Local Variables                                           :ARCHIVE:
+# Local Variables:
+# eval: (toggle-truncate-lines 1)
+# eval: (org-hugo-auto-export-mode)
+# End:

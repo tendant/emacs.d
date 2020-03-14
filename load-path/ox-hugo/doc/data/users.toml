@@ -1,0 +1,396 @@
+# [unique_key] # This can be any unique string (would suffice to set this to your GitHub/Gitlab/etc. username)
+#   author = "Foo Bar" (*mandatory*)
+#   source = "Git repo of your site; needs to have the Org source" (*mandatory*)
+#   site = "https://your.site/" (*mandatory*)
+#
+#   org_dir = "Dir in the repo containing Org source" (default to "" if not set i.e. Org source file is directly in your repo root)
+#   branch = "git branch containing Org source" (defaults to "master" if not set)
+#
+# Misc other keys:
+#
+#   org_src_desc = "Org file" (set this if the link in 'source' key points to just an Org file.
+#
+# Extra keys that might apply if not hosting your repo on GitHub or Gitlab:
+#
+#   hosting = "gitea"
+#     - Set hosting to "gitea" only if your repo is hosted on a Gitea instance, whether
+#       or not you have the Swagger API enabled.
+#   api = "gitea" or "micro.json" (shouldn't be set if source is in a GitHub or Gitlab repo)
+#     - Set api to "gitea" if you host your repo on a Gitea instance
+#       *and* you have the Gitea Swagger v1 API enabled.
+#     - Set api to "micro.json" if:
+#       - your repo is neither on GitHub or Gitlab, and
+#       - if your repo is on Gitea, but you don't have its API enabled, and
+#       - you have added this theme component: https://github.com/kaushalmodi/hugo-micro-json, and
+#       - added "Micro" custom output format to your "home" page Kind
+#         (see instructions in that theme's README.org).
+
+[00-ox-hugo-doc]
+  author = "Kaushal Modi"
+  source = "https://github.com/kaushalmodi/ox-hugo"
+  site = "https://ox-hugo.scripter.co/"
+  org_dir = "doc"
+
+[01-ox-hugo-test]
+  author = "Kaushal Modi"
+  source = "https://github.com/kaushalmodi/ox-hugo"
+  site = "https://ox-hugo.scripter.co/test/"
+  org_dir = "test/site/content-org"
+
+[02-scripter-co]
+  author = "Kaushal Modi"
+  source = "https://gitlab.com/kaushalmodi/kaushalmodi.gitlab.io"
+  site = "https://scripter.co/"
+  org_dir = "content-org"
+
+[oscarnajera]
+  author = "Óscar Nájera"
+  source = "https://gitlab.com/Titan-C/titan-c.gitlab.io"
+  site = "https://blog.oscarnajera.com/"
+
+[punchagan]
+  author = "Puneeth Chaganti"
+  source = "https://github.com/punchagan/punchagan.muse-amuse.in"
+  site = "https://punchagan.muse-amuse.in/"
+  org_dir = "content-org"
+
+[thatteidlikaalsoup]
+  author = "Puneeth Chaganti"
+  source = "https://github.com/thatte-idli-kaal-soup/thatteidlikaalsoup.team"
+  site = "https://thatteidlikaalsoup.team/"
+  org_dir = "content-org"
+
+[lambdaloop]
+  author = "Pierre Karashchuk"
+  source = "https://github.com/lambdaloop/blog"
+  site = "http://lambdaloop.com/"
+  org_dir = "blog-org"
+
+[shimmy]
+  author = "Shimmy Xu"
+  source = "https://github.com/shimmy1996/blog"
+  site = "https://www.shimmy1996.com/"
+  org_dir = "org"
+
+[zzamboni]
+  author = "Diego Zamboni"
+  source = "https://github.com/zzamboni/zzamboni.org"
+  site = "https://zzamboni.org/"
+  org_dir = "content-org"
+
+[dmolina]
+  author = "Daniel Molina"
+  source = "https://github.com/dmolina/my-blog"
+  site = "https://dmolina.github.io/"
+  org_dir = "content_org"
+
+[shanesveller]
+  author = "Shane Sveller"
+  source = "https://github.com/shanesveller/shanesveller-dot-com"
+  site = "https://www.shanesveller.com/"
+
+[edkolev]
+  author = "Evgeni Kolev"
+  source = "https://github.com/edkolev/edkolev.github.io"
+  site = "https://evgeni.io/"
+  org_dir = "content-org"
+  branch = "source"
+
+[vinurs]
+  author = "vinurs"
+  source = "https://github.com/vinurs/vinurs.github.io"
+  site = "https://vinurs.me/"
+  org_dir = "content-org"
+  branch = "source"
+
+[cf-learn]
+  author = "Diego Zamboni"
+  source = "https://github.com/zzamboni/cf-learn.info"
+  site = "https://cf-learn.info/"
+  org_dir = "content-org"
+
+[xianmin]
+  author = "Xianmin Chen"
+  source = "https://github.com/xianmin/xianmin.org"
+  site = "https://www.xianmin.org/"
+  org_dir = "orgpost"
+
+# Mon Feb 25 22:40:44 EST 2019 - kmodi
+# http://en.xianmin.org/ found to be inactive as of today.
+# [xianmin-en]
+#   author = "Xianmin Chen"
+#   source = "https://coding.net/u/xianmin/p/en.xianmin.org/git"
+#   site = "http://en.xianmin.org/"
+#   org_dir = "orgpost"
+
+[use-package]
+  author = "John Wiegley"
+  source = "https://github.com/jwiegley/use-package"
+  site = "https://jwiegley.github.io/use-package/"
+
+[aaronbaugher]
+  author = "Aaron Baugher"
+  source = "https://aaron.baugher.biz/text/blog.org" # Site source not in a repo
+  site = "https://aaron.baugher.biz/"
+  org_src_desc = "Org file"
+
+# The domain was found unmaintained (expired certificate) as of today -- Fri Jun 28 09:03:07 EDT 2019 - kmodi
+# [lakedenman]
+#   author = "Lake Denman"
+#   source = "https://github.com/ldenman/blog"
+#   site = "https://lakedenman.com/blog/"
+
+[kengrimes]
+  author = "Ken Grimes"
+  source = "https://www.kengrimes.com/gitweb/?p=kengrimes.com/content.git"
+  site = "https://www.kengrimes.com/"
+
+[emacsun]
+  author = "emacsun"
+  source = "https://github.com/emacsun/ZHugo"
+  site = "https://www.zcl.space/"
+  org_dir = "content_org"
+
+[cadadr]
+  author = "Göktuğ Kayaalp"
+  source = "https://github.com/cadadr/elisp"
+  site = "https://cadadr.github.io/elisp/index.html"
+
+[jackbaty]
+  author = "Jack Baty"
+  source = "https://github.com/jackbaty/baty.net-hugo"
+  site = "https://www.baty.net/"
+  org_dir = "org-content"
+
+[tsdye1]
+  author = "Thomas S. Dye"
+  source = "https://github.com/tsdye/online-web-sites"
+  site = "http://www.tsdye.online/an-archaeologist-reads/"
+  org_dir = "an-archaeologist-reads"
+
+[dschrempf]
+  author = "Dominik Schrempf"
+  source = "https://github.com/dschrempf/blog"
+  site = "https://dschrempf.github.io/"
+  org_dir = "org"
+
+[colelyman]
+  author = "Cole Lyman"
+  source = "https://github.com/Colelyman/colelyman-hugo"
+  site = "https://colelyman.com"
+  org_dir = "site/content-org"
+
+[zmaas]
+  author = "Zachary Maas"
+  source = "https://github.com/zmaas/zmaas.github.io"
+  site = "https://abstractlambda.com/"
+  org_dir = "hugo"
+
+[maciejkula]
+  author = "Maciej Kula"
+  source = "https://github.com/maciejkula/hugo-blog"
+  site = "https://maciejkula.github.io"
+
+[petercheng00]
+  author = "Peter Cheng"
+  source = "https://github.com/petercheng00/personal"
+  site = "http://petercheng.net/"
+  org_dir = "website/v2/petercheng"
+
+[somssi]
+  author = "Somssi"
+  source = "https://github.com/somssi/hugo-somssi"
+  site = "https://somssi.github.io/"
+  org_dir = "content-org"
+
+[palikar]
+  author = "Stanislav Arnaudov"
+  source = "https://github.com/palikar/blog-hugo-files"
+  site = "https://palikar.github.io/"
+  org_dir = "org"
+
+[stingh711]
+  author = "stingh711"
+  source = "https://github.com/stingh711/blog-hugo"
+  site = "https://stingh711.github.io/"
+
+[mclearc]
+  author = "Colin McLear"
+  source = "https://github.com/mclearc/colinmclear.net"
+  site = "https://www.colinmclear.net/"
+
+[steventammen]
+  author = "Steven Tammen"
+  source = "https://github.com/StevenTammen/steventammen.com"
+  site = "https://www.steventammen.com/"
+  org_dir = "org"
+
+[takaxp]
+  author = "Takaaki Ishikawa"
+  source = "https://github.com/takaxp/blog"
+  site = "https://pxaka.tokyo/blog/"
+  org_dir = "entries"
+
+[ryancummings]
+  author = "Ryan Cummings"
+  source = "https://github.com/ryancummings/blog"
+  site = "http://blog.ryanwcummings.com/"
+  org_dir = "content-org"
+
+[taipapamotohus]
+  author = "taipapamotohus"
+  source = "https://github.com/taipapamotohus/Taipapablog"
+  site = "https://taipapamotohus.com/"
+
+[grugrut]
+  author = "grugrut"
+  source = "https://github.com/grugrut/til"
+  site = "https://grugrut.github.io/til/"
+  org_dir = "draft"
+
+[alexmurray]
+  author = "Alex Murray"
+  source = "https://github.com/alexmurray/ubuntu-security-podcast"
+  site = "https://ubuntusecuritypodcast.org/"
+  org_dir = "org"
+
+[vdemeester]
+  author = "Vincent Demeester"
+  source = "https://github.com/vdemeester/blog"
+  site = "https://vincent.demeester.fr/"
+  org_dir = "content-org"
+
+[emacsomancer1]
+  author = "Benjamin Slade"
+  source = "https://gitlab.com/emacsomancer/neobabbage_files"
+  site = "https://babbagefiles.xyz"
+  org_dir = "content-org"
+
+[emacsomancer2]
+  author = "Benjamin Slade"
+  source = "https://gitlab.com/emacsomancer/academic-bslade"
+  site = "https://slade.jnanam.net/"
+  org_dir = "content-org"
+
+[flowsta]
+  author = "Adolfo Antón Bravo"
+  source = "https://git.fsfe.org/adolflow/infotics.es"
+  site = "https://infotics.es"
+  hosting = "gitea"
+  api = "gitea"
+
+[emacscast]
+  author = "Rakhim Davletkaliyev"
+  source = "https://github.com/freetonik/emacscast.org"
+  site = "https://emacscast.org/"
+  org_dir = "content-org"
+
+[rakhim]
+  author = "Rakhim Davletkaliyev"
+  source = "https://github.com/freetonik/rakhim.org"
+  site = "https://rakhim.org/"
+  org_dir = "content-org"
+
+[elbaulp]
+  author = "Alejandro Alcalde"
+  source = "https://github.com/elbaulp/algui91-hugo/"
+  site = "https://elbauldelprogramador.com/en/"
+  org_dir = "content-org"
+
+[amca01]
+  author = "Alasdair McAndrew"
+  source = "https://github.com/amca01/whats_this"
+  site = "https://numbersandshapes.net/"
+  org_dir = "content-org"
+
+[BloggerBust]
+  author = "BloggerBust"
+  source = "https://github.com/BloggerBust/bloggerbust.ca"
+  site = "https://bloggerbust.ca/"
+  org_dir = "content-org"
+
+[semgilo]
+  author = "semgilo"
+  source = "https://github.com/semgilo/blog"
+  site = "http://www.lanhuzi.com/"
+  org_dir = "content-org"
+
+[derui]
+  author = "derui"
+  source = "https://github.com/derui/blog"
+  site = "https://blog.deltabox.site/"
+  org_dir = "content_org"
+
+[jarss]
+  author = "jarss"
+  source = "https://github.com/jarss/TAONAW"
+  site = "https://jarss.github.io/TAONAW/"
+
+[jethrokuan]
+  author = "Jethro Kuan"
+  source = "https://github.com/jethrokuan/braindump"
+  site = "https://braindump.jethro.dev/"
+  org_dir = "org"
+
+# The github repo didn't exist as of today -- Fri Jun 28 09:00:12 EDT 2019 - kmodi
+# [dkensinger]
+#   author = "Dave Kensinger"
+#   source = "https://github.com/dkensinger/my-hugo-blog"
+#   site = "https://dave-2-1.netlify.com"
+
+[justinbarclay]
+  author = "Justin Barclay"
+  source = "https://github.com/justinbarclay/-_-"
+  site = "https://justinbarclay.me"
+
+[bebound]
+  author = "KK"
+  source = "https://github.com/bebound/hugo_blog"
+  site = "https://blog.fromkk.com/"
+
+[emilioj]
+  author = "Emilio J. Padrón González"
+  source = "https://github.com/emilioj/homepage"
+  site = "http://gac.udc.es/~emilioj/"
+  org_dir = "content_org"
+
+[cdodev]
+  author = "Ben Ford"
+  source = "https://github.com/cdodev/commandodev.com"
+  site = "https://commandodev.com/"
+
+[lowkey2046]
+  author = "lowkey2046"
+  source = "https://github.com/lowkey2046/notfound.cn"
+  site = "https://notfound.cn/"
+  org_dir = "content-org"
+
+[drdavis]
+  author = "Doug Davis"
+  source = "https://github.com/drdavis/ddavis.io"
+  site = "https://ddavis.io/"
+
+[ctanas]
+  author = "Claudiu Tănăselia"
+  source = "https://github.com/ctanas/parsec.ro"
+  site = "https://www.parsec.ro"
+  org_dir = "content-org"
+
+[oolon-coloophid-ox-hugo-blog]
+  author = "Ian Hocking"
+  source = "https://github.com/OolonColoophid/blog"
+  site = "https://ianhocking.com"
+  org_dir = ""
+
+# []
+#   author = ""
+#   source = ""
+#   site = ""
+#   org_dir = "content-org"
+
+# []
+#   author = ""
+#   source = ""
+#   site = ""
+#   org_dir = "specify this if Org file not directly in repo root dir"
+#   branch = "specify this if not master"
