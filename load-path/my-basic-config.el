@@ -545,8 +545,8 @@ Returns nil if no differences found, 't otherwise."
 ;; Split window vertically
 ;; (split-window-right) ; interactive command to open a new buffer and split it vertically.
 (setq
-   split-width-threshold 0
-   split-height-threshold nil)
+   split-width-threshold 160
+   split-height-threshold 160)
 
 (message "Loaded my-basic-config.el")
 )
