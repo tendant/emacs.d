@@ -542,5 +542,11 @@ Returns nil if no differences found, 't otherwise."
 ;; https://emacs.stackexchange.com/questions/598/how-do-i-prevent-extremely-long-lines-making-emacs-slow
 (setq-default bidi-display-reordering nil)
 
+;; Split window vertically
+;; (split-window-right) ; interactive command to open a new buffer and split it vertically.
+(setq
+   split-width-threshold 0
+   split-height-threshold nil)
+
 (message "Loaded my-basic-config.el")
 )
