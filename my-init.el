@@ -51,6 +51,7 @@
                       flycheck
                       flycheck-clojure
                       flycheck-rust
+                      go-mode
                       graphql-mode
                       graphviz-dot-mode
                       helm
@@ -73,6 +74,7 @@
                       pyim
                       pyim-basedict
                       restclient
+                      rego-mode
                       rg
                       rust-mode
                       ;; rust-cargo
