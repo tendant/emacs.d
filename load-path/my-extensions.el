@@ -427,3 +427,12 @@ be passed in via a prefix arg."
 ;; exec-path-from-shell
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
+
+;; golang go-mode
+(add-hook 'go-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'gofmt-before-save)
+            (setq-default)
+            (setq tab-width 2)
+            (setq standard-indent 2)
+            (setq indent-tabs-mode nil)))
