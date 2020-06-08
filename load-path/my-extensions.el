@@ -431,8 +431,10 @@ be passed in via a prefix arg."
 ;; golang go-mode
 (add-hook 'go-mode-hook
           (lambda ()
+            ;; golang prefer to use gofmt, instead of customized style
             (add-hook 'before-save-hook 'gofmt-before-save)
-            (setq-default)
-            (setq tab-width 2)
-            (setq standard-indent 2)
-            (setq indent-tabs-mode nil)))
+            ;; (setq-default)
+            ;; (setq tab-width 2)
+            ;; (setq standard-indent 2)
+            ;; (setq indent-tabs-mode nil)
+            ))
