@@ -434,7 +434,11 @@ be passed in via a prefix arg."
             ;; golang prefer to use gofmt, instead of customized style
             (add-hook 'before-save-hook 'gofmt-before-save)
             ;; (setq-default)
-            ;; (setq tab-width 2)
+            (setq tab-width 4)
             ;; (setq standard-indent 2)
             ;; (setq indent-tabs-mode nil)
             ))
+
+(require 'valign)
+
+(require 'my-golang)

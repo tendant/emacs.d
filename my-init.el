@@ -40,6 +40,7 @@
                       company
                       company-ansible
                       company-web
+                      company-lsp
                       counsel
                       dart-mode
                       default-text-scale
@@ -60,6 +61,8 @@
                       js2-mode
                       rjsx-mode
                       ledger-mode
+                      lsp-mode
+                      lsp-ui
                       magit
                       magit-svn
                       markdown-mode

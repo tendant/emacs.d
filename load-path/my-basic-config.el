@@ -548,5 +548,13 @@ Returns nil if no differences found, 't otherwise."
    split-width-threshold 260
    split-height-threshold 260)
 
+;; make company-mode to be compatible with TAB
+;; https://github.com/company-mode/company-mode/issues/94#issuecomment-365701801
+(global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+
+;; disable defautl font setup dialog
+(if mac-osx-p
+    (global-set-key (kbd "s-t") nil))
+
 (message "Loaded my-basic-config.el")
 )
