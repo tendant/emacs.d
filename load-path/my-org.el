@@ -23,7 +23,7 @@
     (setq org-x11idle-program-name 'xprintidle))
 
 (setq org-agenda-files (append '("~/.emacs.d/gcal.org"
-                                 "~/.emacs.d/gcal-wish.org")
+                                 "~/.emacs.d/gcal-work.org")
                                (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
 
 (defun org-all ()
@@ -37,7 +37,7 @@
   (interactive)
   (setq org-agenda-files 
         (list
-         "~/.emacs.d/org-gtd/wish.org"
+         "~/.emacs.d/org-gtd/work.org"
          ))
   (org-agenda-redo))
 
@@ -140,7 +140,7 @@
                "* IDEA %T %?\n")
               ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
                "* %?\n%U\n")
-              ("w" "work" entry (file+headline "~/.emacs.d/org-gtd/wish.org" "Tasks")
+              ("w" "work" entry (file+headline "~/.emacs.d/org-gtd/work.org" "Tasks")
                "* TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
               ;; ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
               ;;  "* MEETING with %? :MEETING:\n%U")
