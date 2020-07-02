@@ -83,6 +83,7 @@
                       ;; rust-cargo
                       flycheck-rust
                       skeletor
+                      smart-input-source
                       smtpmail-multi
                       solarized-theme
                       solidity-mode

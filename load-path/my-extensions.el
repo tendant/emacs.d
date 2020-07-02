@@ -442,3 +442,26 @@ be passed in via a prefix arg."
 (require 'valign)
 
 (require 'my-golang)
+
+
+;;; configure smart-input-source, require 'smart-input-source
+(when mac-osx-p
+  ;; set the english input source
+  (setq smart-input-source-english
+        "com.apple.keylayout.US")
+  ;; set the default other language input source for all buffer
+  (setq-default smart-input-source-other
+                "com.apple.inputmethod.SCIM.ITABC")
+
+  ;; enable the /respect/ mode
+  (smart-input-source-global-respect-mode t)
+
+  ;; enable the /follow context/ and /inline english/ mode for all buffers
+  (smart-input-source-global-follow-context-mode t)
+  (smart-input-source-global-inline-english-mode t)
+
+  ;; enable the /follow context/ and /inline english/ mode for specific buffers
+  ;; :hook
+  ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
+  ;;  ((text-mode prog-mode) . smart-input-source-inline-english-mode))
+  )
