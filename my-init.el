@@ -71,6 +71,7 @@
                       org
                       org-gcal
                       org-plus-contrib
+                      org-roam
                       ;; ox-hugo
                       ox-reveal
                       plantuml-mode
@@ -88,6 +89,7 @@
                       solarized-theme
                       solidity-mode
                       swift-mode
+                      vterm
                       w3m
                       web-mode
                       ws-butler
