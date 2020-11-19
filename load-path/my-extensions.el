@@ -340,7 +340,7 @@ be passed in via a prefix arg."
           (insert "\n"))))))
 
 (require 'my-helm)
-;; configuration for ivy
+;; configuration for ivy, swiper and counsel
 (ivy-mode 1)
 (setq ivy-use-selectable-prompt t) ; make the prompt line selectable
 (setq ivy-use-virtual-buffers t)
@@ -361,6 +361,8 @@ be passed in via a prefix arg."
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+(require 'my-buffers)
 
 (require 'my-im)
 
