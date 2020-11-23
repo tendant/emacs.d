@@ -12,6 +12,9 @@
 ;; (setq mu4e-get-mail-command "mbsync -aV")  ; using mbsync to fetch mail
 (setq mu4e-update-interval 300) ; update every 300 seconds
 
+;; mbsync error: UID is beyond highest assigned UID
+(setq mu4e-change-filenames-when-moving t)
+
 ;; Set mu4e as default mail agent
 (setq mail-user-agent 'mu4e-user-agent)
 
@@ -58,10 +61,14 @@
           :leave-func (lambda () (mu4e-message "Leaving context: account1@gmail.com"))
 	  ;; we match based on the contact-fields of the message
 	  :match-func (lambda (msg)
-                        (message "match-func: account1: " msg)
-			(if msg
+                        (message "match-func: account1")
+                        (if (mu4e-message-contact-field-matches msg
+                                                                '(:to :from :cc :bcc) "account1@gmail.com")
+                            (message "MATCHED: account1"))
+                        (message "match-func: account1 end")
+                        (if msg
                             (mu4e-message-contact-field-matches msg
-                              :to "account1@gmail.com")
+                                                                '(:to :from :cc :bcc) "account1@gmail.com")
                           (message "No message in neil.")))
 	  :vars '( ( user-mail-address	    . "account1@gmail.com"  )
 		   ( user-full-name	    . "Your Name" )
@@ -76,12 +83,16 @@
        ,(make-mu4e-context
 	  :name "account2@gmail.com"
 	  :enter-func (lambda () (mu4e-message "Switch to context: account2@gmail.com"))
-	  ;; no leave-func
+	  :leave-func (lambda () (mu4e-message "Leaving context: account2@gmail.com"))
 	  :match-func (lambda (msg)
-                        (message "match-func: your-nick: " msg)
-			(if msg
-			  (mu4e-message-contact-field-matches msg
-			    :to "account2@gmail.com")
+                        (message "match-func: your-nick: ")
+                        (if (mu4e-message-contact-field-matches msg
+                                                                '(:to :from :cc :bcc) "account2@gmail.com")
+                            (message "MATCHED: your-nick"))
+                        (message "match-func: your-nick end")
+                        (if msg
+			    (mu4e-message-contact-field-matches msg
+			                                        '(:to :from :cc :bcc) "account2@gmail.com")
                           (message "No message in: your-nick")))
 	  :vars '( ( user-mail-address	     . "account2@gmail.com" )
 		   ( user-full-name	     . "Your Name" )
@@ -95,12 +106,16 @@
        ,(make-mu4e-context
 	  :name "account3@example.com"
 	  :enter-func (lambda () (mu4e-message "Switch to context: account3@example.com"))
-	  ;; no leave-func
+	  :leave-func (lambda () (mu4e-message "Leaving context: account3@example.com"))
 	  :match-func (lambda (msg)
-                        (message "match-func: lei: " msg)
-			(if msg
+                        (message "match-func: wish")
+                        (if (mu4e-message-contact-field-matches msg
+                                                                '(:to :from :cc :bcc) "account3@example.com")
+                            (message "MATCHED: wish"))
+                        (message "match-func: wish end")
+                        (if msg
 			  (mu4e-message-contact-field-matches msg
-			    :to "account3@example.com")
+			    '(:to :from :cc :bcc) "account3@example.com")
                           (message "No message in lei")))
 	  :vars '( ( user-mail-address	     . "account3@example.com" )
 		   ( user-full-name	     . "Your Name" )
