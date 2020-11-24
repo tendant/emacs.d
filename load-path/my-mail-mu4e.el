@@ -62,14 +62,13 @@
 	  ;; we match based on the contact-fields of the message
 	  :match-func (lambda (msg)
                         (message "match-func: account1")
-                        (if (mu4e-message-contact-field-matches msg
-                                                                '(:to :from :cc :bcc) "account1@gmail.com")
-                            (message "MATCHED: account1"))
-                        (message "match-func: account1 end")
-                        (if msg
-                            (mu4e-message-contact-field-matches msg
-                                                                '(:to :from :cc :bcc) "account1@gmail.com")
-                          (message "No message in neil.")))
+                        (when msg
+                          (if (mu4e-message-contact-field-matches msg
+                                                                  '(:to :from :cc :bcc) "account1@gmail.com")
+                              (message "MATCHED: account1"))
+                          (message "match-func: account1 end")
+                          (mu4e-message-contact-field-matches msg
+                                                              '(:to :from :cc :bcc) "account1@gmail.com")))
 	  :vars '( ( user-mail-address	    . "account1@gmail.com"  )
 		   ( user-full-name	    . "Your Name" )
                    ( mu4e-sent-folder       . "/gmail-account1/Sent")
@@ -86,14 +85,13 @@
 	  :leave-func (lambda () (mu4e-message "Leaving context: account2@gmail.com"))
 	  :match-func (lambda (msg)
                         (message "match-func: your-nick: ")
-                        (if (mu4e-message-contact-field-matches msg
-                                                                '(:to :from :cc :bcc) "account2@gmail.com")
-                            (message "MATCHED: your-nick"))
-                        (message "match-func: your-nick end")
-                        (if msg
-			    (mu4e-message-contact-field-matches msg
-			                                        '(:to :from :cc :bcc) "account2@gmail.com")
-                          (message "No message in: your-nick")))
+                        (when msg
+                          (if (mu4e-message-contact-field-matches msg
+                                                                  '(:to :from :cc :bcc) "account2@gmail.com")
+                              (message "MATCHED: your-nick"))
+                          (message "match-func: your-nick end")
+			  (mu4e-message-contact-field-matches msg
+			                                      '(:to :from :cc :bcc) "account2@gmail.com")))
 	  :vars '( ( user-mail-address	     . "account2@gmail.com" )
 		   ( user-full-name	     . "Your Name" )
                    ( mu4e-sent-folder       . "/gmail-your-nick/Sent")
@@ -109,14 +107,13 @@
 	  :leave-func (lambda () (mu4e-message "Leaving context: account3@example.com"))
 	  :match-func (lambda (msg)
                         (message "match-func: wish")
-                        (if (mu4e-message-contact-field-matches msg
-                                                                '(:to :from :cc :bcc) "account3@example.com")
-                            (message "MATCHED: wish"))
-                        (message "match-func: wish end")
-                        (if msg
+                        (when msg
+                          (if (mu4e-message-contact-field-matches msg
+                                                                  '(:to :from :cc :bcc) "account3@example.com")
+                              (message "MATCHED: wish"))
+                          (message "match-func: wish end")
 			  (mu4e-message-contact-field-matches msg
-			    '(:to :from :cc :bcc) "account3@example.com")
-                          (message "No message in lei")))
+			    '(:to :from :cc :bcc) "account3@example.com")))
 	  :vars '( ( user-mail-address	     . "account3@example.com" )
 		   ( user-full-name	     . "Your Name" )
                    ( mu4e-sent-folder       . "/account3/Sent")
@@ -162,6 +159,8 @@
 ;;   (setq message-cite-style message-cite-style-gmail))
 
 (setq message-cite-reply-position 'above)
+
+(setq mu4e-enable-mode-line t)
 
 (add-hook 'mu4e-view-mode-hook
   (lambda()
