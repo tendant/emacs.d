@@ -551,6 +551,8 @@ Returns nil if no differences found, 't otherwise."
 ;; make company-mode to be compatible with TAB
 ;; https://github.com/company-mode/company-mode/issues/94#issuecomment-365701801
 (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+;; Use company-mode in all buffers
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; disable defautl font setup dialog
 (if mac-osx-p
