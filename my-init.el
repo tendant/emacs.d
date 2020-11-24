@@ -153,6 +153,13 @@
 
 (let ((current-dir (file-name-directory load-file-name)))
 
+  ;; (defun load-config(conf)
+  ;;   "Load the configuration in literate 'org-mode' elisp."
+  ;;   (interactive)
+  ;;   (org-babel-load-file (concat current-dir conf)))
+
+  ;; (load-config "load-path/basic-conf.org")
+
   (load (concat current-dir "load-path/my-basic-config.el"))
   (message "Loaded my-basic-config.el")
   (load (concat current-dir "load-path/my-extensions.el"))
