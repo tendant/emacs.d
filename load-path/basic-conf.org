@@ -1,0 +1,5 @@
+* begin
+
+#+begin_src elisp
+(message "Begin loading basic-config.org")
+#+end_src
