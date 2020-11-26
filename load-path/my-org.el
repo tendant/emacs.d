@@ -25,7 +25,8 @@
 ;; (setq org-agenda-files (append '("~/.emacs.d/gcal.org"
 ;;                                  "~/.emacs.d/gcal-work.org")
 ;;                                (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
-(setq org-agenda-files (file-expand-wildcards "~/.emacs.d/org-gtd/*.org"))
+(setq org-agenda-files (append (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")
+                               (file-expand-wildcards "~/.emacs.d/calendars/*.org")))
 
 (defun org-all ()
   (interactive)
@@ -269,7 +270,11 @@
 ;;  '((emacs-lisp . t)
 ;;    (latex . t)  ; this is the entry to activate LaTeX
 ;;    (python . t)))
-   
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (clojure . t)
+   (ledger . t)))
 
 (setq org-export-html-style
       "<link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\" />")
