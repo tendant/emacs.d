@@ -66,6 +66,7 @@
                       magit
                       magit-svn
                       markdown-mode
+                      mu4e-alert
                       notmuch
                       nord-theme
                       org

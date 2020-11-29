@@ -196,4 +196,12 @@
 ;; (require 'mu4e-contrib)
 ;; (setq mu4e-html2text-command 'mu4e-shr2text)
 
+;; alert
+(if mac-osx-p
+    (setq mu4e-alert-set-default-style 'osx-notifier))
+;; Enable alert
+(add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+;; Enable mode line alert
+(add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+
 (provide 'my-mail-mu4e)
