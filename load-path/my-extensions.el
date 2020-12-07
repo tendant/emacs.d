@@ -361,7 +361,18 @@ be passed in via a prefix arg."
 (global-set-key (kbd "C-c k") 'counsel-ag)
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-(define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+
+;; https://github.com/abo-abo/swiper/issues/1172#issuecomment-633148859
+(defun swiper-C-r (&optional arg)
+  "Move cursor vertically down ARG candidates.
+If the input is empty, select the previous history element instead."
+  (interactive "p")
+  (if (string= ivy-text "")
+      (ivy-next-history-element 1)
+    (ivy-previous-line arg)))
+
+;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+(define-key minibuffer-local-map (kbd "C-r") 'swiper-C-r)
 
 (require 'my-buffers)
 
