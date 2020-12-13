@@ -9,7 +9,7 @@
 
 ;; The following lines are always needed. Choose your own keys. 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key "\C-cl" 'org-store-link) 
+(global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda) 
 (global-set-key "\C-cb" 'org-iswitchb)
@@ -397,11 +397,6 @@ unwanted space when exporting org-mode to html."
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                  (org-agenda-overriding-header "High-Priority tasks:")))
           (alltodo "")))))
-
-(require 'org-gcal)
-(setq org-gcal-client-id "683892366933-ujh3diskfq7f4oqt1pg8edorl9868752.apps.googleusercontent.com"
-      org-gcal-client-secret "o_hbBcEbH9sXN44rHiN4RQEI"
-      org-gcal-file-alist '(("account2@gmail.com" .  "~/.emacs.d/gcal.org")))
 
 ;;; org babel clojure
 (setq org-babel-clojure-backend 'cider)
