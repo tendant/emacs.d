@@ -1,5 +1,0 @@
-doc/content
-doc/public
-ox-hugo-autoloads.el
-*.elc
-test/site/resources/
