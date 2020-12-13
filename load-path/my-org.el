@@ -132,14 +132,18 @@
 (setq org-capture-templates
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
                "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("T" "your-nick Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
+              ("E" "local event" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Events")
+               "** %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+              ("e" "your-nick google Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("f" "family Calendar" entry (file "~/.emacs.d/calendars/family.org")
+              ("f" "family google Calendar" entry (file "~/.emacs.d/calendars/family.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("w" "wish Calendar" entry (file "~/.emacs.d/calendars/calendar4.org")
+              ("w" "wish google Calendar" entry (file "~/.emacs.d/calendars/calendar4.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
-              ("b" "blog" entry (file "~/.emacs.d/org-wiki/draft/tech/blog.org")
-               "* %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_HUGO_SECTION: posts\n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n")
+              ("b" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "Blog")
+               "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
+              ("z" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "中文")
+               "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
               ("r" "reading" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Reading")
                "* NEXT %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n%a\n")
               ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
@@ -163,8 +167,8 @@
 ;;; Refile http://doc.norang.ca/org-mode.html#Refiling
 
 ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
-(setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                 (org-agenda-files :maxlevel . 9))))
+(setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                 (org-agenda-files :maxlevel . 2))))
 
 ; Use full outline paths for refile targets - we file directly with IDO
 (setq org-refile-use-outline-path t)
@@ -201,7 +205,7 @@
 (advice-add 'org-schedule :after 'org-save-all-org-buffers)
 (advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
 (advice-add 'org-todo :after 'org-save-all-org-buffers)
-
+(add-hook 'org-after-tags-change-hook 'org-save-all-org-buffers)
 
 
 ;; update agenda file after changes to org files
@@ -388,10 +392,10 @@ unwanted space when exporting org-mode to html."
 
 (setq org-agenda-custom-commands
       '(("c" "My agenda view"
-         ((tags "PRIORITY={A}"
+         ((agenda "")
+          (tags "PRIORITY={A}"
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                  (org-agenda-overriding-header "High-Priority tasks:")))
-          (agenda "")
           (alltodo "")))))
 
 (require 'org-gcal)

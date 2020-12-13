@@ -73,7 +73,7 @@
                       org-gcal
                       org-plus-contrib
                       org-roam
-                      ;; ox-hugo
+                      ox-hugo
                       ox-reveal
                       plantuml-mode
                       pyim
