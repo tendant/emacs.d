@@ -500,3 +500,12 @@ If the input is empty, select the previous history element instead."
     (if point
         (goto-char point)
         (message "No non-ascii characters."))))
+
+;;;;; vterm
+(setq vterm-buffer-name-string "vterm %s")
+;;; zsh
+;; autoload -U add-zsh-hook
+;; add-zsh-hook -Uz chpwd (){ print -Pn "\e]2;%m:%2~\a"}
+
+;;; bash
+;; PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}:${PWD}\007"'

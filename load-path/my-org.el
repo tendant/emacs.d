@@ -390,5 +390,9 @@ unwanted space when exporting org-mode to html."
       org-gcal-client-secret "o_hbBcEbH9sXN44rHiN4RQEI"
       org-gcal-file-alist '(("account2@gmail.com" .  "~/.emacs.d/gcal.org")))
 
+;;; org babel clojure
+(setq org-babel-clojure-backend 'cider)
+
+
 (provide 'my-org)
 (message "Loaded org-mode successfully")
