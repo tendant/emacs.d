@@ -100,8 +100,7 @@
 )
 
 (debug-time "Loaded org-mode"
-            ;; (require 'my-org)
-            )
+            (require 'my-org))
 
 ;; (require 'my-gnus)
 

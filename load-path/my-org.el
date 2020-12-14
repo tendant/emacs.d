@@ -199,13 +199,13 @@
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
 
-;;; auto save all org files after hook
-(advice-add 'org-refile :after 'org-save-all-org-buffers)
-(advice-add 'org-deadline :after 'org-save-all-org-buffers)
-(advice-add 'org-schedule :after 'org-save-all-org-buffers)
-(advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
-(advice-add 'org-todo :after 'org-save-all-org-buffers)
-(add-hook 'org-after-tags-change-hook 'org-save-all-org-buffers)
+;;; auto save all org files after hook, Doesn't work, ERROR: apply: Wrong number of arguments: (1 . 2), 0
+;; (advice-add 'org-refile :after 'org-save-all-org-buffers)
+;; (advice-add 'org-deadline :after 'org-save-all-org-buffers)
+;; (advice-add 'org-schedule :after 'org-save-all-org-buffers)
+;; (advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
+;; (advice-add 'org-todo :after 'org-save-all-org-buffers)
+(add-hook 'org-after-tags-change-hook 'org-save-all-org-buffers nil t)
 
 
 ;; update agenda file after changes to org files
@@ -403,6 +403,7 @@ unwanted space when exporting org-mode to html."
 
 ;; edit code block C-c ', org-edit-src-code, org-edit-src-abort
 
+(require 'my-org-gcal)
 
 (provide 'my-org)
 (message "Loaded org-mode successfully")

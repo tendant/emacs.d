@@ -86,6 +86,7 @@
                       flycheck-rust
                       skeletor
                       smart-input-source
+                      smartparens
                       smtpmail-multi
                       solarized-theme
                       solidity-mode

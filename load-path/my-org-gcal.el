@@ -1,4 +1,4 @@
-(require 'org-gcal)
+;; (require 'org-gcal)
 
 (if mac-osx-p
     (setq alert-default-style 'osx-notifier))
