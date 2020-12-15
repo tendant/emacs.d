@@ -346,7 +346,7 @@ be passed in via a prefix arg."
 (setq ivy-use-virtual-buffers t)
 (setq enable-recursive-minibuffers t)
 (global-set-key "\C-s" 'swiper)
-(global-set-key "\C-r" 'swiper-isearch-backward)
+;; (global-set-key "\C-r" 'swiper-isearch-backward)
 (global-set-key (kbd "C-c C-r") 'ivy-resume)
 (global-set-key (kbd "<f6>") 'ivy-resume)
 ;; (global-set-key (kbd "M-x") 'counsel-M-x)
@@ -372,7 +372,7 @@ If the input is empty, select the previous history element instead."
     (ivy-previous-line arg)))
 
 ;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-(define-key minibuffer-local-map (kbd "C-r") 'swiper-C-r)
+;; (define-key minibuffer-local-map (kbd "C-r") 'swiper-C-r)
 
 (require 'my-buffers)
 
@@ -436,7 +436,7 @@ If the input is empty, select the previous history element instead."
 (require 'ledger-complete)
 
 ;; skeletor
-(require 'my-skeletor)
+;; (require 'my-skeletor)
 
 ;; exec-path-from-shell
 (when (memq window-system '(mac ns x))
@@ -459,26 +459,26 @@ If the input is empty, select the previous history element instead."
 
 
 ;;; configure smart-input-source, require 'smart-input-source
-(when mac-osx-p
-  ;; set the english input source
-  (setq smart-input-source-english
-        "com.apple.keylayout.US")
-  ;; set the default other language input source for all buffer
-  (setq-default smart-input-source-other
-                "com.apple.inputmethod.SCIM.ITABC")
+;; (when mac-osx-p
+;;   ;; set the english input source
+;;   (setq smart-input-source-english
+;;         "com.apple.keylayout.US")
+;;   ;; set the default other language input source for all buffer
+;;   (setq-default smart-input-source-other
+;;                 "com.apple.inputmethod.SCIM.ITABC")
 
-  ;; enable the /respect/ mode
-  (smart-input-source-global-respect-mode t)
+;;   ;; enable the /respect/ mode
+;;   (smart-input-source-global-respect-mode t)
 
-  ;; enable the /follow context/ and /inline english/ mode for all buffers
-  (smart-input-source-global-follow-context-mode t)
-  (smart-input-source-global-inline-english-mode t)
+;;   ;; enable the /follow context/ and /inline english/ mode for all buffers
+;;   (smart-input-source-global-follow-context-mode t)
+;;   (smart-input-source-global-inline-english-mode t)
 
-  ;; enable the /follow context/ and /inline english/ mode for specific buffers
-  ;; :hook
-  ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
-  ;;  ((text-mode prog-mode) . smart-input-source-inline-english-mode))
-  )
+;;   ;; enable the /follow context/ and /inline english/ mode for specific buffers
+;;   ;; :hook
+;;   ;; (((text-mode prog-mode) . smart-input-source-follow-context-mode)
+;;   ;;  ((text-mode prog-mode) . smart-input-source-inline-english-mode))
+;;   )
 
 
 ;;; config org-roam

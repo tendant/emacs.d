@@ -9,3 +9,5 @@
                                   ("family-calendar@group.calendar.google.com" . "~/.emacs.d/calendars/family.org")
                                   ("calendar2@group.calendar.google.com" . "~/.emacs.d/calendars/calendar3.org")
                                   ("account3@example.com" . "~/.emacs.d/calendars/calendar4.org")))
+
+(provide 'my-org-gcal)

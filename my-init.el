@@ -46,6 +46,7 @@
                       default-text-scale
                       dockerfile-mode
                       dracula-theme
+                      ein
                       ejc-sql
                       ;; el-get
                       exec-path-from-shell
@@ -85,7 +86,7 @@
                       ;; rust-cargo
                       flycheck-rust
                       skeletor
-                      smart-input-source
+                      sis
                       smartparens
                       smtpmail-multi
                       solarized-theme
