@@ -277,7 +277,8 @@
 ;; (add-to-list 'load-path "~/.emacs.d/load-path/gist.el")
 ;; (require 'gist)
 
-(require 'my-web)
+;; (require 'my-web)
+
 
 (require 'my-clojure)
 

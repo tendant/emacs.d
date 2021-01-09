@@ -136,7 +136,7 @@
                "** %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
               ("e" "your-nick google Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("f" "family google Calendar" entry (file "~/.emacs.d/calendars/family.org")
+              ("f" "family google Calendar" entry (file "~/.emacs.d/calendars/calendar2.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
               ("w" "wish google Calendar" entry (file "~/.emacs.d/calendars/calendar4.org")
                "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
@@ -290,8 +290,10 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
+   (shell . t)
    (clojure . t)
-   (ledger . t)))
+   (ledger . t)
+   (python . t)))
 
 (setq org-export-html-style
       "<link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\" />")
@@ -347,6 +349,10 @@
 ;; Resolve the conflict between yasnippet and org-mode
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+;; To save the clock history across Emacs sessions, use:
+(setq org-clock-persist 'history)
+(org-clock-persistence-insinuate)
 
 (defun my-org-mode-keys ()
   "my keys for `org-mode'"

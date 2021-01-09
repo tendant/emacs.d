@@ -46,6 +46,7 @@
                       default-text-scale
                       dockerfile-mode
                       dracula-theme
+                      edwina
                       ein
                       ejc-sql
                       ;; el-get
