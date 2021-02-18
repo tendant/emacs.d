@@ -70,6 +70,8 @@
 (defun my-dired-mode-hook ()
   (local-set-key "E" 'dired-ediff-marked-files))
 
+(setq dired-listing-switches "-alh")
+
 (add-hook 'dired-mode-hook 'my-dired-mode-hook)
 
 (provide 'my-dired)

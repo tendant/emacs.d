@@ -43,7 +43,7 @@
 (setq-default js2-basic-offset 2)
 ;; (setq js-indent-level 4)
 ;; (add-to-list 'auto-mode-alist '("\\.js.\\'" . js-mode))
-;; (autoload 'js2-mode "js2-mode" nil t)
+(autoload 'js2-mode "js2-mode" nil t)
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)) ; \' will match empty string only at the end of the string or buffer; \$ will match end of line
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))

@@ -30,6 +30,9 @@
 ;; Make C-c C-z switch to the CIDER REPL buffer in the current window:
 ;; (setq cider-repl-display-in-current-window t)
 
+(setq cider-preferred-build-tool "clojure-cli")
+(setq cider-clojure-cli-global-options "-M:env/dev:env/test")
+
 
 (require 'paredit)
 (autoload 'enable-paredit-mode "paredit"

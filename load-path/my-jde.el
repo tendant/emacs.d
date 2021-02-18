@@ -133,8 +133,11 @@
   (local-set-key [f5] 'jdibug-step-into)
   (local-set-key [f6] 'jdibug-step-over)
   (local-set-key [f7] 'jdibug-step-out)
-  (local-set-key [f8] 'jdibug-resume)
-  )
+  (local-set-key [f8] 'jdibug-resume))
+
+(defun my-java-mode-hook ()
+  (setq indent-tabs-mode t))
+(add-hook 'java-mode-hook 'my-java-mode-hook)
 
 (add-hook 'jde-mode-hook 'my-jde-mode-hook)
 ;(add-hook 'jde-mode-hook 'java-mode-indent-annotations-setup)

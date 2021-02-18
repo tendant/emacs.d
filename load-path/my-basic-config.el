@@ -468,8 +468,33 @@ Returns nil if no differences found, 't otherwise."
 ;;; prevent too many split windows opening, prefer splitting window vertically.
 ;; (setq split-width-threshold (/ (display-pixel-width) 2))
 ;; (setq split-height-threshold (/ (display-pixel-height) 3))
+;; (setq split-height-threshold nil)
+;;(setq split-width-threshold (/ (display-pixel-width) 2))
+
+;;; split window horizontally
+;; (setq split-height-threshold nil)
+;;(setq split-width-threshold 0)
+
+;;; split window horizontally, no more than 2 splits
+(setq split-width-threshold (- (window-width) 10))
 (setq split-height-threshold nil)
-(setq split-width-threshold (/ (display-pixel-width) 2))
+
+(defun count-visible-buffers (&optional frame)
+  "Count how many buffers are currently being shown. Defaults to selected frame."
+  (length (mapcar #'window-buffer (window-list frame))))
+
+(defun do-not-split-more-than-two-windows (window &optional horizontal)
+  (if (and horizontal (> (count-visible-buffers) 1))
+      nil
+    t))
+
+(advice-add 'window-splittable-p :before-while #'do-not-split-more-than-two-windows)
+
+;; Split window vertically
+;; (split-window-right) ; interactive command to open a new buffer and split it vertically.
+;; (setq
+;;    split-width-threshold 260
+;;    split-height-threshold 260)
 
 ;; fix the PATH variable
 ;; (defun set-exec-path-from-shell-PATH ()
@@ -541,12 +566,6 @@ Returns nil if no differences found, 't otherwise."
 ;; Prevent extremely long lines making Emacs slow?
 ;; https://emacs.stackexchange.com/questions/598/how-do-i-prevent-extremely-long-lines-making-emacs-slow
 (setq-default bidi-display-reordering nil)
-
-;; Split window vertically
-;; (split-window-right) ; interactive command to open a new buffer and split it vertically.
-(setq
-   split-width-threshold 260
-   split-height-threshold 260)
 
 ;; make company-mode to be compatible with TAB
 ;; https://github.com/company-mode/company-mode/issues/94#issuecomment-365701801
