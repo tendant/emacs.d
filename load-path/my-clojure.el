@@ -8,6 +8,8 @@
 
 (require 'cider)
 
+(setenv "JAVA_HOME" "~/workspace/jdk/jdk-11.0.5/Contents/Home")
+
 ;; (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 ;; Enable eldoc in Clojure buffers:
@@ -31,7 +33,7 @@
 ;; (setq cider-repl-display-in-current-window t)
 
 (setq cider-preferred-build-tool "clojure-cli")
-(setq cider-clojure-cli-global-options "-M:env/dev:env/test")
+;; (setq cider-clojure-cli-global-options "-M:env/dev:env/test")
 
 
 (require 'paredit)
@@ -64,6 +66,9 @@
 ;;      (with 'defun)
 ;;      (it 'defun)
 ;;      (do-it 'defun)))
+(eval-after-load 'clojure-mode
+  '(define-clojure-indent
+     (for-all 1)))
 
 (setq slime-net-coding-system (quote utf-8-unix))
 

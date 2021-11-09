@@ -8,6 +8,7 @@
 (require 'mu4e)
 ;; top-level Maildir
 (setq mu4e-maildir "~/.Maildir")
+;; (setq mu4e-maildir "~/mails/Maildir")
 (setq mu4e-get-mail-command "true") ; not fetch mail using mu4e
 ;; (setq mu4e-get-mail-command "mbsync -aV")  ; using mbsync to fetch mail
 (setq mu4e-update-interval 300) ; update every 300 seconds
@@ -119,6 +120,26 @@
                    ( mu4e-sent-folder       . "/account3/Sent")
                    ( mu4e-drafts-folder     . "/account3/Drafts")
                    ( mu4e-trash-folder      . "/account3/Trash")
+		   ( mu4e-compose-signature  . (concat "Best,\n"
+                                                       "Your Name"))))
+       ,(make-mu4e-context
+	  :name "user@example.com"
+	  :enter-func (lambda () (mu4e-message "Switch to context: user@example.com"))
+	  :leave-func (lambda () (mu4e-message "Leaving context: user@example.com"))
+	  :match-func (lambda (msg)
+                        (message "match-func: mag")
+                        (when msg
+                          (if (mu4e-message-contact-field-matches msg
+                                                                  '(:to :from :cc :bcc) "user@example.com")
+                              (message "MATCHED: mag"))
+                          (message "match-func: mag end")
+			  (mu4e-message-contact-field-matches msg
+			    '(:to :from :cc :bcc) "user@example.com")))
+	  :vars '( ( user-mail-address	     . "user@example.com" )
+		   ( user-full-name	     . "Your Name" )
+                   ( mu4e-sent-folder       . "/gmail-account4/Sent")
+                   ( mu4e-drafts-folder     . "/gmail-account4/Drafts")
+                   ( mu4e-trash-folder      . "/gmail-account4/Trash")
 		   ( mu4e-compose-signature  . (concat "Best,\n"
                                                        "Your Name"))))))
 

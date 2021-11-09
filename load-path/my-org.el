@@ -132,6 +132,8 @@
 (setq org-capture-templates
       (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
                "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+              ("c" "todo" entry (file+headline "~/.emacs.d/org-gtd/weimill.org" "Tasks")
+               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
               ("E" "local event" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Events")
                "** %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
               ("e" "your-nick google Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
