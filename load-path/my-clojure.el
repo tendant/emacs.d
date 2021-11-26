@@ -34,6 +34,8 @@
 
 (setq cider-preferred-build-tool "clojure-cli")
 ;; (setq cider-clojure-cli-global-options "-M:env/dev:env/test")
+;; https://practical.li/spacemacs/clojure-projects/project-configuration.html
+(setq cider-clojure-cli-aliases "-M:env/dev:env/test")
 
 
 (require 'paredit)
