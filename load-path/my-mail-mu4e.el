@@ -4,8 +4,10 @@
 ;; EMACS=$(which emacs) brew install mu --with-emacs
 ;; mu index --maildir=~/Maildir
 
-(add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu/mu4e")
+(add-to-list 'load-path "/opt/homebrew/Cellar/mu/1.6.8/share/emacs/site-lisp/mu/mu4e")
 (require 'mu4e)
+
 ;; top-level Maildir
 (setq mu4e-maildir "~/.Maildir")
 (setq mu4e-get-mail-command "true") ; not fetch mail using mu4e

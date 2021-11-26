@@ -40,7 +40,7 @@
                       company
                       company-ansible
                       company-web
-                      company-lsp
+                      ;; company-lsp
                       counsel
                       dart-mode
                       default-text-scale

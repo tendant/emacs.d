@@ -35,8 +35,8 @@
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 
-(require 'emmet-mode) ; use Ctrl-j
-(add-hook 'sgml-mode-hook 'emmet-mode)
+;; (require 'emmet-mode) ; use Ctrl-j
+;; (add-hook 'sgml-mode-hook 'emmet-mode)
 
 ;; for javascript
 (setq js-indent-level 2)
