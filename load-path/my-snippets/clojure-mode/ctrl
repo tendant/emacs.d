@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: ctrl
+# key: ctrl
+# --
+(ns app.controllers.$1
+  (:require [reitit.core :as r]
+            [clojure.spec.alpha :as s]
+            [reitit.coercion.spec :as rs]
+            [reitit.coercion :as coercion]
+            [ring.util.http-response :as resp]
+            [taoensso.timbre :as log]
+            [hiccup.core :as h]))
+
+(defn index [req]
+  (resp/ok "index"))
+$0
+(def routes
+  (r/routes (r/router ["/$1"
+                       ["/index" {:get index}]]
+                      {:compile coercion/compile-request-coercers})))

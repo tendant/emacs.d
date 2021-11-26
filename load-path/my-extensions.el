@@ -510,3 +510,25 @@ If the input is empty, select the previous history element instead."
 
 ;;; bash
 ;; PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}:${PWD}\007"'
+
+;; org-roam
+(use-package org-roam
+      :ensure t
+      :init
+      (setq org-roam-v2-ack t)
+      :custom
+      (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
+      :bind (("C-c n l" . org-roam-buffer-toggle)
+             ("C-c n f" . org-roam-node-find)
+             ("C-c n g" . org-roam-graph)
+             ("C-c n i" . org-roam-node-insert)
+             ("C-c n c" . org-roam-capture)
+             ;; Dailies
+             ("C-c n j" . org-roam-dailies-capture-today))
+      :config
+      (org-roam-setup))
+
+;; Projectile
+(projectile-mode +1)
+;; Recommended keymap prefix on macOS
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)

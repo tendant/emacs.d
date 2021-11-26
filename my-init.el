@@ -93,6 +93,7 @@
                       solarized-theme
                       solidity-mode
                       swift-mode
+                      use-package
                       vterm
                       w3m
                       web-mode

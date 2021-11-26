@@ -130,9 +130,9 @@
             (menu-bar-mode -1)
             (scroll-bar-mode -1)))
 
-;; (tool-bar-mode -1)
-;; (menu-bar-mode -1)
-;; (scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; slow down mouse wheel scroll
 (setq mouse-wheel-scroll-amount '(2))
