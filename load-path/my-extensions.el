@@ -482,10 +482,6 @@ If the input is empty, select the previous history element instead."
 ;;   )
 
 
-;;; config org-roam
-(setq org-roam-directory "~/.emacs.d/org-roam")
-(add-hook 'after-init-hook 'org-roam-mode)
-
 (defun find-first-non-ascii-char ()
   "Find the first non-ascii character from point onwards."
   (interactive)
@@ -512,10 +508,15 @@ If the input is empty, select the previous history element instead."
 ;; PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME}:${PWD}\007"'
 
 ;; org-roam
+;;; config org-roam
+;; (setq org-roam-directory "~/.emacs.d/org-roam")
+;; (add-hook 'after-init-hook 'org-roam-mode)
+(require 'sqlite3)
 (use-package org-roam
       :ensure t
       :init
       (setq org-roam-v2-ack t)
+      (setq org-roam-database-connector 'libsqlite3)
       :custom
       (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
       :bind (("C-c n l" . org-roam-buffer-toggle)

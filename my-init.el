@@ -19,7 +19,8 @@
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	("org" . "http://orgmode.org/elpa/")
-	("melpa" . "http://melpa.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ;; ("melpa" . "http://melpa.org/packages/")
 	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
 	))
 
@@ -73,7 +74,7 @@
                       nord-theme
                       org
                       org-gcal
-                      org-plus-contrib
+                      ;; org-plus-contrib
                       org-roam
                       ox-hugo
                       ox-reveal
