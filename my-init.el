@@ -39,22 +39,21 @@
 
 ;; (el-get 'sync)
 
+(setq base-dir (file-name-directory load-file-name))
 
-(let ((current-dir (file-name-directory load-file-name)))
+(defun load-config(conf)
+  "Load the configuration in literate 'org-mode' elisp."
+  (interactive)
+  (org-babel-load-file (concat base-dir conf)))
 
-  (defun load-config(conf)
-    "Load the configuration in literate 'org-mode' elisp."
-    (interactive)
-    (org-babel-load-file (concat current-dir conf)))
+(load-config "load-path/config-basic.org")
+(load-config "load-path/config-extension.org")
 
-  (load-config "load-path/config-basic.org")
-  (load-config "load-path/config-extension.org")
+;;(load (concat current-dir "load-path/my-basic-config.el"))
+;;(message "Loaded my-basic-config.el")
+;; (load (concat current-dir "load-path/my-extensions.el"))
+;; (message "Loaded my-extensions.el")
 
-  ;;(load (concat current-dir "load-path/my-basic-config.el"))
-  ;;(message "Loaded my-basic-config.el")
-  ;; (load (concat current-dir "load-path/my-extensions.el"))
-  ;; (message "Loaded my-extensions.el")
-  )
 
 ;; (defvar my-packages '(ac-cider
 ;;                       org-chef
