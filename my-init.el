@@ -17,12 +17,14 @@
 ;;              '("melpa" . "https://melpa.org/packages/"))
 
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-	("org" . "http://orgmode.org/elpa/")
-        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-        ;; ("melpa" . "http://melpa.org/packages/")
+      '(("org" . "http://orgmode.org/elpa/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa" . "http://melpa.org/packages/")
 	;; ("melpa-stable" . "http://stable.melpa.org/packages/")
 	))
+
+(package-initialize)
 
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
@@ -165,6 +167,7 @@
     (org-babel-load-file (concat current-dir conf)))
 
   (load-config "load-path/config-basic.org")
+  (load-config "load-path/config-extension.org")
 
   (load (concat current-dir "load-path/my-basic-config.el"))
   (message "Loaded my-basic-config.el")
