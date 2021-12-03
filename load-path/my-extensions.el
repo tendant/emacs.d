@@ -441,7 +441,10 @@ If the input is empty, select the previous history element instead."
 
 ;; exec-path-from-shell
 (when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
 
 ;; golang go-mode
 (add-hook 'go-mode-hook

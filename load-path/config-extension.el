@@ -1,10 +1,15 @@
 (message "Begin loading config-extension.org")
 
 ;; This is only needed once, near the top of the file
-(eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  (add-to-list 'load-path "<path where use-package is installed>")
-  (require 'use-package))
+  ;; (eval-when-compile
+  ;;   ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  ;;   ;; (add-to-list 'load-path "<path where use-package is installed>")
+  ;;   (require 'use-package))
+(unless (package-installed-p 'use-package)
+  ;; only fetch the archives if you don't have use-package installed
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
 
 (setq my-emacs-load-path (concat (file-name-directory (or load-file-name buffer-file-name))))
 
@@ -12,6 +17,19 @@
 (message my-emacs-load-path)
 
 (add-to-list 'load-path my-emacs-load-path)
+
+(use-package company
+  :ensure t
+  :init
+  ;; https://github.com/clojure-emacs/cider/issues/2009
+  (setq company-dabbrev-char-regexp "\sw\|-")
+
+  ;; make company-mode to be compatible with TAB
+  ;; https://github.com/company-mode/company-mode/issues/94#issuecomment-365701801
+  (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+  ;; Use company-mode in all buffers
+  (add-hook 'after-init-hook 'global-company-mode)
+  )
 
 ;; Save all backups to one folder
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -38,13 +56,16 @@
   (add-hook 'after-save-hook 'backup-each-save))
 
 ;; (load-theme 'solarized-dark t)
-(load-theme 'nord t)
-(setq nord-comment-brightness 20)
+(use-package nord-theme
+  :ensure t
+  :config
+  (load-theme 'nord t)
+  (setq nord-comment-brightness 20))
 ;; Use brighter color for comments
 (set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#81A1C1") ; nord9
+                  :foreground "#81A1C1") ; nord9
 (set-face-attribute 'vertical-border nil
-                    :foreground "#EBCB8B") ; nord13
+                  :foreground "#EBCB8B") ; nord13
 
 ;; (load-theme 'dracula t)
 
@@ -159,418 +180,421 @@ Version 2017-03-12"
 
 (message "Loading org-mode")
 
-;; This option is only relevant at load-time of Org-mode, and must be
-;; set *before* org.el is loaded.
-;; (setq org-CUA-compatible t)
+  ;; This option is only relevant at load-time of Org-mode, and must be
+  ;; set *before* org.el is loaded.
+  ;; (setq org-CUA-compatible t)
 
-;; This line only if Org is not part of the X/Emacs distribution. This line is not needed for git version.
-;; (require 'org-install)
+  ;; This line only if Org is not part of the X/Emacs distribution. This line is not needed for git version.
+  ;; (require 'org-install)
 
-;; The following lines are always needed. Choose your own keys. 
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda) 
-(global-set-key "\C-cb" 'org-iswitchb)
+  ;; The following lines are always needed. Choose your own keys. 
+  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-cc" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda) 
+  (global-set-key "\C-cb" 'org-iswitchb)
 
-(add-hook 'org-mode-hook 'turn-on-font-lock) ; (XEmacs user must use this option)
+  (add-hook 'org-mode-hook 'turn-on-font-lock) ; (XEmacs user must use this option)
 
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
-(setq org-clock-idle-time 10)
-(if linux-x-p
-    (setq org-x11idle-program-name 'xprintidle))
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+  (setq org-clock-idle-time 10)
+  (if linux-x-p
+      (setq org-x11idle-program-name 'xprintidle))
 
-;; (setq org-agenda-files (append '("~/.emacs.d/gcal.org"
-;;                                  "~/.emacs.d/gcal-work.org")
-;;                                (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
-(setq org-agenda-files (append (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")
-                               (file-expand-wildcards "~/.emacs.d/calendars/*.org")))
+  ;; (setq org-agenda-files (append '("~/.emacs.d/gcal.org"
+  ;;                                  "~/.emacs.d/gcal-work.org")
+  ;;                                (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")))
+  (setq org-agenda-files (append (file-expand-wildcards "~/.emacs.d/org-gtd/*.org")
+                                 (file-expand-wildcards "~/.emacs.d/calendars/*.org")))
 
-(defun org-all ()
-  (interactive)
-  (setq org-agenda-files 
-        (file-expand-wildcards
-         "~/.emacs.d/org-gtd/[a-zA-Z]*.org"))
-  (org-agenda-redo))
+  (defun org-all ()
+    (interactive)
+    (setq org-agenda-files 
+          (file-expand-wildcards
+           "~/.emacs.d/org-gtd/[a-zA-Z]*.org"))
+    (org-agenda-redo))
 
-(defun org-work ()
-  (interactive)
-  (setq org-agenda-files 
-        (list
-         "~/.emacs.d/org-gtd/work.org"
-         ))
-  (org-agenda-redo))
+  (defun org-work ()
+    (interactive)
+    (setq org-agenda-files 
+          (list
+           "~/.emacs.d/org-gtd/work.org"
+           ))
+    (org-agenda-redo))
 
-(defun org-personal ()
-  (interactive)
-  (setq org-agenda-files 
-        (list
-         "~/.emacs.d/org-gtd/personal.org"
-         ))
-  (org-agenda-redo))
+  (defun org-personal ()
+    (interactive)
+    (setq org-agenda-files 
+          (list
+           "~/.emacs.d/org-gtd/personal.org"
+           ))
+    (org-agenda-redo))
 
-;; Then each time you turn an entry from a TODO (not-done) state into
-;; any of the DONE states, a line 'CLOSED: [timestamp]' will be
-;; inserted just after the headline. If you turn the entry back into a
-;; TODO item through further state cycling, that line will be removed
-;; again.  The corresponding in-buffer setting is #+STARTUP: logdone
+  ;; Then each time you turn an entry from a TODO (not-done) state into
+  ;; any of the DONE states, a line 'CLOSED: [timestamp]' will be
+  ;; inserted just after the headline. If you turn the entry back into a
+  ;; TODO item through further state cycling, that line will be removed
+  ;; again.  The corresponding in-buffer setting is #+STARTUP: logdone
 
-(setq org-log-done 'time)
+  (setq org-log-done 'time)
 
-;; C-u C-c C-t: to switch the status quickly.
+  ;; C-u C-c C-t: to switch the status quickly.
 
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "IDEA(i)" "DRAFT(f)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                (sequence "IDEA(i)" "DRAFT(f)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("DRAFT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("IDEA" :foreground "yellow" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+  (setq org-todo-keyword-faces
+        (quote (("TODO" :foreground "red" :weight bold)
+                ("NEXT" :foreground "blue" :weight bold)
+                ("DRAFT" :foreground "blue" :weight bold)
+                ("DONE" :foreground "forest green" :weight bold)
+                ("WAITING" :foreground "orange" :weight bold)
+                ("HOLD" :foreground "magenta" :weight bold)
+                ("CANCELLED" :foreground "forest green" :weight bold)
+                ("MEETING" :foreground "forest green" :weight bold)
+                ("IDEA" :foreground "yellow" :weight bold)
+                ("PHONE" :foreground "forest green" :weight bold))))
 
-(define-key global-map [(f9)] 'org-agenda)
+  (define-key global-map [(f9)] 'org-agenda)
 
-;; Fast todo selection allows changing from any task todo state to any
-;; other state directly by selecting the appropriate key from the fast
-;; todo selection key menu. Changing a task state is done with C-c C-t
-;; KEY, where KEY is the appropriate fast todo state selection key as
-;; defined in org-todo-keywords.
-(setq org-use-fast-todo-selection t)
+  ;; Fast todo selection allows changing from any task todo state to any
+  ;; other state directly by selecting the appropriate key from the fast
+  ;; todo selection key menu. Changing a task state is done with C-c C-t
+  ;; KEY, where KEY is the appropriate fast todo state selection key as
+  ;; defined in org-todo-keywords.
+  (setq org-use-fast-todo-selection t)
 
-;; Moving a task to CANCELLED adds a CANCELLED tag
-;; Moving a task to WAITING adds a WAITING tag
-;; Moving a task to HOLD adds WAITING and HOLD tags
-;; Moving a task to a done state removes WAITING and HOLD tags
-;; Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
-;; Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
-;; Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
-(setq org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("CANCELLED" . t))
-              ("WAITING" ("WAITING" . t))
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
-
-
-
-;; To keep the overview over the fraction of subtasks that are already
-;; completed, insert either '[/]' or '[%]' anywhere in the
-;; headline. These cookies will be updates each time the todo status
-;; of a child changes.
-
-;; If you would like a TODO entry to automatically change to DONE when
-;; all chilrden are done, you can use the following setup
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise." 
-  (let (org-log-done org-log-states) ; turn off logging 
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-(add-hook 'org-after-todo-statistics-hook 'org-summary-todo) 
-
-(setq org-special-ctrl-k t)
-(setq org-special-ctrl-a/e "reversed")
-
-(add-to-list 'file-coding-system-alist (cons "\\.org$"  'utf-8))
+  ;; Moving a task to CANCELLED adds a CANCELLED tag
+  ;; Moving a task to WAITING adds a WAITING tag
+  ;; Moving a task to HOLD adds WAITING and HOLD tags
+  ;; Moving a task to a done state removes WAITING and HOLD tags
+  ;; Moving a task to TODO removes WAITING, CANCELLED, and HOLD tags
+  ;; Moving a task to NEXT removes WAITING, CANCELLED, and HOLD tags
+  ;; Moving a task to DONE removes WAITING, CANCELLED, and HOLD tags
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
 
-;;; Configuration of Remember
-(setq org-directory "~/.emacs.d/org-gtd/")
-(setq org-default-notes-file "~/.emacs.d/org-gtd/refile.org")
 
-;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
-(setq org-capture-templates
-      (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
-               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("c" "todo" entry (file+headline "~/.emacs.d/org-gtd/weimill.org" "Tasks")
-               "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("E" "local event" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Events")
-               "** %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("e" "your-nick google Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
-               "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("f" "family google Calendar" entry (file "~/.emacs.d/calendars/calendar2.org")
-               "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
-              ("w" "wish google Calendar" entry (file "~/.emacs.d/calendars/calendar4.org")
-               "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
-              ("b" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "Blog")
-               "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
-              ("z" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "中文")
-               "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
-              ("r" "reading" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Reading")
-               "* NEXT %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n%a\n")
-              ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* %? :NOTE:\n%U\n%a\n")
-              ("i" "idea" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* IDEA %T %?\n")
-              ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
-               "* %?\n%U\n")
-              ;; ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
-              ;;  "* MEETING with %? :MEETING:\n%U")
-              ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* PHONE %? :PHONE:\n%U")
-              ("h" "Habit" entry (file "~/.emacs.d/org-gtd/refile.org")
-               "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
-              ("c" "Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
-               "%(org-chef-get-recipe-from-url)")
-              ("m" "Manual Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
-               "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n"))))
+  ;; To keep the overview over the fraction of subtasks that are already
+  ;; completed, insert either '[/]' or '[%]' anywhere in the
+  ;; headline. These cookies will be updates each time the todo status
+  ;; of a child changes.
+
+  ;; If you would like a TODO entry to automatically change to DONE when
+  ;; all chilrden are done, you can use the following setup
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise." 
+    (let (org-log-done org-log-states) ; turn off logging 
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo) 
+
+  (setq org-special-ctrl-k t)
+  (setq org-special-ctrl-a/e "reversed")
+
+  (add-to-list 'file-coding-system-alist (cons "\\.org$"  'utf-8))
 
 
-;;; Refile http://doc.norang.ca/org-mode.html#Refiling
+  ;;; Configuration of Remember
+  (setq org-directory "~/.emacs.d/org-gtd/")
+  (setq org-default-notes-file "~/.emacs.d/org-gtd/refile.org")
 
-; Targets include this file and any file contributing to the agenda - up to 9 levels deep
-(setq org-refile-targets (quote ((nil :maxlevel . 2)
-                                 (org-agenda-files :maxlevel . 2))))
-
-; Use full outline paths for refile targets - we file directly with IDO
-(setq org-refile-use-outline-path t)
-
-; Targets complete directly with IDO
-(setq org-outline-path-complete-in-steps nil)
-
-; Allow refile to create parent tasks with confirmation
-(setq org-refile-allow-creating-parent-nodes (quote confirm))
-
-; Use IDO for both buffer and file completion and ido-everywhere to t
-(setq org-completion-use-ido t)
-(setq ido-everywhere t)
-(setq ido-max-directory-size 100000)
-(ido-mode (quote both))
-; Use the current window when visiting files and buffers with ido
-(setq ido-default-file-method 'selected-window)
-(setq ido-default-buffer-method 'selected-window)
-; Use the current window for indirect buffer display
-(setq org-indirect-buffer-display 'current-window)
-
-;;;; Refile settings
-; Exclude DONE state tasks from refile targets
-(defun bh/verify-refile-target ()
-  "Exclude todo keywords with a done state from refile targets"
-  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
-(setq org-refile-target-verify-function 'bh/verify-refile-target)
-
-
-;;; auto save all org files after hook, Doesn't work, ERROR: apply: Wrong number of arguments: (1 . 2), 0
-;; (advice-add 'org-refile :after 'org-save-all-org-buffers)
-;; (advice-add 'org-deadline :after 'org-save-all-org-buffers)
-;; (advice-add 'org-schedule :after 'org-save-all-org-buffers)
-;; (advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
-;; (advice-add 'org-todo :after 'org-save-all-org-buffers)
-(add-hook 'org-after-tags-change-hook 'org-save-all-org-buffers nil t)
+  ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+  (setq org-capture-templates
+        (quote (("t" "todo" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Tasks")
+                 "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+                ("c" "todo" entry (file+headline "~/.emacs.d/org-gtd/weimill.org" "Tasks")
+                 "** TODO %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+                ("E" "local event" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Events")
+                 "** %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+                ("e" "your-nick google Calendar" entry (file "~/.emacs.d/calendars/your-nick.org")
+                 "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+                ("f" "family google Calendar" entry (file "~/.emacs.d/calendars/calendar2.org")
+                 "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U \n")
+                ("w" "wish google Calendar" entry (file "~/.emacs.d/calendars/calendar4.org")
+                 "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\")) %a\n")
+                ("b" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "Blog")
+                 "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
+                ("z" "blog" entry (file+headline "~/.emacs.d/org-wiki/draft/tech/blog.org" "中文")
+                 "** %?\n   :PROPERTIES:\n   :EXPORT_FILE_NAME: \n   :EXPORT_DATE: %(format-time-string \"%Y-%m-%d\")\n   :END:\n\n")
+                ("r" "reading" entry (file+headline "~/.emacs.d/org-gtd/personal.org" "Reading")
+                 "* NEXT %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%U\n%a\n")
+                ("n" "note" entry (file "~/.emacs.d/org-gtd/refile.org")
+                 "* %? :NOTE:\n%U\n%a\n")
+                ("i" "idea" entry (file "~/.emacs.d/org-gtd/refile.org")
+                 "* IDEA %T %?\n")
+                ("j" "Journal" entry (file+datetree "~/.emacs.d/org-gtd/diary.org")
+                 "* %?\n%U\n")
+                ;; ("m" "Meeting" entry (file "~/.emacs.d/org-gtd/refile.org")
+                ;;  "* MEETING with %? :MEETING:\n%U")
+                ("p" "Phone call" entry (file "~/.emacs.d/org-gtd/refile.org")
+                 "* PHONE %? :PHONE:\n%U")
+                ("h" "Habit" entry (file "~/.emacs.d/org-gtd/refile.org")
+                 "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"<%Y-%m-%d %a .+1d/3d>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
+                ("c" "Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
+                 "%(org-chef-get-recipe-from-url)")
+                ("m" "Manual Cookbook" entry (file "~/.emacs.d/org-gtd/cookbook.org")
+                 "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n"))))
 
 
-;; update agenda file after changes to org files
-(defun org-mode-init ()
-  (add-hook 'after-save-hook 'org-update-agenda-file t t))
+  ;;; Refile http://doc.norang.ca/org-mode.html#Refiling
 
-;; export function to temporary file for window manager.
-(defun org-update-agenda-file (&optional force)
-  (interactive)
-  (save-excursion
-    (save-window-excursion
-      (let ((file "/tmp/org-agenda.txt"))
-        (org-agenda-list)
-        (org-write-agenda file)))))
+  ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+  (setq org-refile-targets (quote ((nil :maxlevel . 2)
+                                   (org-agenda-files :maxlevel . 2))))
 
-;; Up date the temporary Org Agenda file?
-(if (and linuxp mac-osx-p)
-    (progn
-      (org-update-agenda-file t)
-      (add-hook 'org-mode-hook 'org-mode-init)))
+  ; Use full outline paths for refile targets - we file directly with IDO
+  (setq org-refile-use-outline-path t)
 
-;; saves all org buffers at 1 minute before the hour      
-; (run-at-time "00:59" 3600 'org-save-all-org-buffers)
+  ; Targets complete directly with IDO
+  (setq org-outline-path-complete-in-steps nil)
 
-(setq org-publish-project-alist
-      '(
+  ; Allow refile to create parent tasks with confirmation
+  (setq org-refile-allow-creating-parent-nodes (quote confirm))
+
+  ; Use IDO for both buffer and file completion and ido-everywhere to t
+  (setq org-completion-use-ido t)
+  (setq ido-everywhere t)
+  (setq ido-max-directory-size 100000)
+  (ido-mode (quote both))
+  ; Use the current window when visiting files and buffers with ido
+  (setq ido-default-file-method 'selected-window)
+  (setq ido-default-buffer-method 'selected-window)
+  ; Use the current window for indirect buffer display
+  (setq org-indirect-buffer-display 'current-window)
+
+  ;;;; Refile settings
+  ; Exclude DONE state tasks from refile targets
+  (defun bh/verify-refile-target ()
+    "Exclude todo keywords with a done state from refile targets"
+    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+  (setq org-refile-target-verify-function 'bh/verify-refile-target)
+
+
+  ;;; auto save all org files after hook, Doesn't work, ERROR: apply: Wrong number of arguments: (1 . 2), 0
+  ;; (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  ;; (advice-add 'org-deadline :after 'org-save-all-org-buffers)
+  ;; (advice-add 'org-schedule :after 'org-save-all-org-buffers)
+  ;; (advice-add 'org-store-log-note :after 'org-save-all-org-buffers)
+  ;; (advice-add 'org-todo :after 'org-save-all-org-buffers)
+  (add-hook 'org-after-tags-change-hook 'org-save-all-org-buffers nil t)
+
+
+  ;; update agenda file after changes to org files
+  (defun org-mode-init ()
+    (add-hook 'after-save-hook 'org-update-agenda-file t t))
+
+  ;; export function to temporary file for window manager.
+  (defun org-update-agenda-file (&optional force)
+    (interactive)
+    (save-excursion
+      (save-window-excursion
+        (let ((file "/tmp/org-agenda.txt"))
+          (org-agenda-list)
+          (org-write-agenda file)))))
+
+  ;; Up date the temporary Org Agenda file?
+  (if (and linuxp mac-osx-p)
+      (progn
+        (org-update-agenda-file t)
+        (add-hook 'org-mode-hook 'org-mode-init)))
+
+  ;; saves all org buffers at 1 minute before the hour      
+  ; (run-at-time "00:59" 3600 'org-save-all-org-buffers)
+
+  (setq org-publish-project-alist
+        '(
         
-        ("org-myblog"
-         ;; Path to your org files.
-         :base-directory "~/workspace/blog/leiwang/resources/org"
-         :base-extension "org"
+          ("org-myblog"
+           ;; Path to your org files.
+           :base-directory "~/workspace/blog/leiwang/resources/org"
+           :base-extension "org"
          
-         ;; Path to your Jekyll project.
-         :publishing-directory "~/workspace/blog/leiwang/resources/content"
-         :recursive t
-         :publishing-function org-html-export-to-html
-         :headline-levels 4 
-         :html-extension "html"
-         :body-only t ;; Only export section between <body> </body>
-         )
+           ;; Path to your Jekyll project.
+           :publishing-directory "~/workspace/blog/leiwang/resources/content"
+           :recursive t
+           :publishing-function org-html-export-to-html
+           :headline-levels 4 
+           :html-extension "html"
+           :body-only t ;; Only export section between <body> </body>
+           )
         
-        ("org-static-myblog"
-         :base-directory "~/Documents/myblog/org/static/"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-         :publishing-directory "~/Documents/myblog/jekyll/_site/"
-         :recursive t
-         :publishing-function org-publish-attachment)
+          ("org-static-myblog"
+           :base-directory "~/Documents/myblog/org/static/"
+           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
+           :publishing-directory "~/Documents/myblog/jekyll/_site/"
+           :recursive t
+           :publishing-function org-publish-attachment)
         
-        ("myblog" :components ("org-myblog" "org-static-myblog"))
+          ("myblog" :components ("org-myblog" "org-static-myblog"))
+          )
         )
-      )
 
-;; Make windmove work in org-mode
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
+  ;; Make windmove work in org-mode
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right)
 
-;; Configure for latex fragment
-;;; usage in buffer: C-c C-x C-l to generate preview and C-c C-c to
-;;; remove preview image.
-;; (require 'cdlatex)
-;; (require 'texmathp)
-;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-;; (setq org-format-latex-options 
-;;       '(:foreground default 
-;;                     :background default 
-;;                     :scale 1.2
-;;                     :html-foreground "Black" 
-;;                     :html-background "Transparent" 
-;;                     :html-scale 1.2
-;;                     :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
-;; (setq org-export-with-LaTeX-fragments t)
+  ;; Configure for latex fragment
+  ;;; usage in buffer: C-c C-x C-l to generate preview and C-c C-c to
+  ;;; remove preview image.
+  ;; (require 'cdlatex)
+  ;; (require 'texmathp)
+  ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  ;; (setq org-format-latex-options 
+  ;;       '(:foreground default 
+  ;;                     :background default 
+  ;;                     :scale 1.2
+  ;;                     :html-foreground "Black" 
+  ;;                     :html-background "Transparent" 
+  ;;                     :html-scale 1.2
+  ;;                     :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+  ;; (setq org-export-with-LaTeX-fragments t)
 
-;; (require 'ob-tangle)
-;; (org-babel-do-load-languages  ; use 'make' to compile org-mode
-;;                               ; first.
-;;  'org-babel-load-languages
-;;  '((emacs-lisp . t)
-;;    (latex . t)  ; this is the entry to activate LaTeX
-;;    (python . t)))
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (shell . t)
-   (clojure . t)
-   (ledger . t)
-   (python . t)))
+  ;; (require 'ob-tangle)
+  ;; (org-babel-do-load-languages  ; use 'make' to compile org-mode
+  ;;                               ; first.
+  ;;  'org-babel-load-languages
+  ;;  '((emacs-lisp . t)
+  ;;    (latex . t)  ; this is the entry to activate LaTeX
+  ;;    (python . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)
+     (clojure . t)
+     (ledger . t)
+     (python . t)))
 
-(setq org-export-html-style
-      "<link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\" />")
+  (setq org-export-html-style
+        "<link rel=\"stylesheet\" type=\"text/css\" href=\"org.css\" />")
 
-;;; snippets for org-mode
-;; (yas/define-snippets 'org-mode
-;; '(
-;;   ("isrc" "#+BEGIN_SRC ${1:name}
-;;    $2
-;;    #+END_SRC
-;; " "#SRC : #+BEGIN_...#+END_" nil nil)
-;;   ("iexp" "#+BEGIN_EXAMPLE
-;;    $1
-;;    #+END_EXAMPLE
-;; " "#EXAMPLE : #+BEGIN_...#+END_" nil nil)
-;;   ("iver" "#+BEGIN_VERSE
-;;    $1
-;;    #+END_VERSE
-;; " "#VERSE : #+BEGIN_...#+END_" nil nil)
-;;   ("iquo" "#+BEGIN_QUOTE
-;;    $1
-;;    #+END_QUOTE
-;; " "#QUOTE : #+BEGIN_...#+END_" nil nil)
-;;   ("ihtml" "#+BEGIN_HTML
-;;    $1
-;;    #+END_HTML
-;; " "#HTML : #+BEGIN_...#+END_" nil nil)
-;;   ("icod" "#+BEGIN_HTML
-;;   <pre class=\"brush: ${1:bash};fontsize: ${2:50}; first-line: ${3:1}; ${4:collapse: true; }\">
-;;   $0</pre>
-;; #+END_HTML " "#HTMLCODE : #+BEGIN_...#+END_" nil nil)
-;;  )
-;; 'text-mode)
+  ;;; snippets for org-mode
+  ;; (yas/define-snippets 'org-mode
+  ;; '(
+  ;;   ("isrc" "#+BEGIN_SRC ${1:name}
+  ;;    $2
+  ;;    #+END_SRC
+  ;; " "#SRC : #+BEGIN_...#+END_" nil nil)
+  ;;   ("iexp" "#+BEGIN_EXAMPLE
+  ;;    $1
+  ;;    #+END_EXAMPLE
+  ;; " "#EXAMPLE : #+BEGIN_...#+END_" nil nil)
+  ;;   ("iver" "#+BEGIN_VERSE
+  ;;    $1
+  ;;    #+END_VERSE
+  ;; " "#VERSE : #+BEGIN_...#+END_" nil nil)
+  ;;   ("iquo" "#+BEGIN_QUOTE
+  ;;    $1
+  ;;    #+END_QUOTE
+  ;; " "#QUOTE : #+BEGIN_...#+END_" nil nil)
+  ;;   ("ihtml" "#+BEGIN_HTML
+  ;;    $1
+  ;;    #+END_HTML
+  ;; " "#HTML : #+BEGIN_...#+END_" nil nil)
+  ;;   ("icod" "#+BEGIN_HTML
+  ;;   <pre class=\"brush: ${1:bash};fontsize: ${2:50}; first-line: ${3:1}; ${4:collapse: true; }\">
+  ;;   $0</pre>
+  ;; #+END_HTML " "#HTMLCODE : #+BEGIN_...#+END_" nil nil)
+  ;;  )
+  ;; 'text-mode)
 
-(require 'ox-latex)
-(require 'ox-beamer)
+;;   (use-package ox-latex
+;;  :ensure t)
+;;   (use-package ox-beamer
+;;   :ensure t)
 
-;; (add-to-list 'org-latex-classes
-;;              '("beamer"
-;;                "\\documentclass\[presentation\]\{beamer\}"
-;;                ("\\section\{%s\}" . "\\section*\{%s\}")
-;;                ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
-;;                ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
+  ;; (add-to-list 'org-latex-classes
+  ;;              '("beamer"
+  ;;                "\\documentclass\[presentation\]\{beamer\}"
+  ;;                ("\\section\{%s\}" . "\\section*\{%s\}")
+  ;;                ("\\subsection\{%s\}" . "\\subsection*\{%s\}")
+  ;;                ("\\subsubsection\{%s\}" . "\\subsubsection*\{%s\}")))
 
-;; colorized code block in beamer using minted
-(setq org-latex-listings 'minted)
-(add-to-list 'org-latex-packages-alist '("" "minted"))
-(setq org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; colorized code block in beamer using minted
+  (setq org-latex-listings 'minted)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-;; Resolve the conflict between yasnippet and org-mode
-(defun yas/org-very-safe-expand ()
-  (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+  ;; Resolve the conflict between yasnippet and org-mode
+  (defun yas/org-very-safe-expand ()
+    (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-;; To save the clock history across Emacs sessions, use:
-(setq org-clock-persist 'history)
-(org-clock-persistence-insinuate)
+  ;; To save the clock history across Emacs sessions, use:
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
 
-(defun my-org-mode-keys ()
-  "my keys for `org-mode'"
-  (interactive)
-  (local-set-key (kbd "<f7>") 'org-clock-in)
-  (local-set-key (kbd "<f8>") 'org-clock-out)
-  (make-variable-buffer-local 'yas/trigger-key)
-  (setq yas/trigger-key [tab])
-  (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-  (define-key yas/keymap [tab] 'yas/next-field))
+  (defun my-org-mode-keys ()
+    "my keys for `org-mode'"
+    (interactive)
+    (local-set-key (kbd "<f7>") 'org-clock-in)
+    (local-set-key (kbd "<f8>") 'org-clock-out)
+    (make-variable-buffer-local 'yas/trigger-key)
+    (setq yas/trigger-key [tab])
+    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+    (define-key yas/keymap [tab] 'yas/next-field))
 
-(add-hook 'org-mode-hook 'my-org-mode-keys)
+  (add-hook 'org-mode-hook 'my-org-mode-keys)
 
-;; 防止org-mode在导出HTML时把行末的回车输出为空格
-(defadvice org-html-paragraph (before fsh-org-html-paragraph-advice
-                                      (paragraph contents info) activate)
-  "Join consecutive Chinese lines into a single long line without
-unwanted space when exporting org-mode to html."
-  (let ((fixed-contents)
-        (orig-contents (ad-get-arg 1))
-        (reg-han "[[:multibyte:]]"))
-    (setq fixed-contents (replace-regexp-in-string
-                          ;; 这一行是匹配上一行末和下一行头都是中文的情况, 但是这样的话遇上"中文\nenglish"就仍然有空格
-                          ;; (concat "\\(" reg-han "\\) *\n *\\(" reg-han "\\)")
-                          (concat "\\(" reg-han "\\) *\n *")
-                          "\\1" orig-contents))
-    (ad-set-arg 1 fixed-contents)))
+  ;; 防止org-mode在导出HTML时把行末的回车输出为空格
+  (defadvice org-html-paragraph (before fsh-org-html-paragraph-advice
+                                        (paragraph contents info) activate)
+    "Join consecutive Chinese lines into a single long line without
+  unwanted space when exporting org-mode to html."
+    (let ((fixed-contents)
+          (orig-contents (ad-get-arg 1))
+          (reg-han "[[:multibyte:]]"))
+      (setq fixed-contents (replace-regexp-in-string
+                            ;; 这一行是匹配上一行末和下一行头都是中文的情况, 但是这样的话遇上"中文\nenglish"就仍然有空格
+                            ;; (concat "\\(" reg-han "\\) *\n *\\(" reg-han "\\)")
+                            (concat "\\(" reg-han "\\) *\n *")
+                            "\\1" orig-contents))
+      (ad-set-arg 1 fixed-contents)))
 
-;; Set default column view headings: Task Total-Time Time-Stamp
-;; Activate org-columns with C-c C-x C-c while on a top-level heading
-(setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
+  ;; Set default column view headings: Task Total-Time Time-Stamp
+  ;; Activate org-columns with C-c C-x C-c while on a top-level heading
+  (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 
-(add-to-list 'load-path "~/emacs.d/load-path/ox-hugo")
-(with-eval-after-load 'ox
-  (require 'ox-hugo))
+  (add-to-list 'load-path "~/emacs.d/load-path/ox-hugo")
+  (use-package ox-hugo
+    :ensure t)
 
-;; When t (the default), the user is asked before every code block
-;; evaluation.  When ‘nil’, the user is not asked.  When set to a
-;; function, it is called with two arguments (language and body of the
-;; code block ) and should return t to ask and ‘nil’ not to ask.
-(setq org-confirm-babel-evaluate nil)
+  ;; When t (the default), the user is asked before every code block
+  ;; evaluation.  When ‘nil’, the user is not asked.  When set to a
+  ;; function, it is called with two arguments (language and body of the
+  ;; code block ) and should return t to ask and ‘nil’ not to ask.
+  (setq org-confirm-babel-evaluate nil)
 
 
-(setq org-agenda-custom-commands
-      '(("c" "My agenda view"
-         ((agenda "")
-          (tags "PRIORITY={A}"
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "High-Priority tasks:")))
-          (alltodo "")))))
+  (setq org-agenda-custom-commands
+        '(("c" "My agenda view"
+           ((agenda "")
+            (tags "PRIORITY={A}"
+                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                   (org-agenda-overriding-header "High-Priority tasks:")))
+            (alltodo "")))))
 
-;;; org babel clojure
-(setq org-babel-clojure-backend 'cider)
+  ;;; org babel clojure
+  (setq org-babel-clojure-backend 'cider)
 
-;; edit code block C-c ', org-edit-src-code, org-edit-src-abort
+  ;; edit code block C-c ', org-edit-src-code, org-edit-src-abort
 
-(require 'sqlite3)
+(use-package sqlite3
+  :ensure t)
 (use-package org-roam
       :ensure t
       :init
@@ -588,20 +612,26 @@ unwanted space when exporting org-mode to html."
       :config
       (org-roam-setup))
 
-(setq magit-auto-revert-mode nil)
-;; (setq magit-revert-buffers nil)
-(setq auto-revert-buffer-list-filter
-      'magit-auto-revert-repository-buffers-p)
-(setq vc-handled-backends (delq 'Git vc-handled-backends))
-(global-set-key [f5] 'magit-status)
-(setq magit-section-initial-visibility-alist '((stashes . show)
-                                               (unstaged . show)
-                                               (unpushed . show)
-                                               (recent . show)))
-(setq magit-diff-refine-hunk 'all)
+(use-package magit
+    :ensure t
+    :init
+    (setq magit-auto-revert-mode nil)
+    ;; (setq magit-revert-buffers nil)
+    (setq auto-revert-buffer-list-filter
+          'magit-auto-revert-repository-buffers-p)
+    (setq vc-handled-backends (delq 'Git vc-handled-backends))
+    (global-set-key [f5] 'magit-status)
+    (setq magit-section-initial-visibility-alist '((stashes . show)
+                                                   (unstaged . show)
+                                                   (unpushed . show)
+                                                   (recent . show)))
+    (setq magit-diff-refine-hunk 'all))
 
-(autoload 'git-blame-mode "git-blame"
-  "Minor mode for incremental blame for Git." t)
+(use-package git-blamed
+  :ensure t
+  :init 
+  (autoload 'git-blame-mode "git-blame"
+    "Minor mode for incremental blame for Git." t))
 
 (add-to-list 'auto-mode-alist '("\\.[Cc][Ss][Vv]\\'" . csv-mode))
 (autoload 'csv-mode "csv-mode"
@@ -624,7 +654,8 @@ unwanted space when exporting org-mode to html."
             (local-set-key (kbd "<f8>") 'mhtml-mode)))
 
 ;; multi-web-mode
-(require 'multi-web-mode)
+(use-package multi-web-mode
+  :ensure t)
 (setq mweb-default-major-mode 'html-mode)
 (setq mweb-tags '( ;;(php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
                   (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
@@ -633,7 +664,8 @@ unwanted space when exporting org-mode to html."
 ;; (multi-web-global-mode 1) ; use web-mode for html instead
 
 ;;; for html
-(require 'web-mode)
+(use-package web-mode
+  :ensure t)
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.htm\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
@@ -670,7 +702,8 @@ unwanted space when exporting org-mode to html."
 
 (setq css-indent-offset 2)
 
-(require 'flycheck)
+(use-package flycheck
+  :ensure t)
 
 (flycheck-define-checker jsxhint-checker
   "A JSX syntax and style checker based on JSXHint."
@@ -695,7 +728,8 @@ unwanted space when exporting org-mode to html."
 ;; (add-to-list 'load-path "~/emacs.d/load-path/pkg-info.el")
 ;; (add-to-list 'load-path "~/emacs.d/load-path/s.el")
 
-(require 'cider)
+(use-package cider
+  :ensure t)
 
 (setenv "JAVA_HOME" "~/workspace/jdk/jdk-11.0.5/Contents/Home")
 
@@ -727,7 +761,8 @@ unwanted space when exporting org-mode to html."
 (setq cider-clojure-cli-aliases "-M:env/dev:env/test")
 
 
-(require 'paredit)
+(use-package paredit
+  :ensure t)
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code."
   t)
@@ -783,16 +818,14 @@ unwanted space when exporting org-mode to html."
    "(require 'clojure.tools.namespace.repl)
     (clojure.tools.namespace.repl/refresh)"))
 
-;; https://github.com/clojure-emacs/cider/issues/2009
-(setq company-dabbrev-char-regexp "\sw\|-")
-
 (autoload 'octave-mode "octave-mode" nil t)
 (setq auto-mode-alist
       (cons '("\\.m\\'" . octave-mode) auto-mode-alist))
 
 
 
-(require 'ox-reveal)
+(use-package ox-reveal
+  :ensure t)
 (setq org-reveal-root "file://~/.emacs.d/load-path/ox-reveal/reveal.js")
 
 (defun my-fixup (p1 p2)
@@ -824,10 +857,16 @@ be passed in via a prefix arg."
           (insert "\n"))))))
 
 ;; trim white space in changed area during save except for final new line
-(ws-butler-global-mode 1)
+(use-package ws-butler
+  :ensure t
+  :init 
+  (ws-butler-global-mode 1))
 
 (when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
 
 (defun find-first-non-ascii-char ()
   "Find the first non-ascii character from point onwards."
@@ -850,9 +889,12 @@ be passed in via a prefix arg."
 
 ;;; helm-git-project
 ;; forked from https://gist.github.com/eiel/2717956
-(require 'cl)
-(require 'helm-config)
-(require 'helm-files)
+;; (use-package cl
+;;   :ensure t)
+;; (use-package helm-config
+;;   :ensure t)
+;; (use-package helm-files
+;;   :ensure t)
 
 (defvar helm-git-project-dir nil)
 
@@ -890,6 +932,8 @@ be passed in via a prefix arg."
 
 (global-set-key [f4] 'counsel-git)
 
+(use-package ivy
+  :ensure t)
 (ivy-mode 1)
 (setq ivy-use-selectable-prompt t) ; make the prompt line selectable
 (setq ivy-use-virtual-buffers t)
@@ -990,8 +1034,10 @@ Version 2016-06-19"
 (global-set-key (kbd "<M-f11>") 'xah-previous-emacs-buffer)
 (global-set-key (kbd "<M-f12>") 'xah-next-emacs-buffer)
 
-(require 'pyim)
-(require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
+(use-package pyim
+  :ensure t)
+(use-package pyim-basedict
+  :ensure t) ; 拼音词库设置，五笔用户 *不需要* 此行设置
 (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
 
 (setq pyim-page-style 'one-line)
@@ -1138,7 +1184,8 @@ Version 2016-06-19"
 (global-set-key (kbd "C-M--") 'default-text-scale-decrease)
 
 ;; restclient
-(require 'restclient)
+(use-package restclient
+  :ensure t)
 (defvar my-restclient-token nil)
 (defun my-restclient-hook ()
   "Update token from a request."
@@ -1178,7 +1225,8 @@ Version 2016-06-19"
                  (setq-local tab-always-indent 'complete)
                  (setq-local completion-cycle-threshold t)
                  (setq-local ledger-complete-in-steps t)))
-(require 'ledger-complete)
+;; (use-package ledger-complete
+;;   :ensure t)
 
 ;; golang go-mode
 (add-hook 'go-mode-hook
@@ -1212,6 +1260,9 @@ Version 2016-06-19"
       lsp-ui-flycheck-enable t)
 
 ;; Projectile
-(projectile-mode +1)
-;; Recommended keymap prefix on macOS
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  ;; Recommended keymap prefix on macOS
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))
