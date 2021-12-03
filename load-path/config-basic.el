@@ -277,7 +277,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; confirm exit
-(setq confirm-kill-emacs 'y-or-n-p)
+;; (setq confirm-kill-emacs 'y-or-n-p)
+(setq confirm-kill-emacs nil) 
 
 (message "***** 2")
 ;;; Customization for psvn.el, The latest version of psvn.el can be
