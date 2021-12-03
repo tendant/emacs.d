@@ -39,7 +39,7 @@
 
 ;; (el-get 'sync)
 
-(setq base-dir (file-name-directory load-file-name))
+(setq base-dir (file-name-directory (or load-file-name buffer-file-name)))
 
 (defun load-config(conf)
   "Load the configuration in literate 'org-mode' elisp."
