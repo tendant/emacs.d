@@ -1013,6 +1013,11 @@ be passed in via a prefix arg."
 #+begin_src elisp
 (use-package ivy
   :ensure t)
+(use-package swiper
+  :ensure t)
+(use-package counsel
+  :ensure t)
+
 (ivy-mode 1)
 (setq ivy-use-selectable-prompt t) ; make the prompt line selectable
 (setq ivy-use-virtual-buffers t)
