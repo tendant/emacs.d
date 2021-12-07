@@ -150,6 +150,13 @@ Version 2017-03-12"
 
 #+end_src
 
+* ripgrep
+
+#+begin_src elisp
+  (use-package rg
+    :ensure t)
+#+end_src
+
 * dired
 #+begin_src elisp
 (use-package dired-single
@@ -635,24 +642,26 @@ Version 2017-03-12"
 * org-roam
 
 #+begin_src elisp
-(use-package sqlite3
-  :ensure t)
-(use-package org-roam
-      :ensure t
-      :init
-      (setq org-roam-v2-ack t)
-      (setq org-roam-database-connector 'libsqlite3)
-      :custom
-      (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
-      :bind (("C-c n l" . org-roam-buffer-toggle)
-             ("C-c n f" . org-roam-node-find)
-             ("C-c n g" . org-roam-graph)
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n c" . org-roam-capture)
-             ;; Dailies
-             ("C-c n j" . org-roam-dailies-capture-today))
-      :config
-      (org-roam-setup))
+  ;; (use-package sqlite3
+  ;;   :ensure t)
+  (use-package emacsql-libsqlite3
+    :ensure t)
+  (use-package org-roam
+        :ensure t
+        :init
+        (setq org-roam-v2-ack t)
+        (setq org-roam-database-connector 'libsqlite3)
+        :custom
+        (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
+        :bind (("C-c n l" . org-roam-buffer-toggle)
+               ("C-c n f" . org-roam-node-find)
+               ("C-c n g" . org-roam-graph)
+               ("C-c n i" . org-roam-node-insert)
+               ("C-c n c" . org-roam-capture)
+               ;; Dailies
+               ("C-c n j" . org-roam-dailies-capture-today))
+        :config
+        (org-roam-setup))
 #+end_src
 
 * magit
@@ -1400,3 +1409,16 @@ Version 2016-06-19"
 #+end_src
 
 * TODO valign
+
+* yaml-mode
+
+#+begin_src elisp
+  (use-package yaml-mode
+    :ensure t)
+#+end_src
+
+* markdown-mode
+#+begin_src elisp
+  (use-package markdown-mode
+    :ensure t)
+#+end_src
