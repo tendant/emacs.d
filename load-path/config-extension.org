@@ -164,6 +164,8 @@ Version 2017-03-12"
   (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
     'dired-single-buffer-mouse)
   (define-key dired-mode-map [remap dired-up-directory]
+    'dired-single-up-directory)
+  (define-key dired-mode-map (kbd ".")
     'dired-single-up-directory))
 
 ;; if dired's already loaded, then the keymap will be bound
