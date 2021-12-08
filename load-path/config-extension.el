@@ -125,6 +125,9 @@ Version 2017-03-12"
 ;; do not enable tramp completion with ido
 (setq ido-enable-tramp-completion nil)
 
+(use-package rg
+  :ensure t)
+
 (use-package dired-single
   :ensure t
   :init
@@ -137,6 +140,8 @@ Version 2017-03-12"
   (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
     'dired-single-buffer-mouse)
   (define-key dired-mode-map [remap dired-up-directory]
+    'dired-single-up-directory)
+  (define-key dired-mode-map (kbd ".")
     'dired-single-up-directory))
 
 ;; if dired's already loaded, then the keymap will be bound
@@ -593,7 +598,9 @@ Version 2017-03-12"
 
   ;; edit code block C-c ', org-edit-src-code, org-edit-src-abort
 
-(use-package sqlite3
+;; (use-package sqlite3
+;;   :ensure t)
+(use-package emacsql-libsqlite3
   :ensure t)
 (use-package org-roam
       :ensure t
@@ -934,6 +941,11 @@ be passed in via a prefix arg."
 
 (use-package ivy
   :ensure t)
+(use-package swiper
+  :ensure t)
+(use-package counsel
+  :ensure t)
+
 (ivy-mode 1)
 (setq ivy-use-selectable-prompt t) ; make the prompt line selectable
 (setq ivy-use-virtual-buffers t)
@@ -1266,3 +1278,9 @@ Version 2016-06-19"
   (projectile-mode +1)
   ;; Recommended keymap prefix on macOS
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t)
