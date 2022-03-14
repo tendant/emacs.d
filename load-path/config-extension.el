@@ -144,6 +144,11 @@ Version 2017-03-12"
   (define-key dired-mode-map (kbd ".")
     'dired-single-up-directory))
 
+(setq dired-listing-switches "-alh")
+(setq dired-recursive-copies 'always)
+
+(setq dired-dwim-target t)
+
 ;; if dired's already loaded, then the keymap will be bound
 (if (boundp 'dired-mode-map)
     ;; we're good to go; just add our bindings
@@ -606,7 +611,7 @@ Version 2017-03-12"
       :ensure t
       :init
       (setq org-roam-v2-ack t)
-      ;; (setq org-roam-database-connector 'libsqlite3)
+      ;; (setq org-roam-database-connector 'libsqlite3) ; unique key constraint issue
       :custom
       (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
       :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -1241,6 +1246,8 @@ Version 2016-06-19"
 ;;   :ensure t)
 
 ;; golang go-mode
+(use-package go-mode
+  :ensure t)
 (add-hook 'go-mode-hook
           (lambda ()
             ;; golang prefer to use gofmt, instead of customized style
@@ -1254,11 +1261,14 @@ Version 2016-06-19"
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 (add-hook 'go-mode-hook #'yas-minor-mode)
+(add-hook 'go-mode-hook #'flycheck-mode)
 
 ;; go-mode
+
 ;; lsp-mode
 ;; lsp-ui
 (setq lsp-gopls-staticcheck t)
@@ -1284,3 +1294,19 @@ Version 2016-06-19"
 
 (use-package markdown-mode
   :ensure t)
+
+(use-package smartparens
+  :ensure t
+  ;; :diminish smartparens-mode ;; Do not show in modeline
+  :init
+  (require 'smartparens-config)
+  :config
+  (smartparens-global-mode t) ;; These options can be t or nil.
+  (show-smartparens-global-mode t)
+  (setq sp-show-pair-from-inside t)
+  (add-hook 'prog-mode-hook
+            'smartparens-mode)
+  :custom-face
+  ;; Could also have :background "Grey" for example.
+  ;; (sp-show-pair-match-face ((t (:foreground "White"))))
+  )

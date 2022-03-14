@@ -175,6 +175,11 @@ Version 2017-03-12"
   (define-key dired-mode-map (kbd ".")
     'dired-single-up-directory))
 
+(setq dired-listing-switches "-alh")
+(setq dired-recursive-copies 'always)
+
+(setq dired-dwim-target t)
+
 ;; if dired's already loaded, then the keymap will be bound
 (if (boundp 'dired-mode-map)
     ;; we're good to go; just add our bindings
@@ -1364,36 +1369,42 @@ Version 2016-06-19"
 
 * golang-mode
 #+begin_src elisp
-;; golang go-mode
-(add-hook 'go-mode-hook
-          (lambda ()
-            ;; golang prefer to use gofmt, instead of customized style
-            (add-hook 'before-save-hook 'gofmt-before-save)
-            ;; (setq-default)
-            (setq tab-width 4)
-            ;; (setq standard-indent 2)
-            ;; (setq indent-tabs-mode nil)
-            ))
+  ;; golang go-mode
+  (use-package go-mode
+    :ensure t)
+  (add-hook 'go-mode-hook
+            (lambda ()
+              ;; golang prefer to use gofmt, instead of customized style
+              (add-hook 'before-save-hook 'gofmt-before-save)
+              ;; (setq-default)
+              (setq tab-width 4)
+              ;; (setq standard-indent 2)
+              ;; (setq indent-tabs-mode nil)
+              ))
 
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-(add-hook 'go-mode-hook #'yas-minor-mode)
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-;; go-mode
-;; lsp-mode
-;; lsp-ui
-(setq lsp-gopls-staticcheck t)
-(setq lsp-eldoc-render-all t)
-(setq lsp-gopls-complete-unimported t)
+  (add-hook 'go-mode-hook #'yas-minor-mode)
+  (add-hook 'go-mode-hook #'flycheck-mode)
+  (add-hook 'go-mode-hook 'eglot-ensure)
 
-(setq lsp-ui-doc-enable nil
-      lsp-ui-peek-enable t
-      lsp-ui-sideline-enable t
-      lsp-ui-imenu-enable t
-      lsp-ui-flycheck-enable t)
+  ;; go-mode
+
+  ;; lsp-mode
+  ;; lsp-ui
+  (setq lsp-gopls-staticcheck t)
+  (setq lsp-eldoc-render-all t)
+  (setq lsp-gopls-complete-unimported t)
+
+  (setq lsp-ui-doc-enable nil
+        lsp-ui-peek-enable t
+        lsp-ui-sideline-enable t
+        lsp-ui-imenu-enable t
+        lsp-ui-flycheck-enable t)
 
 #+end_src
 
@@ -1421,4 +1432,24 @@ Version 2016-06-19"
 #+begin_src elisp
   (use-package markdown-mode
     :ensure t)
+#+end_src
+
+* smartparens
+
+#+begin_src elisp
+  (use-package smartparens
+    :ensure t
+    ;; :diminish smartparens-mode ;; Do not show in modeline
+    :init
+    (require 'smartparens-config)
+    :config
+    (smartparens-global-mode t) ;; These options can be t or nil.
+    (show-smartparens-global-mode t)
+    (setq sp-show-pair-from-inside t)
+    (add-hook 'prog-mode-hook
+              'smartparens-mode)
+    :custom-face
+    ;; Could also have :background "Grey" for example.
+    ;; (sp-show-pair-match-face ((t (:foreground "White"))))
+    )
 #+end_src
