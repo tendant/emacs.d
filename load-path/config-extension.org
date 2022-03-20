@@ -679,7 +679,7 @@ Version 2017-03-12"
     (setq auto-revert-buffer-list-filter
           'magit-auto-revert-repository-buffers-p)
     (setq vc-handled-backends (delq 'Git vc-handled-backends))
-    (global-set-key [f5] 'magit-status)
+    (global-set-key [f4] 'magit-status)
     (setq magit-section-initial-visibility-alist '((stashes . show)
                                                    (unstaged . show)
                                                    (unpushed . show)
@@ -1021,7 +1021,7 @@ be passed in via a prefix arg."
       (helm-other-buffer sources
                          (format "*Helm git project in %s*" default-directory))))
 
-  (global-set-key [f4] 'counsel-git)
+  (global-set-key [f5] 'counsel-git)
 
 #+end_src
 

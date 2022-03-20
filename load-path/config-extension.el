@@ -1266,6 +1266,7 @@ Version 2016-06-19"
 
 (add-hook 'go-mode-hook #'yas-minor-mode)
 (add-hook 'go-mode-hook #'flycheck-mode)
+(add-hook 'go-mode-hook 'eglot-ensure)
 
 ;; go-mode
 
