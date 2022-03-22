@@ -11,6 +11,12 @@
   (package-install 'use-package))
 (require 'use-package)
 
+(when (memq window-system '(mac ns x))
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
+
 (setq my-emacs-load-path (concat (file-name-directory (or load-file-name buffer-file-name))))
 
 (message "my-emacs-load-path:")
@@ -484,7 +490,7 @@ Version 2017-03-12"
    '((emacs-lisp . t)
      (shell . t)
      (clojure . t)
-     (ledger . t)
+     ;; (ledger . t)
      (python . t)))
 
   (setq org-export-html-style
@@ -632,7 +638,7 @@ Version 2017-03-12"
     (setq auto-revert-buffer-list-filter
           'magit-auto-revert-repository-buffers-p)
     (setq vc-handled-backends (delq 'Git vc-handled-backends))
-    (global-set-key [f5] 'magit-status)
+    (global-set-key [f4] 'magit-status)
     (setq magit-section-initial-visibility-alist '((stashes . show)
                                                    (unstaged . show)
                                                    (unpushed . show)
@@ -874,12 +880,6 @@ be passed in via a prefix arg."
   :init 
   (ws-butler-global-mode 1))
 
-(when (memq window-system '(mac ns x))
-  (use-package exec-path-from-shell
-    :ensure t
-    :init
-    (exec-path-from-shell-initialize)))
-
 (defun find-first-non-ascii-char ()
   "Find the first non-ascii character from point onwards."
   (interactive)
@@ -942,7 +942,7 @@ be passed in via a prefix arg."
     (helm-other-buffer sources
                        (format "*Helm git project in %s*" default-directory))))
 
-(global-set-key [f4] 'counsel-git)
+(global-set-key [f5] 'counsel-git)
 
 (use-package ivy
   :ensure t)

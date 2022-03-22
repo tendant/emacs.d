@@ -18,6 +18,16 @@
   (require 'use-package)
 #+end_src
 
+* Configure exec-path-from-shell
+
+#+begin_src elisp
+(when (memq window-system '(mac ns x))
+  (use-package exec-path-from-shell
+    :ensure t
+    :init
+    (exec-path-from-shell-initialize)))
+#+end_src
+
 * Configure load-path
 
 #+begin_src elisp
@@ -523,7 +533,7 @@ Version 2017-03-12"
    '((emacs-lisp . t)
      (shell . t)
      (clojure . t)
-     (ledger . t)
+     ;; (ledger . t)
      (python . t)))
 
   (setq org-export-html-style
@@ -947,12 +957,6 @@ be passed in via a prefix arg."
   :ensure t
   :init 
   (ws-butler-global-mode 1))
-
-(when (memq window-system '(mac ns x))
-  (use-package exec-path-from-shell
-    :ensure t
-    :init
-    (exec-path-from-shell-initialize)))
 
 (defun find-first-non-ascii-char ()
   "Find the first non-ascii character from point onwards."
