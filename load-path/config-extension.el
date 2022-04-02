@@ -203,11 +203,11 @@ Version 2017-03-12"
   ;; This line only if Org is not part of the X/Emacs distribution. This line is not needed for git version.
   ;; (require 'org-install)
 
-  ;; The following lines are always needed. Choose your own keys. 
+  ;; The following lines are always needed. Choose your own keys.
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)
-  (global-set-key "\C-ca" 'org-agenda) 
+  (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
 
   (add-hook 'org-mode-hook 'turn-on-font-lock) ; (XEmacs user must use this option)
@@ -226,14 +226,14 @@ Version 2017-03-12"
 
   (defun org-all ()
     (interactive)
-    (setq org-agenda-files 
+    (setq org-agenda-files
           (file-expand-wildcards
            "~/.emacs.d/org-gtd/[a-zA-Z]*.org"))
     (org-agenda-redo))
 
   (defun org-work ()
     (interactive)
-    (setq org-agenda-files 
+    (setq org-agenda-files
           (list
            "~/.emacs.d/org-gtd/work.org"
            ))
@@ -241,7 +241,7 @@ Version 2017-03-12"
 
   (defun org-personal ()
     (interactive)
-    (setq org-agenda-files 
+    (setq org-agenda-files
           (list
            "~/.emacs.d/org-gtd/personal.org"
            ))
@@ -309,10 +309,10 @@ Version 2017-03-12"
   ;; If you would like a TODO entry to automatically change to DONE when
   ;; all chilrden are done, you can use the following setup
   (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise." 
-    (let (org-log-done org-log-states) ; turn off logging 
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states) ; turn off logging
       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
-  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo) 
+  (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
   (setq org-special-ctrl-k t)
   (setq org-special-ctrl-a/e "reversed")
@@ -425,33 +425,33 @@ Version 2017-03-12"
         (org-update-agenda-file t)
         (add-hook 'org-mode-hook 'org-mode-init)))
 
-  ;; saves all org buffers at 1 minute before the hour      
+  ;; saves all org buffers at 1 minute before the hour
   ; (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 
   (setq org-publish-project-alist
         '(
-        
+
           ("org-myblog"
            ;; Path to your org files.
            :base-directory "~/workspace/blog/leiwang/resources/org"
            :base-extension "org"
-         
+
            ;; Path to your Jekyll project.
            :publishing-directory "~/workspace/blog/leiwang/resources/content"
            :recursive t
            :publishing-function org-html-export-to-html
-           :headline-levels 4 
+           :headline-levels 4
            :html-extension "html"
            :body-only t ;; Only export section between <body> </body>
            )
-        
+
           ("org-static-myblog"
            :base-directory "~/Documents/myblog/org/static/"
            :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
            :publishing-directory "~/Documents/myblog/jekyll/_site/"
            :recursive t
            :publishing-function org-publish-attachment)
-        
+
           ("myblog" :components ("org-myblog" "org-static-myblog"))
           )
         )
@@ -468,12 +468,12 @@ Version 2017-03-12"
   ;; (require 'cdlatex)
   ;; (require 'texmathp)
   ;; (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  ;; (setq org-format-latex-options 
-  ;;       '(:foreground default 
-  ;;                     :background default 
+  ;; (setq org-format-latex-options
+  ;;       '(:foreground default
+  ;;                     :background default
   ;;                     :scale 1.2
-  ;;                     :html-foreground "Black" 
-  ;;                     :html-background "Transparent" 
+  ;;                     :html-foreground "Black"
+  ;;                     :html-background "Transparent"
   ;;                     :html-scale 1.2
   ;;                     :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
   ;; (setq org-export-with-LaTeX-fragments t)
@@ -557,8 +557,8 @@ Version 2017-03-12"
   (defun my-org-mode-keys ()
     "my keys for `org-mode'"
     (interactive)
-    (local-set-key (kbd "<f7>") 'org-clock-in)
-    (local-set-key (kbd "<f8>") 'org-clock-out)
+    ;; (local-set-key (kbd "<f7>") 'org-clock-in)
+    ;; (local-set-key (kbd "<f8>") 'org-clock-out)
     (make-variable-buffer-local 'yas/trigger-key)
     (setq yas/trigger-key [tab])
     (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
@@ -722,6 +722,12 @@ Version 2017-03-12"
 
 (use-package flycheck
   :ensure t)
+
+(setq flycheck-check-syntax-automatically '(save
+                                            idle-change
+                                            new-line
+                                            idle-buffer-switch
+                                            mode-enabled))
 
 (flycheck-define-checker jsxhint-checker
   "A JSX syntax and style checker based on JSXHint."
@@ -942,7 +948,7 @@ be passed in via a prefix arg."
     (helm-other-buffer sources
                        (format "*Helm git project in %s*" default-directory))))
 
-(global-set-key [f5] 'counsel-git)
+(global-set-key [f8] 'counsel-git)
 
 (use-package ivy
   :ensure t)
