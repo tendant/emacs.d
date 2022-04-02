@@ -662,6 +662,24 @@ Version 2017-03-12"
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
+(setq flycheck-check-syntax-automatically '(save
+                                            idle-change
+                                            new-line
+                                            idle-buffer-switch
+                                            mode-enabled))
+
+(flycheck-define-checker jsxhint-checker
+  "A JSX syntax and style checker based on JSXHint."
+
+  :command ("jsxhint" source)
+  :error-patterns
+  ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
+  :modes (web-mode))
+
 ;; html-mode and js-mode
 (add-hook 'html-mode-hook
           (lambda ()
@@ -719,23 +737,6 @@ Version 2017-03-12"
 (message "Configured for javascript")
 
 (setq css-indent-offset 2)
-
-(use-package flycheck
-  :ensure t)
-
-(setq flycheck-check-syntax-automatically '(save
-                                            idle-change
-                                            new-line
-                                            idle-buffer-switch
-                                            mode-enabled))
-
-(flycheck-define-checker jsxhint-checker
-  "A JSX syntax and style checker based on JSXHint."
-
-  :command ("jsxhint" source)
-  :error-patterns
-  ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
-  :modes (web-mode))
 
 (add-hook 'web-mode-hook
           (lambda ()
@@ -1272,7 +1273,7 @@ Version 2016-06-19"
 
 (add-hook 'go-mode-hook #'yas-minor-mode)
 (add-hook 'go-mode-hook #'flycheck-mode)
-(add-hook 'go-mode-hook 'eglot-ensure)
+;; (add-hook 'go-mode-hook 'eglot-ensure) ; don't use, it will enable flymake-mode
 
 ;; go-mode
 
