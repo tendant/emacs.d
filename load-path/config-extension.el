@@ -177,7 +177,7 @@ Version 2017-03-12"
 ;; (use-package yasnippet
   ;;   :ensure t
   ;;   :config
-  ;;   (setcdr yas-snippet-dirs (cons (concat my-emacs-load-path "my-snippets") (rest yas-snippet-dirs))) 
+  ;;   (setcdr yas-snippet-dirs (cons (concat my-emacs-load-path "my-snippets") (rest yas-snippet-dirs)))
   ;;   (yas/global-mode 1))
 (use-package yasnippet                  ; Snippets
   :ensure t
@@ -185,8 +185,9 @@ Version 2017-03-12"
   (setq yas-verbosity 1)                      ; No need to be so verbose
   (setq yas-wrap-around-region t)
 
-  (with-eval-after-load 'yasnippet
-    (setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+  ;; (with-eval-after-load 'yasnippet
+  ;;   (setq yas-snippet-dirs '(yasnippet-snippets-dir)))
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
 
   (yas-reload-all)
   (yas-global-mode))
@@ -1262,15 +1263,17 @@ Version 2016-06-19"
             ;; (setq-default)
             (setq tab-width 4)
             ;; (setq standard-indent 2)
-            ;; (setq indent-tabs-mode nil)
+            (setq indent-tabs-mode t)
 
             (local-set-key (kbd "M-.") #'godef-jump)
             ;; gotest
-            ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
-            ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
-            ;; (define-key go-mode-map (kbd "C-x p") 'go-test-current-project)
-            ;; (define-key go-mode-map (kbd "C-x b") 'go-test-current-benchmark)
-            ;; (define-key go-mode-map (kbd "C-x x") 'go-run)
+            (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
+            (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
+            (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
+            (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
+            (define-key go-mode-map (kbd "C-c x") 'go-run)
+
+            ;; (flymake-mode -1)
             ))
 
 ;; gotest
@@ -1286,10 +1289,50 @@ Version 2016-06-19"
 
 (add-hook 'go-mode-hook #'yas-minor-mode)
 (add-hook 'go-mode-hook #'flycheck-mode)
+
 ;; (add-hook 'go-mode-hook 'eglot-ensure) ; don't use, it will enable flymake-mode
+;; (add-hook 'go-mode-hook 'eglot-ensure)
+;; replace flymake with flycheck
+;; (use-package flymake-flycheck
+;;   :ensure t)
+
+;; (put 'eglot-node 'flymake-overlay-control nil)
+;; (put 'eglot-warning 'flymake-overlay-control nil)
+;; (put 'eglot-error 'flymake-overlay-control nil)
+;; (push '(face . nil) (get :note 'flymake-overlay-control))
+;; (push '(face . nil) (get :error 'flymake-overlay-control))
+;; (push '(face . nil) (get :warning 'flymake-overlay-control))
+;; (setq flymake-diagnostic-functions (flymake-flycheck-all-chained-diagnostic-functions))
+
 
 ;; lsp-mode
+(use-package lsp-mode
+  :ensure t
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  ;; (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (go-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package which-key
+  :ensure t)
+
 ;; lsp-ui
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+;; if you are ivy user
+(use-package lsp-ivy
+  :ensure t
+  :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs
+  :ensure t
+  :commands lsp-treemacs-errors-list)
+
 (setq lsp-gopls-staticcheck t)
 (setq lsp-eldoc-render-all t)
 (setq lsp-gopls-complete-unimported t)
@@ -1298,7 +1341,9 @@ Version 2016-06-19"
       lsp-ui-peek-enable t
       lsp-ui-sideline-enable t
       lsp-ui-imenu-enable t
-      lsp-ui-flycheck-enable t)
+      lsp-ui-flycheck-enable t
+      lsp-enable-snippet t
+      company-lsp-enable-snippet t)
 
 ;; Projectile
 (use-package projectile
