@@ -1263,7 +1263,20 @@ Version 2016-06-19"
             (setq tab-width 4)
             ;; (setq standard-indent 2)
             ;; (setq indent-tabs-mode nil)
+
+            (local-set-key (kbd "M-.") #'godef-jump)
+            ;; gotest
+            ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
+            ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
+            ;; (define-key go-mode-map (kbd "C-x p") 'go-test-current-project)
+            ;; (define-key go-mode-map (kbd "C-x b") 'go-test-current-benchmark)
+            ;; (define-key go-mode-map (kbd "C-x x") 'go-run)
             ))
+
+;; gotest
+(use-package gotest
+  :ensure t)
+
 
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -1274,8 +1287,6 @@ Version 2016-06-19"
 (add-hook 'go-mode-hook #'yas-minor-mode)
 (add-hook 'go-mode-hook #'flycheck-mode)
 ;; (add-hook 'go-mode-hook 'eglot-ensure) ; don't use, it will enable flymake-mode
-
-;; go-mode
 
 ;; lsp-mode
 ;; lsp-ui
