@@ -1386,97 +1386,105 @@ Version 2016-06-19"
 
 * golang-mode
 #+begin_src elisp
-  ;; golang go-mode
-  (use-package go-mode
-    :ensure t)
-  (add-hook 'go-mode-hook
-            (lambda ()
-              ;; golang prefer to use gofmt, instead of customized style
-              (add-hook 'before-save-hook 'gofmt-before-save)
-              ;; (setq-default)
-              (setq tab-width 4)
-              ;; (setq standard-indent 2)
-              (setq indent-tabs-mode t)
+    ;; golang go-mode
+    (use-package go-mode
+      :ensure t)
+    (add-hook 'go-mode-hook
+              (lambda ()
+                ;; golang prefer to use gofmt, instead of customized style
+                (add-hook 'before-save-hook 'gofmt-before-save)
+                ;; (setq-default)
+                (setq tab-width 4)
+                ;; (setq standard-indent 2)
+                (setq indent-tabs-mode t)
 
-              (local-set-key (kbd "M-.") #'godef-jump)
-              ;; gotest
-              (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
-              (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
-              (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
-              (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
-              (define-key go-mode-map (kbd "C-c x") 'go-run)
+                (local-set-key (kbd "M-.") #'godef-jump)
+                ;; gotest
+                (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
+                (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
+                (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
+                (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
+                (define-key go-mode-map (kbd "C-c x") 'go-run)
 
-              ;; (flymake-mode -1)
-              ))
+                ;; (flymake-mode -1)
+                (setq gofmt-command "goimports")
+                (add-hook 'before-save-hook 'gofmt-before-save)
 
-  ;; gotest
-  (use-package gotest
-    :ensure t)
+                ))
 
+    ;; gotest
+    (use-package gotest
+      :ensure t)
 
-  (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
-  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
-  (add-hook 'go-mode-hook #'yas-minor-mode)
-  (add-hook 'go-mode-hook #'flycheck-mode)
-
-  ;; (add-hook 'go-mode-hook 'eglot-ensure) ; don't use, it will enable flymake-mode
-  ;; (add-hook 'go-mode-hook 'eglot-ensure)
-  ;; replace flymake with flycheck
-  ;; (use-package flymake-flycheck
-  ;;   :ensure t)
-
-  ;; (put 'eglot-node 'flymake-overlay-control nil)
-  ;; (put 'eglot-warning 'flymake-overlay-control nil)
-  ;; (put 'eglot-error 'flymake-overlay-control nil)
-  ;; (push '(face . nil) (get :note 'flymake-overlay-control))
-  ;; (push '(face . nil) (get :error 'flymake-overlay-control))
-  ;; (push '(face . nil) (get :warning 'flymake-overlay-control))
-  ;; (setq flymake-diagnostic-functions (flymake-flycheck-all-chained-diagnostic-functions))
+  (defun custom/find-go-dir (dir)
+    (if (equal dir "/") nil
+      (if (member "go.mod" (directory-files dir)) dir
+        (custom/find-go-dir (file-name-directory (string-trim-right dir "/"))))))
 
 
-  ;; lsp-mode
-  (use-package lsp-mode
-    :ensure t
-    :init
-    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-    ;; (setq lsp-keymap-prefix "C-c l")
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-           (go-mode . lsp)
-           ;; if you want which-key integration
-           (lsp-mode . lsp-enable-which-key-integration))
-    :commands lsp)
+    (defun lsp-go-install-save-hooks ()
+      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+      (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
-  (use-package which-key
-    :ensure t)
+    (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
-  ;; lsp-ui
-  (use-package lsp-ui
-    :ensure t
-    :commands lsp-ui-mode)
+    (add-hook 'go-mode-hook #'yas-minor-mode)
+    (add-hook 'go-mode-hook #'flycheck-mode)
 
-  ;; if you are ivy user
-  (use-package lsp-ivy
-    :ensure t
-    :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-treemacs
-    :ensure t
-    :commands lsp-treemacs-errors-list)
+    ;; (add-hook 'go-mode-hook 'eglot-ensure) ; don't use, it will enable flymake-mode
+    ;; (add-hook 'go-mode-hook 'eglot-ensure)
+    ;; replace flymake with flycheck
+    ;; (use-package flymake-flycheck
+    ;;   :ensure t)
 
-  (setq lsp-gopls-staticcheck t)
-  (setq lsp-eldoc-render-all t)
-  (setq lsp-gopls-complete-unimported t)
+    ;; (put 'eglot-node 'flymake-overlay-control nil)
+    ;; (put 'eglot-warning 'flymake-overlay-control nil)
+    ;; (put 'eglot-error 'flymake-overlay-control nil)
+    ;; (push '(face . nil) (get :note 'flymake-overlay-control))
+    ;; (push '(face . nil) (get :error 'flymake-overlay-control))
+    ;; (push '(face . nil) (get :warning 'flymake-overlay-control))
+    ;; (setq flymake-diagnostic-functions (flymake-flycheck-all-chained-diagnostic-functions))
 
-  (setq lsp-ui-doc-enable nil
-        lsp-ui-peek-enable t
-        lsp-ui-sideline-enable t
-        lsp-ui-imenu-enable t
-        lsp-ui-flycheck-enable t
-        lsp-enable-snippet t
-        company-lsp-enable-snippet t)
+
+    ;; lsp-mode
+    (use-package lsp-mode
+      :ensure t
+      :init
+      ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+      ;; (setq lsp-keymap-prefix "C-c l")
+      :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+             (go-mode . lsp)
+             ;; if you want which-key integration
+             (lsp-mode . lsp-enable-which-key-integration))
+      :commands lsp)
+
+    (use-package which-key
+      :ensure t)
+
+    ;; lsp-ui
+    (use-package lsp-ui
+      :ensure t
+      :commands lsp-ui-mode)
+
+    ;; if you are ivy user
+    (use-package lsp-ivy
+      :ensure t
+      :commands lsp-ivy-workspace-symbol)
+    (use-package lsp-treemacs
+      :ensure t
+      :commands lsp-treemacs-errors-list)
+
+    (setq lsp-gopls-staticcheck t)
+    (setq lsp-eldoc-render-all t)
+    (setq lsp-gopls-complete-unimported t)
+
+    (setq lsp-ui-doc-enable nil
+          lsp-ui-peek-enable t
+          lsp-ui-sideline-enable t
+          lsp-ui-imenu-enable t
+          lsp-ui-flycheck-enable t
+          lsp-enable-snippet t
+          company-lsp-enable-snippet t)
 
 #+end_src
 
@@ -1489,6 +1497,8 @@ Version 2016-06-19"
     (projectile-mode +1)
     ;; Recommended keymap prefix on macOS
     (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))
+  (add-to-list 'projectile-project-root-files-functions 'custom/find-go-dir)
+
 #+end_src
 
 * TODO valign
