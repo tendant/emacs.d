@@ -1309,6 +1309,8 @@ Version 2016-06-19"
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; use default-text-scale-mode
+(use-package default-text-scale
+  :ensure t)
 (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
 (global-set-key (kbd "C-M--") 'default-text-scale-decrease)
 
@@ -1534,4 +1536,61 @@ Version 2016-06-19"
     ;; Could also have :background "Grey" for example.
     ;; (sp-show-pair-match-face ((t (:foreground "White"))))
     )
+#+end_src
+
+* straight.el
+
+#+begin_src elisp
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+
+#+end_src
+
+* tsx-mode
+#+begin_src elisp
+
+  (use-package tree-sitter
+    :ensure t)
+  (use-package tree-sitter-langs
+    :ensure t)
+  (straight-use-package '(tsi :type git :host github :repo "orzechowskid/tsi.el"))
+  (require 'tsi-typescript)
+  (require 'tsi-css)
+  (require 'tsi-json)
+  (use-package coverlay
+    :ensure t)
+
+  (straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
+  (require 'tsx-mode)
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
+  (setq standard-indent 2) ; Fix indent-region issue: https://github.com/orzechowskid/tsi.el/issues/40
+#+end_src
+
+* Indent folding
+
+#+begin_src elisp
+  (use-package highlight-indent-guides
+    :ensure t)
+
+  (defun toggle-indent-fold ()
+    "Toggle fold all lines larger than indentation on current line"
+    (interactive)
+    (let ((col 1))
+      (save-excursion
+        (back-to-indentation)
+        (setq col (+ 1 (current-column)))
+        (set-selective-display
+         (if selective-display nil (or col 1))))))
+  (global-set-key [(M C i)] 'aj-toggle-fold)
 #+end_src

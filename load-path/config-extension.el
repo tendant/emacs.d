@@ -1274,6 +1274,9 @@ Version 2016-06-19"
               (define-key go-mode-map (kbd "C-c x") 'go-run)
 
               ;; (flymake-mode -1)
+              (setq gofmt-command "goimports")
+              (add-hook 'before-save-hook 'gofmt-before-save)
+
               ))
 
   ;; gotest
@@ -1380,3 +1383,31 @@ Version 2016-06-19"
   ;; Could also have :background "Grey" for example.
   ;; (sp-show-pair-match-face ((t (:foreground "White"))))
   )
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(use-package tree-sitter
+  :ensure t)
+(use-package tree-sitter-langs
+  :ensure t)
+(straight-use-package '(tsi :type git :host github :repo "orzechowskid/tsi.el"))
+(require 'tsi-typescript)
+(require 'tsi-css)
+(require 'tsi-json)
+(use-package coverlay
+  :ensure t)
+
+(straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
+(require 'tsx-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
