@@ -746,6 +746,13 @@ Version 2017-03-12"
 
 * web development
 #+begin_src elisp
+(use-package rjsx-mode
+  :ensure t)
+(setq auto-mode-alist
+    (append '((".*\\.astro\\'" . js-jsx-mode))
+        auto-mode-alist))
+#+end_src
+#+begin_src elisp
     ;; html-mode and js-mode
     (add-hook 'html-mode-hook
               (lambda ()
@@ -1555,6 +1562,15 @@ Version 2016-06-19"
   (load bootstrap-file nil 'nomessage))
 
 
+#+end_src
+
+* typescript
+#+begin_src elisp
+(use-package tss
+  :ensure t)
+(use-package typescript-mode
+  :ensure t)
+(setq typescript-indent-level 2)
 #+end_src
 
 * tsx-mode
