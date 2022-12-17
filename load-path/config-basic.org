@@ -632,3 +632,17 @@ Mainly used by "emacs -daemon"
 (message "Loaded my-hook.el")
 
 #+end_src
+
+
+* Making Emacs write all auxiliary files somewhere else
+
+https://www.gnu.org/software/emacs/manual/html_node/efaq/Not-writing-files-to-the-current-directory.html
+
+#+begin_src elisp
+(setq lock-file-name-transforms
+      '(("\\`/.*/\\([^/]+\\)\\'" "~/.emacs.d/aux/lock/\\1" t)))
+(setq auto-save-file-name-transforms
+      '(("\\`/.*/\\([^/]+\\)\\'" "~/.emacs.d/aux/save\\1" t)))
+(setq backup-directory-alist
+      '((".*" . "~/.emacs.d/aux/backup")))
+#+end_src

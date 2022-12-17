@@ -607,3 +607,10 @@ Returns nil if no differences found, 't otherwise."
             (run-after-make-frame-hooks (selected-frame))))
 
 (message "Loaded my-hook.el")
+
+(setq lock-file-name-transforms
+      '(("\\`/.*/\\([^/]+\\)\\'" "~/.emacs.d/aux/lock/\\1" t)))
+(setq auto-save-file-name-transforms
+      '(("\\`/.*/\\([^/]+\\)\\'" "~/.emacs.d/aux/save\\1" t)))
+(setq backup-directory-alist
+      '((".*" . "~/.emacs.d/aux/backup")))

@@ -632,6 +632,8 @@ Version 2017-03-12"
     (add-to-list 'load-path "~/emacs.d/load-path/ox-hugo")
     (use-package ox-hugo
       :ensure t)
+    (setq org-hugo-date-format "%Y-%m-%d")
+    (setq org-hugo-content-folder "src/pages")
 
     ;; When t (the default), the user is asked before every code block
     ;; evaluation.  When ‘nil’, the user is not asked.  When set to a
@@ -1591,6 +1593,7 @@ Version 2016-06-19"
   (require 'tsx-mode)
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
   (setq standard-indent 2) ; Fix indent-region issue: https://github.com/orzechowskid/tsi.el/issues/40
+  (add-hook 'tsx-mode-hook #'lsp)
 #+end_src
 
 * Indent folding
@@ -1610,3 +1613,32 @@ Version 2016-06-19"
          (if selective-display nil (or col 1))))))
   (global-set-key [(M C i)] 'aj-toggle-fold)
 #+end_src
+
+
+* lsp-tailwind
+
+#+begin_src elisp
+  (straight-use-package
+   '(lsp-tailwindcss
+     :type git :host github :repo "merrickluo/lsp-tailwindcss"))
+
+  (use-package lsp-tailwindcss
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
+
+#+end_src
+
+LSP :: Error from the Language Server: Unhandled method textDocument/documentColor (Method not Found)
+
+> Just executed M-x lsp in your current buffer.
+
+
+Language Server Installation
+
+    M-x lsp-install-server, then select tailwindcss.
+
+Update
+
+    C-u M-x lsp-install-server, then select tailwindcss.

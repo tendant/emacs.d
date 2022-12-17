@@ -589,6 +589,8 @@ Version 2017-03-12"
   (add-to-list 'load-path "~/emacs.d/load-path/ox-hugo")
   (use-package ox-hugo
     :ensure t)
+  (setq org-hugo-date-format "%Y-%m-%d")
+  (setq org-hugo-content-folder "src/pages")
 
   ;; When t (the default), the user is asked before every code block
   ;; evaluation.  When ‘nil’, the user is not asked.  When set to a
@@ -680,6 +682,12 @@ Version 2017-03-12"
   :error-patterns
   ((error line-start (1+ nonl) ": line " line ", col " column ", " (message) line-end))
   :modes (web-mode))
+
+(use-package rjsx-mode
+  :ensure t)
+(setq auto-mode-alist
+    (append '((".*\\.astro\\'" . js-jsx-mode))
+        auto-mode-alist))
 
 ;; html-mode and js-mode
 (add-hook 'html-mode-hook
@@ -1205,6 +1213,8 @@ Version 2016-06-19"
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
 ;; use default-text-scale-mode
+(use-package default-text-scale
+  :ensure t)
 (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
 (global-set-key (kbd "C-M--") 'default-text-scale-decrease)
 
@@ -1397,6 +1407,12 @@ Version 2016-06-19"
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(use-package tss
+  :ensure t)
+(use-package typescript-mode
+  :ensure t)
+(setq typescript-indent-level 2)
+
 (use-package tree-sitter
   :ensure t)
 (use-package tree-sitter-langs
@@ -1411,3 +1427,29 @@ Version 2016-06-19"
 (straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
 (require 'tsx-mode)
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
+(setq standard-indent 2) ; Fix indent-region issue: https://github.com/orzechowskid/tsi.el/issues/40
+(add-hook 'tsx-mode-hook #'lsp)
+
+(use-package highlight-indent-guides
+  :ensure t)
+
+(defun toggle-indent-fold ()
+  "Toggle fold all lines larger than indentation on current line"
+  (interactive)
+  (let ((col 1))
+    (save-excursion
+      (back-to-indentation)
+      (setq col (+ 1 (current-column)))
+      (set-selective-display
+       (if selective-display nil (or col 1))))))
+(global-set-key [(M C i)] 'aj-toggle-fold)
+
+(straight-use-package
+ '(lsp-tailwindcss
+   :type git :host github :repo "merrickluo/lsp-tailwindcss"))
+
+(use-package lsp-tailwindcss
+:init
+(setq lsp-tailwindcss-add-on-mode t)
+:config
+(add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
