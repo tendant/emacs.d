@@ -614,3 +614,18 @@ Returns nil if no differences found, 't otherwise."
       '(("\\`/.*/\\([^/]+\\)\\'" "~/.emacs.d/aux/save\\1" t)))
 (setq backup-directory-alist
       '((".*" . "~/.emacs.d/aux/backup")))
+
+(defun file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
+
+;;; image-type: Invalid image type ‘svg’
+;; This is an issue with the way Emacs initializes its image support on macOS Ventura. It's fixed on the current master branch, and will be in Emacs 29 when that is released.
+;;
+;; See https://debbugs.gnu.org/cgi/bugreport.cgi?bug=59081
+
+(setq image-types (cons 'svg image-types))

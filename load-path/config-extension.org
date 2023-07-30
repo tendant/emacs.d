@@ -1053,42 +1053,61 @@ be passed in via a prefix arg."
 
 * ivy
 #+begin_src elisp
-(use-package ivy
-  :ensure t)
-(use-package swiper
-  :ensure t)
-(use-package counsel
-  :ensure t)
+  (use-package ivy
+    :ensure t)
+  (use-package swiper
+    :ensure t)
+  (use-package counsel
+    :ensure t)
 
-(ivy-mode 1)
-(setq ivy-use-selectable-prompt t) ; make the prompt line selectable
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
-;; (global-set-key "\C-r" 'swiper-isearch-backward)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-;; (global-set-key (kbd "M-x") 'counsel-M-x)
-;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-(global-set-key (kbd "C-c g") 'counsel-git)
-(global-set-key (kbd "C-c j") 'counsel-git-grep)
-(global-set-key (kbd "C-c k") 'counsel-ag)
-(global-set-key (kbd "C-x l") 'counsel-locate)
-(global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+  (ivy-mode 1)
+  (setq ivy-use-selectable-prompt t) ; make the prompt line selectable
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (global-set-key "\C-s" 'swiper)
+  ;; (global-set-key "\C-r" 'swiper-isearch-backward)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  (global-set-key (kbd "C-c g") 'counsel-git)
+  (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x l") 'counsel-locate)
+  (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 
-;; https://github.com/abo-abo/swiper/issues/1172#issuecomment-633148859
-(defun swiper-C-r (&optional arg)
-  "Move cursor vertically down ARG candidates.
-If the input is empty, select the previous history element instead."
-  (interactive "p")
-  (if (string= ivy-text "")
-      (ivy-next-history-element 1)
-    (ivy-previous-line arg)))
+
+  ;; Set ivy mini buffer selection color
+  (custom-set-faces
+   '(ivy-current-match
+     ((((class color) (background light))
+       :background "#0EA5E9" :foreground "white")
+      (((class color) (background dark))
+       :background "#0EA5E9" :foreground "black"))))
+
+  ;; (progn
+  ;;   (set-face-attribute 'ivy-current-match nil :foreground "white")
+  ;;   (set-face-attribute 'ivy-minibuffer-match-face-2 nil :foreground "white" :background "red")
+  ;;   (set-face-attribute 'ivy-minibuffer-match-face-3 nil :foreground "white" :background "darkgreen")
+  ;;   (set-face-attribute 'ivy-minibuffer-match-face-4 nil :foreground "white" :background "blue")
+  ;;   ;;
+  ;;   (set-face-attribute 'swiper-match-face-2         nil :foreground "white" :background "red")
+  ;;   (set-face-attribute 'swiper-match-face-3         nil :foreground "white" :background "darkgreen")
+  ;;   (set-face-attribute 'swiper-match-face-4         nil :foreground "white" :background "blue"))
+
+  ;; https://github.com/abo-abo/swiper/issues/1172#issuecomment-633148859
+  (defun swiper-C-r (&optional arg)
+    "Move cursor vertically down ARG candidates.
+  If the input is empty, select the previous history element instead."
+    (interactive "p")
+    (if (string= ivy-text "")
+        (ivy-next-history-element 1)
+      (ivy-previous-line arg)))
 
 #+end_src
 
@@ -1642,3 +1661,24 @@ Language Server Installation
 Update
 
     C-u M-x lsp-install-server, then select tailwindcss.
+
+* eshell
+
+#+begin_src elisp
+(defun eshell-new()
+  "Open a new instance of eshell."
+  (interactive)
+  (eshell 'N))
+#+end_src
+
+
+eshell-aliases-file is a variable defined in ‘em-alias.el’.
+
+Its value is "~/.emacs.d/eshell/alias"
+
+The file in which aliases are kept.
+Whenever an alias is defined by the user, using the ‘alias’ command,
+it will be written to this file.  Thus, alias definitions (and
+deletions) are always permanent.  This approach was chosen for the
+sake of simplicity, since that’s pretty much the only benefit to be
+gained by using this module.

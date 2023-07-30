@@ -646,3 +646,26 @@ https://www.gnu.org/software/emacs/manual/html_node/efaq/Not-writing-files-to-th
 (setq backup-directory-alist
       '((".*" . "~/.emacs.d/aux/backup")))
 #+end_src
+
+* Too many open files
+
+#+begin_src elisp
+(defun file-notify-rm-all-watches ()
+  "Remove all existing file notification watches from Emacs."
+  (interactive)
+  (maphash
+   (lambda (key _value)
+     (file-notify-rm-watch key))
+   file-notify-descriptors))
+#+end_src
+
+* bug fixes
+
+#+begin_src elisp
+;;; image-type: Invalid image type ‘svg’
+;; This is an issue with the way Emacs initializes its image support on macOS Ventura. It's fixed on the current master branch, and will be in Emacs 29 when that is released.
+;;
+;; See https://debbugs.gnu.org/cgi/bugreport.cgi?bug=59081
+
+(setq image-types (cons 'svg image-types))
+#+end_src

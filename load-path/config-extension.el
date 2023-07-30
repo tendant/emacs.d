@@ -1453,3 +1453,8 @@ Version 2016-06-19"
 (setq lsp-tailwindcss-add-on-mode t)
 :config
 (add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
+
+(defun eshell-new()
+  "Open a new instance of eshell."
+  (interactive)
+  (eshell 'N))
