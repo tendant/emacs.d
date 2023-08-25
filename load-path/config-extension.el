@@ -1148,10 +1148,11 @@ Version 2016-06-19"
 (defun fix-mac-osx-issue ()
   "Fix mac osx Chinese font issue"
   (if mac-osx-x-p
+      (set-frame-font "Menlo" nil t)
       ;; this is good for all
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font) charset
-                          (font-spec :family (car (cdr my-font-options)))))))
+                          (font-spec :family "STHeiti")))))
 
 (defun my-font-config ()
   "Configure font for Linux."
