@@ -1115,14 +1115,15 @@ Version 2016-06-19"
 ;;                 '(pyim-probe-dynamic-english
 ;;                   pyim-probe-isearch-mode))
 
-;; Font configuration when using Emacs 
+;; Font configuration when using Emacs
 (add-hook 'after-make-window-system-frame-hooks
           (lambda ()
             (my-font-config)))
 
 (when (display-graphic-p)
   (setq my-font-options
-        (cond ((eq system-type 'darwin)     '("Monaco"     "STHeiti"))
+        (cond ((eq system-type 'darwin)     '("Source Code Pro"     "STHeiti"))
+              ;; ((eq system-type 'darwin)     '("Monaco"     "STHeiti"))
               ((eq system-type 'gnu/linux)  '("Menlo"     "WenQuanYi Zen Hei"))
               ((eq system-type 'windows-nt) '("Consolas"  "Microsoft Yahei")))))
 
@@ -1146,7 +1147,7 @@ Version 2016-06-19"
 
 (defun fix-mac-osx-issue ()
   "Fix mac osx Chinese font issue"
-  (if (and mac-osx-x-p (>= emacs-major-version 23))
+  (if mac-osx-x-p
       ;; this is good for all
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font) charset
@@ -1154,38 +1155,17 @@ Version 2016-06-19"
 
 (defun my-font-config ()
   "Configure font for Linux."
-  (if (and linuxp (>= emacs-major-version 23))
+  (if linuxp
       (progn
         ;; (set-frame-font "Bitstream Vera Sans Mono-8")
         ;; (set-frame-font "DejaVu Sans Mono-8")
         (set-frame-font "Inconsolata-11") ; sudo apt-get install fonts-inconsolata
         ;; set the default font for chinese.
         (set-fontset-font "fontset-default"
-                          'unicode '("Microsoft YaHei" . "unicode-bmp")) 
-        ;; (message "my-font.el: configured font for emacs 23")
-        ))
-  (fix-mac-osx-issue)
-  (if (and linuxp (< emacs-major-version 23))
-      (progn 
-        ;;       (create-fontset-from-fontset-spec
-        ;;        "-*-courier-medium-R-normal--14-*-*-*-*-*-fontset-mymono,
-        ;;         chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--14-*-*-*-*-*-iso10646-1,
-        ;;         chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--14-*-*-*-*-*-iso10646-1,
-        ;;         chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--14-*-*-*-*-*-iso10646-1"
-        ;;        )
-        (create-fontset-from-fontset-spec
-         "-bitstream-bitstream vera sans mono-medium-r-normal--*-*-*-*-*-*-fontset-bitstreammono,
-        ascii:-bitstream-bitstream vera sans mono-medium-r-normal-*-*-*-100-100-*-*-iso8859-1,
-        latin-iso8859-1:-bitstream-bitstream vera sans mono-medium-r-normal-*-*-*-100-100-*-*-iso8859-1,
-        chinese-gb2312:-*-wenquanyi bitmap song-medium-*-normal--9-*-*-*-*-*-iso10646-1,
-        chinese-gbk:-*-wenquanyi bitmap song-medium-*-normal--9-*-*-*-*-*-iso10646-1,
-        chinese-gb18030:-*-wenquanyi bitmap song-medium-*-normal--9-*-*-*-*-*-iso10646-1")
-        (setq default-frame-alist
-              (append '((font . "fontset-bitstreammono"))
-                      default-frame-alist))
-        (set-frame-font "fontset-bitstreammono")
-        (message "*** Configure font done.")
-        )))
+                          'unicode '("Microsoft YaHei" . "unicode-bmp"))
+        (message "my-font.el: configured font for emacs 23")))
+  (fix-mac-osx-issue))
+
 
 
 
@@ -1208,9 +1188,9 @@ Version 2016-06-19"
 
 ;; (defun zoom-font (n)
 ;;   "with positive N, increase the font size, otherwise decrease it"
-;;   (set-face-attribute 'default (selected-frame) :height 
+;;   (set-face-attribute 'default (selected-frame) :height
 ;;     (+ (face-attribute 'default :height) (* (if (> n 0) 1 -1) 10)))
-;;   ;; need this for mac osx Chinese font issue after zooming 
+;;   ;; need this for mac osx Chinese font issue after zooming
 ;;   (fix-mac-osx-issue))
 
 ;; (global-set-key (kbd "C-=")      '(lambda nil (interactive) (if linuxp
