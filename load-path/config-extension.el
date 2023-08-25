@@ -988,6 +988,25 @@ be passed in via a prefix arg."
 (global-set-key (kbd "C-x l") 'counsel-locate)
 (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
 
+
+;; Set ivy mini buffer selection color
+(custom-set-faces
+ '(ivy-current-match
+   ((((class color) (background light))
+     :background "#0EA5E9" :foreground "white")
+    (((class color) (background dark))
+     :background "#0EA5E9" :foreground "black"))))
+
+;; (progn
+;;   (set-face-attribute 'ivy-current-match nil :foreground "white")
+;;   (set-face-attribute 'ivy-minibuffer-match-face-2 nil :foreground "white" :background "red")
+;;   (set-face-attribute 'ivy-minibuffer-match-face-3 nil :foreground "white" :background "darkgreen")
+;;   (set-face-attribute 'ivy-minibuffer-match-face-4 nil :foreground "white" :background "blue")
+;;   ;;
+;;   (set-face-attribute 'swiper-match-face-2         nil :foreground "white" :background "red")
+;;   (set-face-attribute 'swiper-match-face-3         nil :foreground "white" :background "darkgreen")
+;;   (set-face-attribute 'swiper-match-face-4         nil :foreground "white" :background "blue"))
+
 ;; https://github.com/abo-abo/swiper/issues/1172#issuecomment-633148859
 (defun swiper-C-r (&optional arg)
   "Move cursor vertically down ARG candidates.
