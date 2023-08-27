@@ -1694,5 +1694,6 @@ gained by using this module.
   ;; `puni-global-mode` before `puni` is actually loaded. Only after you press
   ;; any key that calls Puni commands, it's loaded.
   (puni-global-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'puni-disable-puni-mode) ; Disable puni in minibuffer to avoid conflict with ido C-d keybinding
   (add-hook 'term-mode-hook #'puni-disable-puni-mode))
 #+end_src
