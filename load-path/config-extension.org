@@ -1529,7 +1529,7 @@ Version 2016-06-19"
 
 * smartparens
 
-#+begin_src elisp
+#+begin_src
   (use-package smartparens
     :ensure t
     ;; :diminish smartparens-mode ;; Do not show in modeline
@@ -1545,6 +1545,24 @@ Version 2016-06-19"
     ;; Could also have :background "Grey" for example.
     ;; (sp-show-pair-match-face ((t (:foreground "White"))))
     )
+#+end_src
+
+#+begin_src
+  ;; smartparens
+  (require 'smartparens-config)
+  (with-eval-after-load 'smartparens
+    ;; smartparens
+        (sp-local-pair 'org-mode "\\[" "\\]")
+        (sp-local-pair 'org-mode "$" "$")
+        (sp-local-pair 'org-mode "'" "'" :actions '(rem))
+        (sp-local-pair 'org-mode "=" "=" :actions '(rem))
+        (sp-local-pair 'org-mode "\\left(" "\\right)" :trigger "\\l(" :post-handlers '(sp-latex-insert-spaces-inside-pair))
+        (sp-local-pair 'org-mode "\\left[" "\\right]" :trigger "\\l[" :post-handlers '(sp-latex-insert-spaces-inside-pair))
+        (sp-local-pair 'org-mode "\\left\\{" "\\right\\}" :trigger "\\l{" :post-handlers '(sp-latex-insert-spaces-inside-pair))
+        (sp-local-pair 'org-mode "\\left|" "\\right|" :trigger "\\l|" :post-handlers '(sp-latex-insert-spaces-inside-pair))
+        )
+
+  (add-hook 'org-mode-hook 'smartparens-mode)
 #+end_src
 
 * straight.el
@@ -1663,3 +1681,18 @@ it will be written to this file.  Thus, alias definitions (and
 deletions) are always permanent.  This approach was chosen for the
 sake of simplicity, since that’s pretty much the only benefit to be
 gained by using this module.
+
+
+* puni mode for lisp editing
+
+#+begin_src lisp
+;; Use puni-mode globally and disable it for term-mode.
+(use-package puni
+  :defer t
+  :init
+  ;; The autoloads of Puni are set up so you can enable `puni-mode` or
+  ;; `puni-global-mode` before `puni` is actually loaded. Only after you press
+  ;; any key that calls Puni commands, it's loaded.
+  (puni-global-mode)
+  (add-hook 'term-mode-hook #'puni-disable-puni-mode))
+#+end_src

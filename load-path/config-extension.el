@@ -1148,7 +1148,7 @@ Version 2016-06-19"
 (defun fix-mac-osx-issue ()
   "Fix mac osx Chinese font issue"
   (if mac-osx-x-p
-      (set-frame-font "Menlo" nil t)
+      (set-frame-font "Menlo" nil t) ; Menlo, Monaco
       ;; this is good for all
       (dolist (charset '(kana han symbol cjk-misc bopomofo))
         (set-fontset-font (frame-parameter nil 'font) charset
@@ -1377,22 +1377,6 @@ Version 2016-06-19"
 
 (use-package markdown-mode
   :ensure t)
-
-(use-package smartparens
-  :ensure t
-  ;; :diminish smartparens-mode ;; Do not show in modeline
-  :init
-  (require 'smartparens-config)
-  :config
-  (smartparens-global-mode t) ;; These options can be t or nil.
-  (show-smartparens-global-mode t)
-  (setq sp-show-pair-from-inside t)
-  (add-hook 'prog-mode-hook
-            'smartparens-mode)
-  :custom-face
-  ;; Could also have :background "Grey" for example.
-  ;; (sp-show-pair-match-face ((t (:foreground "White"))))
-  )
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
