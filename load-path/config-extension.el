@@ -1442,3 +1442,18 @@ Version 2016-06-19"
   "Open a new instance of eshell."
   (interactive)
   (eshell 'N))
+
+(electric-pair-mode 1)
+;; Emacs has a concept of Syntax Table. The basic idea is, each
+;; character (every Unicode character), is categorized into a
+;; class. Classes are: letters, punctuations, brackets, programing
+;; language identifiers, comment character, string delimiters, etc.
+;; http://xahlee.info/emacs/emacs/elisp_syntax_table.html
+;; make electric-pair-mode work on more brackets
+(setq electric-pair-pairs
+      '(
+        (?\" . ?\")
+        (?\' . ?\')
+        (?\< . ?\>)
+        (?\[ . ?\])
+        (?\{ . ?\})))

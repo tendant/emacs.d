@@ -1697,3 +1697,22 @@ gained by using this module.
   (add-hook 'eval-expression-minibuffer-setup-hook #'puni-disable-puni-mode) ; Disable puni in minibuffer to avoid conflict with ido C-d keybinding
   (add-hook 'term-mode-hook #'puni-disable-puni-mode))
 #+end_src
+
+* electric-pair-mode
+
+#+begin_src elisp
+  (electric-pair-mode 1)
+  ;; Emacs has a concept of Syntax Table. The basic idea is, each
+  ;; character (every Unicode character), is categorized into a
+  ;; class. Classes are: letters, punctuations, brackets, programing
+  ;; language identifiers, comment character, string delimiters, etc.
+  ;; http://xahlee.info/emacs/emacs/elisp_syntax_table.html
+  ;; make electric-pair-mode work on more brackets
+  (setq electric-pair-pairs
+        '(
+          (?\" . ?\")
+          (?\' . ?\')
+          (?\< . ?\>)
+          (?\[ . ?\])
+          (?\{ . ?\})))
+#+end_src

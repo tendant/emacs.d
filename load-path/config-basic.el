@@ -536,17 +536,21 @@ Returns nil if no differences found, 't otherwise."
 ;; Turn off electric-indent-mode
 (when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
+;;; https://git.savannah.gnu.org/cgit/emacs.git/tree/etc/NEWS?h=emacs-29&id=ef8838c3a5f041769f72758b831eb3fa7a130fb9#n493
+;;; ** The linum.el library is now obsolete.
+;;; We recommend using either the built-in 'display-line-numbers-mode', or
+;;; the 'nlinum' package from GNU ELPA instead.  The former has better
+;;; performance, but the latter is closer to a drop-in replacement.
+;;
 ;; Line highlighting/numbering
 ;; (global-hl-line-mode 1)
 ;; (global-linum-mode 1) ; enable this will cause emacs to hang when opening big org file
-
-(defun nolinum ()
-  (interactive)
-  (message "Deactivate linum mode")
-  ;; (global-linum-mode 0)
-  (linum-mode 0))
-
-(add-hook 'org-mode-hook 'nolinum)
+;; (defun nolinum ()
+;;   (interactive)
+;;   (message "Deactivate linum mode")
+;;  ;; (global-linum-mode 0)
+;;  (linum-mode 0))
+;;(add-hook 'org-mode-hook 'nolinum)
 
 
 ;; For dired in mac osx
