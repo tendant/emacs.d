@@ -1398,8 +1398,8 @@ Version 2016-06-19"
 * golang-mode
 #+begin_src elisp
     ;; golang go-mode
-    ;; (use-package go-mode
-    ;;   :ensure t)
+    (use-package go-mode
+      :ensure t)
     (add-hook 'go-mode-hook
               (lambda ()
                 ;; golang prefer to use gofmt, instead of customized style
