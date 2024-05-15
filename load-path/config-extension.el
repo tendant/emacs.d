@@ -1264,8 +1264,8 @@ Version 2016-06-19"
 ;;   :ensure t)
 
 ;; golang go-mode
-  (use-package go-mode
-    :ensure t)
+  ;; (use-package go-mode
+  ;;   :ensure t)
   (add-hook 'go-mode-hook
             (lambda ()
               ;; golang prefer to use gofmt, instead of customized style
@@ -1296,7 +1296,7 @@ Version 2016-06-19"
 (defun custom/find-go-dir (dir)
   (if (equal dir "/") nil
     (if (member "go.mod" (directory-files dir)) dir
-      (custom/find-go-dir (file-name-directory (string-trim-right dir "/"))))))
+      (custom/find-go-dir (file-name-directory (string-trim-right did "/"))))))
 
 
   (defun lsp-go-install-save-hooks ()
@@ -1370,7 +1370,8 @@ Version 2016-06-19"
   (projectile-mode +1)
   ;; Recommended keymap prefix on macOS
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map))
-(add-to-list 'projectile-project-root-files-functions 'custom/find-go-dir)
+
+;; (add-to-list 'projectile-project-root-files-functions 'custom/find-go-dir)
 
 (use-package yaml-mode
   :ensure t)
@@ -1457,3 +1458,20 @@ Version 2016-06-19"
         (?\< . ?\>)
         (?\[ . ?\])
         (?\{ . ?\})))
+
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
+(use-package dap-mode)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+(with-eval-after-load 'lsp-mode
+
+  (require 'dap-cpptools)
+  (yas-global-mode))
