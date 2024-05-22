@@ -1401,28 +1401,30 @@ Version 2016-06-19"
   ;; golang go-mode
   (use-package go-mode
     :ensure t)
-  (add-hook 'go-mode-hook
-            (lambda ()
-              ;; golang prefer to use gofmt, instead of customized style
-              (add-hook 'before-save-hook 'gofmt-before-save)
-              ;; (setq-default)
-              (setq tab-width 4)
-              ;; (setq standard-indent 2)
-              (setq indent-tabs-mode t)
 
-              (local-set-key (kbd "M-.") #'lsp-goto-type-definition)
-              ;; gotest
-              (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
-              (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
-              (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
-              (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
-              (define-key go-mode-map (kbd "C-c x") 'go-run)
+  (defun go-mode-hook-fn ()
+    ;; golang prefer to use gofmt, instead of customized style
+    (add-hook 'before-save-hook 'gofmt-before-save)
+    ;; (setq-default)
+    (setq tab-width 4)
+    ;; (setq standard-indent 2)
+    (setq indent-tabs-mode t)
 
-              ;; (flymake-mode -1)
-              (setq gofmt-command "goimports")
-              (add-hook 'before-save-hook 'gofmt-before-save)
+    (local-set-key (kbd "M-.") #'xref-find-definitions)
+    ;; gotest
+    (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
+    (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
+    (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
+    (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
+    (define-key go-mode-map (kbd "C-c x") 'go-run)
 
-              ))
+    ;; (flymake-mode -1)
+    (setq gofmt-command "goimports")
+    (add-hook 'before-save-hook 'gofmt-before-save)
+
+    )
+
+  (add-hook 'go-mode-hook 'go-mode-hook-fn)
 
   ;; gotest
   (use-package gotest
