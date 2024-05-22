@@ -1397,6 +1397,7 @@ Version 2016-06-19"
 
 * golang-mode
 #+begin_src elisp
+    (setenv "GOPATH" (concat (getenv "HOME") "/go"))
     ;; golang go-mode
     (use-package go-mode
       :ensure t)
@@ -1409,7 +1410,7 @@ Version 2016-06-19"
                 ;; (setq standard-indent 2)
                 (setq indent-tabs-mode t)
 
-                (local-set-key (kbd "M-.") #'godef-jump)
+                (local-set-key (kbd "M-.") #'lsp-goto-type-definition)
                 ;; gotest
                 (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
                 (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)

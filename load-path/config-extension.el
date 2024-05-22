@@ -1263,9 +1263,10 @@ Version 2016-06-19"
 ;; (use-package ledger-complete
 ;;   :ensure t)
 
-;; golang go-mode
-  ;; (use-package go-mode
-  ;;   :ensure t)
+(setenv "GOPATH" (concat (getenv "HOME") "/go"))
+  ;; golang go-mode
+  (use-package go-mode
+    :ensure t)
   (add-hook 'go-mode-hook
             (lambda ()
               ;; golang prefer to use gofmt, instead of customized style
