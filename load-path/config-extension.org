@@ -1416,6 +1416,7 @@ Version 2016-06-19"
     (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
     (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
     (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
+    (define-key go-mode-map (kbd "C-c i") 'go-goto-imports)
     (define-key go-mode-map (kbd "C-c x") 'go-run)
 
     ;; (flymake-mode -1)
@@ -1721,7 +1722,7 @@ gained by using this module.
           (?\{ . ?\})))
 #+end_src
 
-* c++
+* c++, cplusplus
 #+begin_src elisp
   (add-hook 'c-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'lsp)
@@ -1739,4 +1740,21 @@ gained by using this module.
 
     (require 'dap-cpptools)
     (yas-global-mode))
+
+(defun my-c-mode-common-hook ()
+ ;; https://stackoverflow.com/a/664492
+ ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
+ (c-set-offset 'substatement-open 0)
+ ;; other customizations can go here
+
+ (setq c++-tab-always-indent t)
+ (setq c-basic-offset 4)                  ;; Default is 2
+ (setq c-indent-level 4)                  ;; Default is 2
+
+ (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+ (setq tab-width 4)
+ (setq indent-tabs-mode t)  ; use spaces only if nil
+ )
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 #+end_src

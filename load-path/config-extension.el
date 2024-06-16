@@ -1276,12 +1276,13 @@ Version 2016-06-19"
   ;; (setq standard-indent 2)
   (setq indent-tabs-mode t)
 
-  (local-set-key (kbd "M-.") #'lsp-goto-type-definition)
+  (local-set-key (kbd "M-.") #'xref-find-definitions)
   ;; gotest
   (define-key go-mode-map (kbd "C-c f") 'go-test-current-file)
   (define-key go-mode-map (kbd "C-c t") 'go-test-current-test)
   (define-key go-mode-map (kbd "C-c p") 'go-test-current-project)
   (define-key go-mode-map (kbd "C-c b") 'go-test-current-benchmark)
+  (define-key go-mode-map (kbd "C-c i") 'go-goto-imports)
   (define-key go-mode-map (kbd "C-c x") 'go-run)
 
   ;; (flymake-mode -1)
