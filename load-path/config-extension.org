@@ -1482,6 +1482,20 @@ Version 2016-06-19"
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
+  (setq lsp-diagnostic-package :flycheck)
+  (setq lsp-prefer-capf t)
+  (setq read-process-output-max (* 1024 1024))
+
+  ;; https://github.com/FredeEB/.emacs.d?tab=readme-ov-file#lsp
+  (use-package dap-mode
+    :init
+    (require 'dap-gdb-lldb)
+    (require 'dap-go)
+    ;;download debuggers, REQUIRES unzip
+    (when (not (file-exists-p (expand-file-name ".extension" user-emacs-directory)))
+      (dap-gdb-lldb-setup t)
+      (dap-go-setup t)))
+
   (use-package which-key
     :ensure t)
 
