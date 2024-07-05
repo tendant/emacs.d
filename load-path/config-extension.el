@@ -1464,18 +1464,40 @@ Version 2016-06-19"
         (?\{ . ?\})))
 
 (add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
 
-(use-package dap-mode)
+  (use-package dap-mode)
 
-(setq gc-cons-threshold (* 100 1024 1024)
-      read-process-output-max (* 1024 1024)
-      treemacs-space-between-root-nodes nil
-      company-idle-delay 0.0
-      company-minimum-prefix-length 1
-      lsp-idle-delay 0.1)  ;; clangd is fast
+  (setq gc-cons-threshold (* 100 1024 1024)
+        read-process-output-max (* 1024 1024)
+        treemacs-space-between-root-nodes nil
+        company-idle-delay 0.0
+        company-minimum-prefix-length 1
+        lsp-idle-delay 0.1)  ;; clangd is fast
 
-(with-eval-after-load 'lsp-mode
+  (with-eval-after-load 'lsp-mode
 
-  (require 'dap-cpptools)
-  (yas-global-mode))
+    (require 'dap-cpptools)
+    (yas-global-mode))
+
+(defun my-c-mode-common-hook ()
+ ;; https://stackoverflow.com/a/664492
+ ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
+ (c-set-offset 'substatement-open 0)
+ ;; other customizations can go here
+
+ (setq c++-tab-always-indent t)
+ (setq c-basic-offset 4)                  ;; Default is 2
+ (setq c-indent-level 4)                  ;; Default is 2
+
+ (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+ (setq tab-width 4)
+ (setq indent-tabs-mode nil)  ; use spaces only if nil
+ )
+
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+(require 'eglot)
+(add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
