@@ -1266,7 +1266,16 @@ Version 2016-06-19"
 (setenv "GOPATH" (concat (getenv "HOME") "/go"))
 ;; golang go-mode
 (use-package go-mode
-  :ensure t)
+  :ensure t
+  :config (push (expand-file-name "~/go/bin") exec-path))
+
+(defun go-run ()
+  (interactive)
+  (save-buffer)
+  (let ((buffer "*go*"))
+    (start-process "*go*" buffer "go" "run" (buffer-name))
+    (switch-to-buffer buffer)
+    (view-mode)))
 
 (defun go-mode-hook-fn ()
   ;; golang prefer to use gofmt, instead of customized style
@@ -1290,6 +1299,9 @@ Version 2016-06-19"
   (add-hook 'before-save-hook 'gofmt-before-save)
 
   )
+
+;; https://github.com/golang/go/issues/38032#issuecomment-602769254
+(setq lsp-enable-file-watchers nil)
 
 (add-hook 'go-mode-hook 'go-mode-hook-fn)
 
@@ -1338,6 +1350,20 @@ Version 2016-06-19"
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
+
+(setq lsp-diagnostic-package :flycheck)
+(setq lsp-prefer-capf t)
+(setq read-process-output-max (* 1024 1024))
+
+;; https://github.com/FredeEB/.emacs.d?tab=readme-ov-file#lsp
+(use-package dap-mode
+  :init
+  (require 'dap-gdb-lldb)
+  (require 'dap-go)
+  ;;download debuggers, REQUIRES unzip
+  (when (not (file-exists-p (expand-file-name ".extension" user-emacs-directory)))
+    (dap-gdb-lldb-setup t)
+    (dap-go-setup t)))
 
 (use-package which-key
   :ensure t)
@@ -1464,36 +1490,49 @@ Version 2016-06-19"
         (?\{ . ?\})))
 
 (add-hook 'c-mode-hook 'lsp)
-  (add-hook 'c++-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
-  (use-package dap-mode)
+(use-package dap-mode
+  :ensure t)
+(use-package cmake-mode
+  :ensure t)
 
-  (setq gc-cons-threshold (* 100 1024 1024)
-        read-process-output-max (* 1024 1024)
-        treemacs-space-between-root-nodes nil
-        company-idle-delay 0.0
-        company-minimum-prefix-length 1
-        lsp-idle-delay 0.1)  ;; clangd is fast
+(use-package modern-cpp-font-lock
+  :ensure t
+  :config
+  (modern-c++-font-lock-global-mode))
 
-  (with-eval-after-load 'lsp-mode
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
 
-    (require 'dap-cpptools)
-    (yas-global-mode))
+(with-eval-after-load 'lsp-mode
+
+  (require 'dap-cpptools)
+  (yas-global-mode))
 
 (defun my-c-mode-common-hook ()
- ;; https://stackoverflow.com/a/664492
- ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
- (c-set-offset 'substatement-open 0)
- ;; other customizations can go here
+  ;; https://stackoverflow.com/a/664492
+  ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'innamespace 0)
+  (c-set-offset 'brace-list-open 0)
+  ;; other customizations can go here
 
- (setq c++-tab-always-indent t)
- (setq c-basic-offset 4)                  ;; Default is 2
- (setq c-indent-level 4)                  ;; Default is 2
+  ;; (setq-default c-tab-always-indent nil) ; control end of line tab behavior
+  (setq c++-tab-always-indent t)
 
- (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
- (setq tab-width 4)
- (setq indent-tabs-mode nil)  ; use spaces only if nil
- )
+  ;; (setq c-default-style "linux")
+  (setq c-basic-offset 4)                  ;; Default is 2
+  (setq c-indent-level 4)                  ;; Default is 2
+
+  ;; (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60))
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)  ; use spaces only if nil
+   )
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
