@@ -134,33 +134,10 @@ Version 2017-03-12"
 (use-package rg
   :ensure t)
 
-(use-package dired-single
-  :ensure t
-  :init
-(defun my-dired-init ()
-  "Bunch of stuff to run for dired, either immediately or when it's
-   loaded."
-  ;; <add other stuff here>
-  (define-key dired-mode-map [remap dired-find-file]
-    'dired-single-buffer)
-  (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
-    'dired-single-buffer-mouse)
-  (define-key dired-mode-map [remap dired-up-directory]
-    'dired-single-up-directory)
-  (define-key dired-mode-map (kbd ".")
-    'dired-single-up-directory))
-
 (setq dired-listing-switches "-alh")
 (setq dired-recursive-copies 'always)
 
 (setq dired-dwim-target t)
-
-;; if dired's already loaded, then the keymap will be bound
-(if (boundp 'dired-mode-map)
-    ;; we're good to go; just add our bindings
-    (my-dired-init)
-  ;; it's not loaded yet, so add our bindings to the load-hook
-  (add-hook 'dired-load-hook 'my-dired-init)))
 
 (defun dired-ediff-marked-files ()
   "Run ediff on marked ediff files."
@@ -168,10 +145,10 @@ Version 2017-03-12"
   (set 'marked-files (dired-get-marked-files))
   (when (= (safe-length marked-files) 2)
     (ediff-files (nth 0 marked-files) (nth 1 marked-files)))
-  
+
   (when (= (safe-length marked-files) 3)
     (ediff3 (buffer-file-name (nth 0 marked-files))
-            (buffer-file-name (nth 1 marked-files)) 
+            (buffer-file-name (nth 1 marked-files))
             (buffer-file-name (nth 2 marked-files)))))
 
 ;; (use-package yasnippet
@@ -614,8 +591,8 @@ Version 2017-03-12"
 
 ;; (use-package sqlite3
 ;;   :ensure t)
-(use-package emacsql-libsqlite3
-  :ensure t)
+;; (use-package emacsql-libsqlite3
+;;      :ensure t)
 (use-package org-roam
       :ensure t
       :init
@@ -1355,16 +1332,6 @@ Version 2016-06-19"
 (setq lsp-prefer-capf t)
 (setq read-process-output-max (* 1024 1024))
 
-;; https://github.com/FredeEB/.emacs.d?tab=readme-ov-file#lsp
-(use-package dap-mode
-  :init
-  (require 'dap-gdb-lldb)
-  (require 'dap-go)
-  ;;download debuggers, REQUIRES unzip
-  (when (not (file-exists-p (expand-file-name ".extension" user-emacs-directory)))
-    (dap-gdb-lldb-setup t)
-    (dap-go-setup t)))
-
 (use-package which-key
   :ensure t)
 
@@ -1422,8 +1389,8 @@ Version 2016-06-19"
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(use-package tss
-  :ensure t)
+;; (use-package tss
+;;   :ensure t)
 (use-package typescript-mode
   :ensure t)
 (setq typescript-indent-level 2)
@@ -1492,8 +1459,6 @@ Version 2016-06-19"
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
-(use-package dap-mode
-  :ensure t)
 (use-package cmake-mode
   :ensure t)
 

@@ -1584,11 +1584,11 @@ Version 2016-06-19"
 
 * typescript
 #+begin_src elisp
-(use-package tss
-  :ensure t)
-(use-package typescript-mode
-  :ensure t)
-(setq typescript-indent-level 2)
+  ;; (use-package tss
+  ;;   :ensure t)
+  (use-package typescript-mode
+    :ensure t)
+  (setq typescript-indent-level 2)
 #+end_src
 
 * tsx-mode
