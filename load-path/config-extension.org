@@ -169,6 +169,11 @@ Version 2017-03-12"
 
 * dired
 #+begin_src elisp
+(setq dired-listing-switches "-alh")
+(setq dired-recursive-copies 'always)
+
+(setq dired-dwim-target t)
+
 (use-package dired-single
   :ensure t
   :init
@@ -203,10 +208,10 @@ Version 2017-03-12"
   (set 'marked-files (dired-get-marked-files))
   (when (= (safe-length marked-files) 2)
     (ediff-files (nth 0 marked-files) (nth 1 marked-files)))
-  
+
   (when (= (safe-length marked-files) 3)
     (ediff3 (buffer-file-name (nth 0 marked-files))
-            (buffer-file-name (nth 1 marked-files)) 
+            (buffer-file-name (nth 1 marked-files))
             (buffer-file-name (nth 2 marked-files)))))
 #+end_src
 
@@ -662,8 +667,8 @@ Version 2017-03-12"
 #+begin_src elisp
   ;; (use-package sqlite3
   ;;   :ensure t)
-  (use-package emacsql-libsqlite3
-    :ensure t)
+  ;; (use-package emacsql-libsqlite3
+  ;;      :ensure t)
   (use-package org-roam
         :ensure t
         :init

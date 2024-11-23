@@ -590,7 +590,7 @@ Version 2017-03-12"
   (use-package ox-hugo
     :ensure t)
   (setq org-hugo-date-format "%Y-%m-%d")
-  (setq org-hugo-content-folder "src/pages")
+  (setq org-hugo-content-folder "src/content")
 
   ;; When t (the default), the user is asked before every code block
   ;; evaluation.  When ‘nil’, the user is not asked.  When set to a
@@ -1208,15 +1208,15 @@ Version 2016-06-19"
 ;;                                                               (zoom-font -1))))
 
 ;; Change current buffer font size
-(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C-M-=") 'text-scale-increase)
 
-(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-M--") 'text-scale-decrease)
 
 ;; use default-text-scale-mode
 (use-package default-text-scale
   :ensure t)
-(global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-(global-set-key (kbd "C-M--") 'default-text-scale-decrease)
+(global-set-key (kbd "C-=") 'default-text-scale-increase)
+(global-set-key (kbd "C--") 'default-text-scale-decrease)
 
 ;; restclient
 (use-package restclient
