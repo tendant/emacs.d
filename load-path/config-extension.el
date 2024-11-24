@@ -136,6 +136,9 @@ Version 2017-03-12"
 
 (setq dired-listing-switches "-alh")
 (setq dired-recursive-copies 'always)
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd ".")
+            'dired-up-directory))
 
 (setq dired-dwim-target t)
 
@@ -1406,6 +1409,7 @@ Version 2016-06-19"
 (use-package coverlay
   :ensure t)
 
+(use-package css-in-js-mode :straight '(css-in-js-mode :type git :host github :repo "orzechowskid/tree-sitter-css-in-js"))
 (straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
 (require 'tsx-mode)
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
@@ -1456,6 +1460,8 @@ Version 2016-06-19"
         (?\[ . ?\])
         (?\{ . ?\})))
 
+(use-package tree-sitter
+  :ensure t)
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
@@ -1474,6 +1480,8 @@ Version 2016-06-19"
       company-minimum-prefix-length 1
       lsp-idle-delay 0.1)  ;; clangd is fast
 
+(use-package dap-mode
+  :ensure t)
 (with-eval-after-load 'lsp-mode
 
   (require 'dap-cpptools)
