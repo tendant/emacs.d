@@ -571,6 +571,7 @@ Version 2017-03-12"
     :ensure t)
   (setq org-hugo-date-format "%Y-%m-%d")
   (setq org-hugo-content-folder "src/content")
+  (setq org-hugo-headline-anchor nil)
 
   ;; When t (the default), the user is asked before every code block
   ;; evaluation.  When ‘nil’, the user is not asked.  When set to a
@@ -1275,9 +1276,6 @@ Version 2016-06-19"
   (define-key go-mode-map (kbd "C-c x") 'go-run)
 
   ;; (flymake-mode -1)
-  (setq gofmt-command "goimports")
-  (add-hook 'before-save-hook 'gofmt-before-save)
-
   )
 
 ;; https://github.com/golang/go/issues/38032#issuecomment-602769254
@@ -1296,6 +1294,7 @@ Version 2016-06-19"
 
 
 (defun lsp-go-install-save-hooks ()
+  (message "running lsp-go-install-save-hooks")
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 
@@ -1354,6 +1353,7 @@ Version 2016-06-19"
 (setq lsp-gopls-staticcheck t)
 (setq lsp-eldoc-render-all t)
 (setq lsp-gopls-complete-unimported t)
+(setq lsp-enable-indentation t)
 
 (setq lsp-ui-doc-enable nil
       lsp-ui-peek-enable t
@@ -1362,6 +1362,9 @@ Version 2016-06-19"
       lsp-ui-flycheck-enable t
       lsp-enable-snippet t
       company-lsp-enable-snippet t)
+
+(setq lsp-semgrep-args '("--severity" "ERROR"))
+;; (setq lsp-semgrep-args '("--config=p/security-audit" "--disable-metrics"))
 
 ;; Projectile
 (use-package projectile
@@ -1397,24 +1400,6 @@ Version 2016-06-19"
 (use-package typescript-mode
   :ensure t)
 (setq typescript-indent-level 2)
-
-(use-package tree-sitter
-  :ensure t)
-(use-package tree-sitter-langs
-  :ensure t)
-(straight-use-package '(tsi :type git :host github :repo "orzechowskid/tsi.el"))
-(require 'tsi-typescript)
-(require 'tsi-css)
-(require 'tsi-json)
-(use-package coverlay
-  :ensure t)
-
-(use-package css-in-js-mode :straight '(css-in-js-mode :type git :host github :repo "orzechowskid/tree-sitter-css-in-js"))
-(straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
-(require 'tsx-mode)
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
-(setq standard-indent 2) ; Fix indent-region issue: https://github.com/orzechowskid/tsi.el/issues/40
-(add-hook 'tsx-mode-hook #'lsp)
 
 (use-package highlight-indent-guides
   :ensure t)
@@ -1513,3 +1498,73 @@ Version 2016-06-19"
 (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
+
+(use-package ellama
+  :ensure t
+  :bind ("C-c e" . ellama-transient-main-menu)
+  :init
+  ;; setup key bindings
+  ;; (setopt ellama-keymap-prefix "C-c e")
+  ;; language you want ellama to translate to
+  (setopt ellama-language "English")
+  ;; could be llm-openai for example
+  (require 'llm-ollama)
+  (require 'llm-openai)
+  (setq llm-warn-on-nonfree nil)
+
+  (setopt ellama-provider (make-llm-openai ; https://github.com/ahyatt/llm?tab=readme-ov-file#open-ai
+                           ;; :url "https://api.openai.com/v1"
+                           :chat-model "gpt-4o" ; https://platform.openai.com/docs/models/gpt-4
+                           :key "(getenv "OPENAI_API_KEY")"))
+
+  ;;  (setopt ellama-provider
+  ;;    (make-llm-ollama
+  ;;	     ;; this model should be pulled to use it
+  ;;	     ;; value should be the same as you print in terminal during pull
+  ;;	     :chat-model "llama3:8b-instruct-q8_0"
+  ;;	     :embedding-model "nomic-embed-text"
+  ;;	     :default-chat-non-standard-params '(("num_ctx" . 8192))))
+
+  ;;    (setopt ellama-summarization-provider
+  ;;              (make-llm-ollama
+  ;;               :chat-model "qwen2.5:3b"
+  ;;               :embedding-model "nomic-embed-text"
+  ;;               :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  ;;
+  ;;    (setopt ellama-coding-provider
+  ;;              (make-llm-ollama
+  ;;               :chat-model "qwen2.5-coder:3b"
+  ;;               :embedding-model "nomic-embed-text"
+  ;;               :default-chat-non-standard-params '(("num_ctx" . 32768))))
+
+  ;; Predefined llm providers for interactive switching.
+  ;; You shouldn't add ollama providers here - it can be selected interactively
+  ;; without it. It is just example.
+  ;;  (setopt ellama-providers
+  ;;	    '(("zephyr" . (make-llm-ollama
+  ;;			   :chat-model "zephyr:7b-beta-q6_K"
+  ;;			   :embedding-model "zephyr:7b-beta-q6_K"))
+  ;;	      ("mistral" . (make-llm-ollama
+  ;;			    :chat-model "mistral:7b-instruct-v0.2-q6_K"
+  ;;			    :embedding-model "mistral:7b-instruct-v0.2-q6_K"))
+  ;;	      ("mixtral" . (make-llm-ollama
+  ;;			    :chat-model "mixtral:8x7b-instruct-v0.1-q3_K_M-4k"
+  ;;			    :embedding-model "mixtral:8x7b-instruct-v0.1-q3_K_M-4k"))))
+
+  ;;    ;; Naming new sessions with llm
+  ;;    (setopt ellama-naming-provider
+  ;;              (make-llm-ollama
+  ;;               :chat-model "llama3:8b-instruct-q8_0"
+  ;;               :embedding-model "nomic-embed-text"
+  ;;               :default-chat-non-standard-params '(("stop" . ("\n")))))
+  ;;
+  ;;    (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
+  ;;
+  ;;    ;; Translation llm provider
+  ;;    (setopt ellama-translation-provider
+  ;;            (make-llm-ollama
+  ;;             :chat-model "qwen2.5:3b"
+  ;;             :embedding-model "nomic-embed-text"
+  ;;             :default-chat-non-standard-params
+  ;;             '(("num_ctx" . 32768))))
+  )
