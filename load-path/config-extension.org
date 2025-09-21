@@ -1380,6 +1380,25 @@ Version 2016-06-19"
 
 * golang-mode
 #+begin_src elisp
+;; for goflags
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
+;;; You’re seeing the classic race: Emacs opens the file → LSP starts immediately → direnv updates the env a moment later → gopls only sees the old env on first load. After you restart LSP it’s fine.
+;; Don’t auto-start LSP on go-mode; we’ll start it after direnv updates.
+(defun my/lsp-restart-if-needed ()
+  "If LSP started before direnv, restart it once env is ready."
+  (when (and (derived-mode-p 'go-mode)
+             (lsp-workspaces))        ; already running
+    (lsp-workspace-restart)))
+
+(add-hook 'direnv-after-update-environment-hook #'my/lsp-restart-if-needed)
+
+#+end_src
+
+#+begin_src elisp
   (setenv "GOPATH" (concat (getenv "HOME") "/go"))
   ;; golang go-mode
   (use-package go-mode
@@ -1570,24 +1589,6 @@ Version 2016-06-19"
   (add-hook 'org-mode-hook 'smartparens-mode)
 #+end_src
 
-* straight.el
-
-#+begin_src elisp
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-
-#+end_src
 
 * typescript
 #+begin_src elisp
@@ -1605,20 +1606,12 @@ Version 2016-06-19"
     :ensure t)
   (use-package tree-sitter-langs
     :ensure t)
-  (straight-use-package '(tsi :type git :host github :repo "orzechowskid/tsi.el"))
-  (require 'tsi-typescript)
-  (require 'tsi-css)
-  (require 'tsi-json)
+
   (use-package coverlay
     :ensure t)
 
   (use-package css-in-js-mode :straight '(css-in-js-mode :type git :host github :repo "orzechowskid/tree-sitter-css-in-js"))
-  (straight-use-package '(tsx-mode :type git :host github :repo "orzechowskid/tsx-mode.el"))
-  (require 'tsx-mode)
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-mode))
-  (setq standard-indent 2) ; Fix indent-region issue: https://github.com/orzechowskid/tsi.el/issues/40
-  (add-hook 'tsx-mode-hook #'lsp)
-#+end_src
+
 
 * Indent folding
 
@@ -1642,15 +1635,12 @@ Version 2016-06-19"
 * lsp-tailwind
 
 #+begin_src elisp
-  (straight-use-package
-   '(lsp-tailwindcss
-     :type git :host github :repo "merrickluo/lsp-tailwindcss"))
-
   (use-package lsp-tailwindcss
-  :init
-  (setq lsp-tailwindcss-add-on-mode t)
-  :config
-  (add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
+    :ensure t
+    :init
+    (setq lsp-tailwindcss-add-on-mode t)
+    :config
+    (add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
 
 #+end_src
 

@@ -1244,13 +1244,23 @@ Version 2016-06-19"
 ;; (use-package ledger-complete
 ;;   :ensure t)
 
-;;; Create an .envrc file in the root of any project where you need custom GOFLAGS.
+;; for goflags
 (use-package direnv
   :ensure t
   :config
   (direnv-mode))
 
+;;; You’re seeing the classic race: Emacs opens the file → LSP starts immediately → direnv updates the env a moment later → gopls only sees the old env on first load. After you restart LSP it’s fine.
+;; Don’t auto-start LSP on go-mode; we’ll start it after direnv updates.
+(remove-hook 'go-mode-hook #'lsp-deferred)
 
+(defun my/lsp-start-after-direnv ()
+  "Start LSP once direnv has applied env, only if not already running."
+  (when (and (derived-mode-p 'go-mode)
+             (not (lsp-workspaces)))
+    (lsp-deferred)))
+
+(add-hook 'direnv-after-update-environment-hook #'my/lsp-start-after-direnv)
 
 (setenv "GOPATH" (concat (getenv "HOME") "/go"))
 ;; golang go-mode
@@ -1410,10 +1420,11 @@ Version 2016-06-19"
 (global-set-key [(M C i)] 'aj-toggle-fold)
 
 (use-package lsp-tailwindcss
-:init
-(setq lsp-tailwindcss-add-on-mode t)
-:config
-(add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
+  :ensure t
+  :init
+  (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (add-to-list 'lsp-tailwindcss-major-modes 'tsx-mode))
 
 (defun eshell-new()
   "Open a new instance of eshell."
