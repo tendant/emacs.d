@@ -1419,10 +1419,6 @@ Version 2016-06-19"
 
   (add-hook 'go-mode-hook 'go-mode-hook-fn)
 
-  ;; gotest
-  (use-package gotest
-    :ensure t)
-
   (defun custom/find-go-dir (dir)
     (if (equal dir "/") nil
       (if (member "go.mod" (directory-files dir)) dir
@@ -1501,6 +1497,9 @@ Version 2016-06-19"
 
   (setq lsp-semgrep-args '("--severity" "ERROR"))
   ;; (setq lsp-semgrep-args '("--config=p/security-audit" "--disable-metrics"))
+
+  (setq lsp-log-io nil)  ;; or use customize interface
+  (setq lsp-message-project-root-warning t) ; optional: related warnings
 
 #+end_src
 
