@@ -1244,6 +1244,14 @@ Version 2016-06-19"
 ;; (use-package ledger-complete
 ;;   :ensure t)
 
+;;; Create an .envrc file in the root of any project where you need custom GOFLAGS.
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
+
+
 (setenv "GOPATH" (concat (getenv "HOME") "/go"))
 ;; golang go-mode
 (use-package go-mode
