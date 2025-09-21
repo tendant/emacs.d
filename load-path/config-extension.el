@@ -1381,19 +1381,6 @@ Version 2016-06-19"
 (use-package markdown-mode
   :ensure t)
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
 ;; (use-package tss
 ;;   :ensure t)
 (use-package typescript-mode
@@ -1413,10 +1400,6 @@ Version 2016-06-19"
       (set-selective-display
        (if selective-display nil (or col 1))))))
 (global-set-key [(M C i)] 'aj-toggle-fold)
-
-(straight-use-package
- '(lsp-tailwindcss
-   :type git :host github :repo "merrickluo/lsp-tailwindcss"))
 
 (use-package lsp-tailwindcss
 :init
