@@ -1252,15 +1252,13 @@ Version 2016-06-19"
 
 ;;; You’re seeing the classic race: Emacs opens the file → LSP starts immediately → direnv updates the env a moment later → gopls only sees the old env on first load. After you restart LSP it’s fine.
 ;; Don’t auto-start LSP on go-mode; we’ll start it after direnv updates.
-(remove-hook 'go-mode-hook #'lsp-deferred)
-
-(defun my/lsp-start-after-direnv ()
-  "Start LSP once direnv has applied env, only if not already running."
+(defun my/lsp-restart-if-needed ()
+  "If LSP started before direnv, restart it once env is ready."
   (when (and (derived-mode-p 'go-mode)
-             (not (lsp-workspaces)))
-    (lsp-deferred)))
+             (lsp-workspaces))        ; already running
+    (lsp-workspace-restart)))
 
-(add-hook 'direnv-after-update-environment-hook #'my/lsp-start-after-direnv)
+(add-hook 'direnv-after-update-environment-hook #'my/lsp-restart-if-needed)
 
 (setenv "GOPATH" (concat (getenv "HOME") "/go"))
 ;; golang go-mode

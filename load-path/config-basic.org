@@ -406,6 +406,7 @@ Returns nil if no differences found, 't otherwise."
     (progn
       (setenv "PATH" (concat "~/.cargo/bin:"
                              "/opt/local/bin:"
+                             "/opt/homebrew/bin:"
                              (getenv "PATH")))
       (add-to-list 'exec-path "/opt/local/bin")
       (add-to-list 'exec-path "~/.cargo/bin")))
