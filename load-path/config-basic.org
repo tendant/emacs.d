@@ -2,6 +2,11 @@
 
 #+begin_src elisp
 (message "Begin loading config-basic.org")
+;; Stop the GUI frame from resizing when font/face changes
+(setq frame-inhibit-implied-resize t)
+
+;; (optional) keep pixelwise behavior for explicit resizes
+(setq frame-resize-pixelwise t)
 #+end_src
 
 * Configure package manager

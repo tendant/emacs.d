@@ -1296,6 +1296,8 @@ Version 2016-06-19"
 ;;                                                               (zoom-font -1))))
 
 
+(setq frame-resize-pixelwise t)
+
 (defvar my/global-font-step 10)
 
 (defun my/global-font-increase ()

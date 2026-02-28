@@ -1188,16 +1188,30 @@ Version 2016-06-19"
 ;;                                                                 (cfs-decrease-fontsize)
 ;;                                                               (zoom-font -1))))
 
-;; Change current buffer font size
-(global-set-key (kbd "C-M-=") 'text-scale-increase)
 
-(global-set-key (kbd "C-M--") 'text-scale-decrease)
+(setq frame-resize-pixelwise t)
 
-;; use default-text-scale-mode
-(use-package default-text-scale
-  :ensure t)
-(global-set-key (kbd "C-=") 'default-text-scale-increase)
-(global-set-key (kbd "C--") 'default-text-scale-decrease)
+(defvar my/global-font-step 10)
+
+(defun my/global-font-increase ()
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height (+ (face-attribute 'default :height)
+                                 my/global-font-step)))
+
+(defun my/global-font-decrease ()
+  (interactive)
+  (set-face-attribute 'default nil
+                      :height (- (face-attribute 'default :height)
+                                 my/global-font-step)))
+
+(defun my/global-font-reset ()
+  (interactive)
+  (set-face-attribute 'default nil :height 120)) ;; set your preferred base size
+
+(global-set-key (kbd "C-=") #'my/global-font-increase)
+(global-set-key (kbd "C--") #'my/global-font-decrease)
+(global-set-key (kbd "C-0") #'my/global-font-reset)
 
 ;; restclient
 (use-package restclient

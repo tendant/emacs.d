@@ -1,4 +1,9 @@
 (message "Begin loading config-basic.org")
+;; Stop the GUI frame from resizing when font/face changes
+(setq frame-inhibit-implied-resize t)
+
+;; (optional) keep pixelwise behavior for explicit resizes
+(setq frame-resize-pixelwise t)
 
 (setq package-archives
       '(("org" . "http://orgmode.org/elpa/")
