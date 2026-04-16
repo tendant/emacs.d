@@ -601,6 +601,7 @@ Version 2017-03-12"
       :ensure t
       :init
       (setq org-roam-v2-ack t)
+      (make-directory "~/.emacs.d/org-roam" t)
       ;; (setq org-roam-database-connector 'libsqlite3) ; unique key constraint issue
       :custom
       (org-roam-directory (file-truename "~/.emacs.d/org-roam"))

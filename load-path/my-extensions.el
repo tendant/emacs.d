@@ -520,6 +520,7 @@ If the input is empty, select the previous history element instead."
       :init
       (setq org-roam-v2-ack t)
       (setq org-roam-database-connector 'libsqlite3)
+      (make-directory "~/.emacs.d/org-roam" t)
       :custom
       (org-roam-directory (file-truename "~/.emacs.d/org-roam"))
       :bind (("C-c n l" . org-roam-buffer-toggle)
