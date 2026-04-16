@@ -57,19 +57,15 @@
 (add-to-list 'mu4e-view-actions
   '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
+;; Configure your email accounts below.
+;; Add one mu4e-context per email address you want to use.
 (setq mu4e-contexts
     `( ,(make-mu4e-context
 	  :name "account1@gmail.com"
 	  :enter-func (lambda () (mu4e-message "Entering context: account1@gmail.com"))
           :leave-func (lambda () (mu4e-message "Leaving context: account1@gmail.com"))
-	  ;; we match based on the contact-fields of the message
 	  :match-func (lambda (msg)
-                        (message "match-func: account1")
                         (when msg
-                          (if (mu4e-message-contact-field-matches msg
-                                                                  '(:to :from :cc :bcc) "account1@gmail.com")
-                              (message "MATCHED: account1"))
-                          (message "match-func: account1 end")
                           (mu4e-message-contact-field-matches msg
                                                               '(:to :from :cc :bcc) "account1@gmail.com")))
 	  :vars '( ( user-mail-address	    . "account1@gmail.com"  )
@@ -77,73 +73,26 @@
                    ( mu4e-sent-folder       . "/gmail-account1/Sent")
                    ( mu4e-drafts-folder     . "/gmail-account1/Drafts")
                    ( mu4e-trash-folder      . "/gmail-account1/Trash")
-                   ;; ( mu4e-refile-folder     .  "/archive")
 		   ( mu4e-compose-signature .
 		     (concat
 		       "Best,\n"
-		       "Your Name\n")))))
+		       "Your Name\n"))))
        ,(make-mu4e-context
 	  :name "account2@gmail.com"
 	  :enter-func (lambda () (mu4e-message "Switch to context: account2@gmail.com"))
 	  :leave-func (lambda () (mu4e-message "Leaving context: account2@gmail.com"))
 	  :match-func (lambda (msg)
-                        (message "match-func: your-nick: ")
                         (when msg
-                          (if (mu4e-message-contact-field-matches msg
-                                                                  '(:to :from :cc :bcc) "account2@gmail.com")
-                              (message "MATCHED: your-nick"))
-                          (message "match-func: your-nick end")
 			  (mu4e-message-contact-field-matches msg
 			                                      '(:to :from :cc :bcc) "account2@gmail.com")))
 	  :vars '( ( user-mail-address	     . "account2@gmail.com" )
 		   ( user-full-name	     . "Your Name" )
-                   ( mu4e-sent-folder       . "/gmail-your-nick/Sent")
-                   ( mu4e-drafts-folder     . "/gmail-your-nick/Drafts")
-                   ( mu4e-trash-folder      . "/gmail-your-nick/Trash")
+                   ( mu4e-sent-folder       . "/gmail-account2/Sent")
+                   ( mu4e-drafts-folder     . "/gmail-account2/Drafts")
+                   ( mu4e-trash-folder      . "/gmail-account2/Trash")
 		   ( mu4e-compose-signature  .
 		     (concat
-		       "Your Name"))))
-
-       ,(make-mu4e-context
-	  :name "account3@example.com"
-	  :enter-func (lambda () (mu4e-message "Switch to context: account3@example.com"))
-	  :leave-func (lambda () (mu4e-message "Leaving context: account3@example.com"))
-	  :match-func (lambda (msg)
-                        (message "match-func: wish")
-                        (when msg
-                          (if (mu4e-message-contact-field-matches msg
-                                                                  '(:to :from :cc :bcc) "account3@example.com")
-                              (message "MATCHED: wish"))
-                          (message "match-func: wish end")
-			  (mu4e-message-contact-field-matches msg
-			    '(:to :from :cc :bcc) "account3@example.com")))
-	  :vars '( ( user-mail-address	     . "account3@example.com" )
-		   ( user-full-name	     . "Your Name" )
-                   ( mu4e-sent-folder       . "/account3/Sent")
-                   ( mu4e-drafts-folder     . "/account3/Drafts")
-                   ( mu4e-trash-folder      . "/account3/Trash")
-		   ( mu4e-compose-signature  . (concat "Best,\n"
-                                                       "Your Name"))))
-       ,(make-mu4e-context
-	  :name "user@example.com"
-	  :enter-func (lambda () (mu4e-message "Switch to context: user@example.com"))
-	  :leave-func (lambda () (mu4e-message "Leaving context: user@example.com"))
-	  :match-func (lambda (msg)
-                        (message "match-func: mag")
-                        (when msg
-                          (if (mu4e-message-contact-field-matches msg
-                                                                  '(:to :from :cc :bcc) "user@example.com")
-                              (message "MATCHED: mag"))
-                          (message "match-func: mag end")
-			  (mu4e-message-contact-field-matches msg
-			    '(:to :from :cc :bcc) "user@example.com")))
-	  :vars '( ( user-mail-address	     . "user@example.com" )
-		   ( user-full-name	     . "Your Name" )
-                   ( mu4e-sent-folder       . "/gmail-account4/Sent")
-                   ( mu4e-drafts-folder     . "/gmail-account4/Drafts")
-                   ( mu4e-trash-folder      . "/gmail-account4/Trash")
-		   ( mu4e-compose-signature  . (concat "Best,\n"
-                                                       "Your Name"))))))
+		       "Your Name"))))))
 
 ;; set `mu4e-context-policy` and `mu4e-compose-policy` to tweak when mu4e should
 ;; guess or ask the correct context, e.g.

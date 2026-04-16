@@ -13,7 +13,7 @@
 (require 'smtpmail-multi)
 
 (setq smtpmail-multi-accounts
-      (quote ((gmail-your-nick . ("account2@gmail.com"
+      (quote ((gmail-account2 . ("account2@gmail.com"
                                   "smtp.gmail.com"
                                   465
                                   "account2@gmail.com"
@@ -30,11 +30,11 @@
                                ssl nil nil nil)))))
 
 (setq smtpmail-multi-associations
-      (quote (("account2@gmail.com" gmail-your-nick)
+      (quote (("account2@gmail.com" gmail-account2)
               ("account1@gmail.com" gmail-account1)
               ("account3@example.com" account3))))
 
-(setq smtpmail-multi-default-account 'gmail-account1)
+(setq smtpmail-multi-default-account 'gmail-account1) ; change to your preferred default
 (setq message-send-mail-function 'smtpmail-multi-send-it)
 (setq smtpmail-debug-info t)
 

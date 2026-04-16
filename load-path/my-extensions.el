@@ -210,8 +210,8 @@
 ;;     (setenv "ORACLE_HOME" "/Applications/oracle/product/10.2.0.4/client/ohome"))
 ;; (if linuxp
 ;;     (progn
-;;       (setenv "ORACLE_HOME" "~/.emacs.d/Dev/instantclient_11_1")
-;;       (add-to-list 'exec-path "~/.emacs.d/Dev/instantclient_11_1")
+;;       (setenv "ORACLE_HOME" "/home/username/Dev/instantclient_11_1")
+;;       (add-to-list 'exec-path "/home/username/Dev/instantclient_11_1")
 ;; ;;       (setenv "PATH" (concat (getenv "ORACLE_HOME") ":" (getenv "PATH")))
 ;; ))
 (autoload 'sqlplus "sqlplus" "sqlplus-mode" t)
