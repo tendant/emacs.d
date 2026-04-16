@@ -6,3 +6,4 @@ backups/
 org-clock-save.el
 org-roam.db
 projectile-bookmarks.eld
+ido.last
