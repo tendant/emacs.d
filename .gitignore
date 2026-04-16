@@ -2,3 +2,7 @@
 load-path/basic-conf.el
 init.el
 elpa/
+backups/
+org-clock-save.el
+org-roam.db
+projectile-bookmarks.eld
