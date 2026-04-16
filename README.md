@@ -7,7 +7,7 @@ Personal Emacs configuration.
 **1. Clone the repo**
 
 ```sh
-git clone https://github.com/your-username/emacs.d.git ~/.emacs.d
+git clone https://github.com/tendant/emacs.d.git ~/.emacs.d
 ```
 
 **2. Create `~/.emacs.d/init.el`**
