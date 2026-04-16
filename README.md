@@ -1,44 +1,35 @@
-emacs.d
-=======
+# emacs.d
 
-An new beginning of my emacs.d
+Personal Emacs configuration.
 
-HOWTO
--------
+## Quick Start
 
-## Clone repository into ~/emacs.d
-<code>
-  git clone git@github.com:your-nick/emacs.d.git
-</code>
-## Create a new file in ~/.emacs.d/init.el
-<code>
-   (load "~/emacs.d/my-init.el")
-</code>
+**1. Clone the repo**
 
+```sh
+git clone https://github.com/your-username/emacs.d.git ~/.emacs.d
+```
 
-Install Latest Stable emacs in Ubuntu
-----
-## Install build dependencies
+**2. Create `~/.emacs.d/init.el`**
 
-<code>
-sudo apt install build-essential checkinstall
-sudo apt-get build-dep emacs24 # enable source in ubuntu software configruation
-</code>
+```elisp
+(load "~/.emacs.d/my-init.el")
+```
 
-## Build and install Emacs 25
+**3. Configure personal settings**
 
-<code>
-sudo apt-get update
-sudo wget http://ftp.gnu.org/gnu/emacs/emacs-25.1.tar.gz
-sudo tar xzvf emacs-25.1.tar.gz
-cd emacs-25.1
-./configure
-make
-sudo checkinstall
-</code>
+Copy and edit the following files with your own values:
 
-<code>
-sudo add-apt-repository -y ppa:ubuntu-elisp
-sudo apt-get update
-sudo apt-get install emacs-snapshot
-</code>
+- `load-path/my-mail-mu4e.el` — email accounts (mu4e)
+- `load-path/my-mail-smtp-multi.el` — SMTP accounts
+- `load-path/my-org-gcal.el` — Google Calendar OAuth credentials
+- `load-path/my-erc.el` — IRC nickname
+
+**4. Launch Emacs**
+
+Packages are managed via `use-package` and will be installed automatically on first launch.
+
+## Requirements
+
+- Emacs 28+
+- [mu](https://github.com/djcb/mu) (optional, for email)
