@@ -1529,7 +1529,7 @@ Version 2016-06-19"
   (setopt ellama-provider (make-llm-openai ; https://github.com/ahyatt/llm?tab=readme-ov-file#open-ai
                            ;; :url "https://api.openai.com/v1"
                            :chat-model "gpt-4o" ; https://platform.openai.com/docs/models/gpt-4
-                           :key "(getenv "OPENAI_API_KEY")"))
+                           :key (getenv "OPENAI_API_KEY")))
 
   ;;  (setopt ellama-provider
   ;;    (make-llm-ollama
